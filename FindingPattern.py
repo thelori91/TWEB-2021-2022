@@ -122,7 +122,7 @@ def initialize_matrix():
     global sub_matrix_width
     print('init {} {}'.format(sub_matrix_height, sub_matrix_width))
     matrix = []
-    for i in range(sub_matrix_height): 
+    for i in range(sub_matrix_height):
         matrix.append([])
         for j in range(sub_matrix_width):
             matrix[i].append(False)
