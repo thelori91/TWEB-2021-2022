@@ -27,6 +27,16 @@ printOutLabel = ttk.Label(content, text='')
 rowLabel = ttk.Label(content, text='Row')
 columnLabel = ttk.Label(content, text='Column')
 canvas = Canvas(content, bg='yellow', width = 200, height = 100) 
+root.bind('<Configure>', lambda event:
+        redraw_automated_grid()
+)
+
+def redraw_automated_grid():
+    global automated_grid
+    global matrix
+    root.update()
+    automated_grid.recalibrate_width_height()
+    automated_grid.draw_canvas(matrix)
 
 class MyError(Exception):
     def __init__(self, value):  # codice inutile
@@ -112,6 +122,8 @@ columnLabel.grid(column=4, row=3, sticky=(N, W), padx=5)
 slider2.grid(column=4, row=4, sticky=(N, E, W), padx=5)
 openFileButton.grid(column=3, row=4, pady=100)
 resetButton.grid(column=4, row=4, pady=100)
+root.update()
+automated_grid = Grid(canvas, matrix)
 
 
 root.rowconfigure(0, weight=1)
