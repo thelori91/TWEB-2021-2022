@@ -1,7 +1,5 @@
-#capire prechè lunghezza conta 1 in più e altezza no 
-#come vedere che tutte le linee abbiano lo stesso numero di elementi 
-#controllare che la grandezza del pattern non sarà maggiore 
-#controllare pattern minore di matrix
+#TODO
+#completare la rotazione con le matrici con altezza e lunghezza differenti 
 def delete_space(p1):
     if (isinstance(p1,list)):
         pattern = []
@@ -19,18 +17,61 @@ def delete_space(p1):
         return pattern
     else:
         raise TypeError("Wrong type")
-
+#
 def correct_length(p):
+    l = len(p)
     r = 0 
     v = True
-    while (r < len(p[0]) and v == True):
+    while (r < l and v == True):
         if len(p[0]) == len(p[r]):
              v = True
              r +=1
         else: 
             v = False
     return v
+#metodo per effettuare le rotazioni del pattern di 90° 180° e 270°
+def rotate(p, grade):
+    pr = []
+    h = len(p)
+    l = len(p[0])
+    if h == l:
+        if grade == 90:
+            for i in range(h):
+                pr.append([])
+                for j in range(l):
+                    pr[i].append(p[j][i])
+            return pr
 
+        elif grade == 180: 
+            pr = rotate(p, 90)
+            pr1 = rotate(pr, 90)
+            return pr1
+        else:
+            if grade == 270:
+                pr = rotate(p, 90)
+                pr1 = rotate(pr, 90)
+                pr2 = rotate(pr1, 90)
+                return pr2
+            raise ValueError(" Invalid rotation value")
+    else: 
+        if grade == 90:
+            for i in range(h):
+                pr.append([])
+                for j in range(l):
+                    pr[i].append(p[i][j])
+            return pr
+
+        elif grade == 180: 
+            pr = rotate(p, 90)
+            pr1 = rotate(pr, 90)
+            return pr1
+        else:
+            if grade == 270:
+                pr = rotate(p, 90)
+                pr1 = rotate(pr, 90)
+                pr2 = rotate(pr1, 90)
+                return pr2
+            raise ValueError(" Invalid rotation value")
 
 var_matr = open("esempio1.txt").read().splitlines()
 var_patrn = open("pattern.txt").read().splitlines()
@@ -48,12 +89,8 @@ l=0
 h=0
 n = 0
 coordinates = []
-#creazione della matrice di dimensioni pattern
-#non capisco peche non entra nel ciclo, dovrei essere a 0 ed entrare ma non entra
-#ipotesi 1 contro il totale di elementi del complesso e poi si confronta con il valore totale della matrice per vedere quante ne ho uguali
-#nel caso di due matrici 7x3 n varrà 21 e si fara 21/7x3
-#altezza uguale lunghezza diversa, altezza diversa
-if(True):
+
+if(correct_length(pattern) == True ):
     if(higthm >= higthp and lengthm >= lengthp):
         if(higthm == higthp):
             if(lengthm == lengthp):
@@ -111,6 +148,7 @@ if(True):
 
         print(n) 
         print(coordinates)
+        print(rotate(pattern, 90))
     else: raise ValueError("Dimension of the matrix smaller than pattern's size")
 else: raise IndexError("Pattern line have different size")
 
