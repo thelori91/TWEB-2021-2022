@@ -2,6 +2,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import *
 from PIL import ImageTk
+from canvas import Grid
 import os
 
 # TODO
@@ -9,20 +10,23 @@ import os
 # 2 SOLUZIONE PER UN TIMER CHE CANCELLI MESSAGGI DELLA printOutLabel NO time.sleep() or Event.wait
 # 3 AGGIUNGERE CANVAS
 # 4 AGGIUNGERE ALGORITMO
-# 5 PENSO LA FINE
+matrix = [
+    [False, False, False],
+    [False, False, False]
+]
 
 root = Tk()
 root.minsize(600, 500)
 fileRead = False
 root.title('Finding Pattern')
 content = ttk.Frame(root, padding=(3, 3, 12, 12))
-frame = ttk.Frame(content, borderwidth=5, relief='ridge', width=200, height=100)
+#frame = ttk.Frame(content, borderwidth=5, relief='ridge', width=200, height=100)
 searchLabel = ttk.Label(content, text='File Name (with extension .txt)')
 fileName = ttk.Entry(content)
 printOutLabel = ttk.Label(content, text='')
 rowLabel = ttk.Label(content, text='Row')
 columnLabel = ttk.Label(content, text='Column')
-
+canvas = Canvas(content, bg='yellow', width = 200, height = 100) 
 
 class MyError(Exception):
     def __init__(self, value):  # codice inutile
@@ -96,7 +100,8 @@ slider = ttk.Scale(content, from_=1, to=100, orient='horizontal', variable=curre
 slider2 = ttk.Scale(content, from_=1, to=100, orient='horizontal', variable=current_value2, command=slider_changed)
 
 content.grid(column=0, row=0, sticky=(N, S, E, W))
-frame.grid(column=0, row=0, columnspan=3, rowspan=5, sticky=(N, S, E, W))
+#frame.grid(column=0, row=0, columnspan=3, rowspan=5, sticky=(N, S, E, W))
+canvas.grid(column=0, row=0, columnspan=3, rowspan=5, sticky=(N, S, E, W))
 searchLabel.grid(column=3, row=0, columnspan=2, sticky=(N, W), padx=5)
 fileName.grid(column=3, row=1, columnspan=2, sticky=(N, E, W), pady=5, padx=5)
 dialogButton.grid(column=5, row=1, sticky=(N, W), padx=5, pady=8)
@@ -107,6 +112,7 @@ columnLabel.grid(column=4, row=3, sticky=(N, W), padx=5)
 slider2.grid(column=4, row=4, sticky=(N, E, W), padx=5)
 openFileButton.grid(column=3, row=4, pady=100)
 resetButton.grid(column=4, row=4, pady=100)
+
 
 root.rowconfigure(0, weight=1)
 root.columnconfigure(0, weight=1)
