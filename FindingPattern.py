@@ -6,123 +6,117 @@ import AutoGrid as ag
 import os
 
 # TODO
-# 1 SISTEMARE CODICE
-# 2 SOLUZIONE PER UN TIMER CHE CANCELLI MESSAGGI DELLA printOutLabel NO time.sleep() or Event.wait
-# 3 AGGIUNGERE CANVAS
-# 4 AGGIUNGERE ALGORITMO
+# 1 SOLUZIONE PER UN TIMER CHE CANCELLI MESSAGGI DELLA printOutLabel NO time.sleep() or Event.wait
+# 2 AGGIUNGERE ALGORITMO
 
 
 root = Tk()
 root.minsize(600, 500)
-fileRead = False
 root.title('Finding Pattern')
 content = ttk.Frame(root, padding=(3, 3, 12, 12))
-searchLabel = ttk.Label(content, text='File Name (with extension .txt)')
-fileName = ttk.Entry(content)
-printOutLabel = ttk.Label(content, text='')
-rowLabel = ttk.Label(content, text='Row')
-columnLabel = ttk.Label(content, text='Column')
-canvas = Canvas(content, bg='yellow', width = 200, height = 100) 
+search_label = ttk.Label(content, text='File Name (with extension .txt)')
+sv = StringVar()
+sv.trace("w", lambda name, index, mode, sv=sv: callback())
+file_name = ttk.Entry(content, textvariable=sv)
+print_out_label = ttk.Label(content, text='')
+row_label = ttk.Label(content, text='Row')
+column_label = ttk.Label(content, text='Column')
+canvas = Canvas(content, bg='yellow', width=200, height=100)
 
-class MyError(Exception):
+
+class my_exception_handler(Exception):
     def __init__(self, value):  # codice inutile
         self.value = value
 
 
-def openFile():  # Function that open a file with the fileName Entrybox
-    global fileRead
-    if fileRead is False:
-        try:
-            pathFile = fileName.get()
-            if pathFile == '':
-                raise FileNotFoundError
-            file_extension = os.path.splitext(fileName.get())
-            if file_extension[1] == '.txt':
-                openFileFun = open(pathFile, 'r').read().splitlines()
-                rowNumber = len(openFileFun)
-                columnNumber = len(openFileFun[0])
-                fileRead = True
-                print(rowNumber, columnNumber)
-                printOutLabel['text'] = 'File correctly opened'
-            else:
-                raise MyError('File extension not accepted')
-        except FileNotFoundError:
-            printOutLabel['text'] = 'File not found'
-        except MyError:
-            printOutLabel['text'] = 'File extension not accepted'
-    else:
-        printOutLabel['text'] = 'File already opened'
-
-
-def openDialog():  # Function that open a file with dialog
-    global fileRead
-    if fileRead is False:
-        root.filename = filedialog.askopenfilename(initialdir="/", title="Select file",
-                                                   filetypes=(("txt files", "*.txt"), ("all files", "*.*")))
-        if root.filename == '':
-            printOutLabel['text'] = 'No file selected'
+def callback():
+    try:
+        path_file = file_name.get()
+        if path_file == '':
+            raise FileNotFoundError
+        file_extension = os.path.splitext(file_name.get())
+        if file_extension[1] == '.txt':
+            openFileFun = open(path_file, 'r').read().splitlines()
+            row_number = len(openFileFun)
+            column_number = len(openFileFun[0])
+            print(row_number, column_number)
+            print_out_label['text'] = 'File correctly opened'
         else:
-            printOutLabel['text'] = 'File correctly opened'
-            fileRead = True
+            raise my_exception_handler('File extension not accepted')
+    except FileNotFoundError:
+        print_out_label['text'] = 'File not found'
+    except my_exception_handler:
+        print_out_label['text'] = 'File extension not accepted'
+
+
+def open_dialog():  # Function that open a file with dialog
+
+    root.filename = filedialog.askopenfilename(initialdir="/", title="Select file",
+                                               filetypes=(("txt files", "*.txt"), ("all files", "*.*")))
+    if root.filename == '':
+        print_out_label['text'] = 'No file selected'
     else:
-        printOutLabel['text'] = 'File already opened'
+        file_name.delete(0, END)
+        file_name.insert(0, root.filename)
+        print_out_label['text'] = 'File correctly opened'
 
 
-def resetFindingPattern():  # Function that restart application
-    global fileRead
-    fileRead = False
-    printOutLabel['text'] = ''
-
-
-def slider_changed(event):  # DA USARE PER VALORE DELLO SLIDER 1
-    sub_matrix_height = int(slider.get())
+# Function that handle the row's slider event
+def row_slider_changed(event):
+    sub_matrix_height = int(row_slider.get())
     automated_grid.set_matrix_height(sub_matrix_height)
 
 
-
-def slider_changed2(event):  # DA USARE PER VALORE DELLO SLIDER 2
-    sub_matrix_width = int(slider2.get())
+# Function that handle the column's slider2 event
+def column_slider_changed(event):
+    sub_matrix_width = int(column_slider.get())
     automated_grid.set_matrix_width(sub_matrix_width)
 
 
+# RadioButton
+draw_radio_button = Radiobutton(content, text="draw", value=0)
+erase_radio_button = Radiobutton(content, text="erase", value=1)
+
 # Button
-openFileButton = ttk.Button(content, text='Open File', command=openFile)
 photo = ImageTk.PhotoImage(file='fileIMG.png')
-dialogButton = Button(content, image=photo, border=0, command=openDialog)
-resetButton = ttk.Button(content, text='Reset', command=resetFindingPattern)
-file = ttk.Button(content)
+dialog_button = Button(content, image=photo, border=0, command=open_dialog)
+search_button = Button(content, text="search pattern", border=0)  # command = avvio algoritmo
 
 # Sliders
-current_value = DoubleVar()
-current_value2 = DoubleVar()
-slider = ttk.Scale(content, from_=1, to=10, orient='horizontal', variable=current_value, command=slider_changed)
-slider2 = ttk.Scale(content, from_=1, to=10, orient='horizontal', variable=current_value2, command=slider_changed2)
+row_current_value = DoubleVar()
+column_current_value = DoubleVar()
+row_current_value.set(1)
+column_current_value.set(1)
+row_slider = ttk.Scale(content, from_=1, to=10, orient='horizontal', variable=row_current_value,
+                       command=row_slider_changed)
+column_slider = ttk.Scale(content, from_=1, to=10, orient='horizontal', variable=column_current_value,
+                          command=column_slider_changed)
 
 content.grid(column=0, row=0, sticky=(N, S, E, W))
-canvas.grid(column=0, row=0, columnspan=3, rowspan=5, sticky=(N, S, E, W))
-searchLabel.grid(column=3, row=0, columnspan=2, sticky=(N, W), padx=5)
-fileName.grid(column=3, row=1, columnspan=2, sticky=(N, E, W), pady=5, padx=5)
-dialogButton.grid(column=5, row=1, sticky=(N, W), padx=5, pady=8)
-printOutLabel.grid(column=3, row=2, columnspan=2, sticky=(N, W), padx=5, pady=70)
-rowLabel.grid(column=3, row=3, sticky=(N, W), padx=5)
-slider.grid(column=3, row=4, sticky=(N, E, W), padx=5)
-columnLabel.grid(column=4, row=3, sticky=(N, W), padx=5)
-slider2.grid(column=4, row=4, sticky=(N, E, W), padx=5)
-openFileButton.grid(column=3, row=4, pady=100)
-resetButton.grid(column=4, row=4, pady=100)
+canvas.grid(column=0, row=0, columnspan=3, rowspan=6, sticky=(N, S, E, W))
+search_label.grid(column=3, row=0, columnspan=2, sticky=(N, W), padx=5)
+file_name.grid(column=3, row=1, columnspan=2, sticky=(N, E, W), pady=5, padx=5)
+dialog_button.grid(column=5, row=1, sticky=(N, W), padx=5, pady=8)
+print_out_label.grid(column=3, row=2, columnspan=2, sticky=(N, W), padx=5, pady=70)
+row_label.grid(column=3, row=3, sticky=(N, W), padx=5)
+row_slider.grid(column=3, row=4, sticky=(N, E, W), padx=5)
+column_label.grid(column=4, row=3, sticky=(N, W), padx=5)
+column_slider.grid(column=4, row=4, sticky=(N, E, W), padx=5)
+draw_radio_button.grid(column=3, row=4, pady=100)
+erase_radio_button.grid(column=4, row=4, pady=100)
+search_button.grid(column=3, row=5, columnspan=2, )  # command = avvio algoritmo
 
-#triggers on window size changed
+
+# triggers on window size changed
 def redraw_automated_grid():
-    root.update()
+    # root.update()
     automated_grid.recalibrate_width_height()
 
 
-root.update()
+# root.update()
 automated_grid = ag.Grid(canvas, 4, 5)
 
-root.bind('<Configure>', lambda event:
-        redraw_automated_grid()
-)
+root.bind('<Configure>', lambda event: redraw_automated_grid())
 root.rowconfigure(0, weight=1)
 root.columnconfigure(0, weight=1)
 content.columnconfigure(0, weight=3)
