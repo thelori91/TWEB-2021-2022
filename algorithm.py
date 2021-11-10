@@ -17,7 +17,7 @@ def delete_space(p1):
         return pattern
     else:
         raise TypeError("Wrong type")
-#
+
 def correct_length(p):
     l = len(p)
     r = 0 
@@ -29,126 +29,128 @@ def correct_length(p):
         else: 
             v = False
     return v
+
+def rotate90(matrix):
+    ret = []
+    new_matrix_row = 0
+    for i in reversed(range(len(matrix[0]))):
+        ret.append([])
+        for j in range(len(matrix)):
+            ret[new_matrix_row].append(matrix[j][i])
+        new_matrix_row += 1
+    return ret
+
 #metodo per effettuare le rotazioni del pattern di 90° 180° e 270°
-def rotate(p, grade):
+def rotate(p, degrees):
     pr = []
     h = len(p)
     l = len(p[0])
     if h == l:
-        if grade == 90:
+        if degrees == 90:
             for i in range(h):
                 pr.append([])
                 for j in range(l):
                     pr[i].append(p[j][i])
             return pr
-
-        elif grade == 180: 
+        elif degrees == 180: 
             pr = rotate(p, 90)
             pr1 = rotate(pr, 90)
             return pr1
         else:
-            if grade == 270:
+            if degrees == 270:
                 pr = rotate(p, 90)
                 pr1 = rotate(pr, 90)
                 pr2 = rotate(pr1, 90)
                 return pr2
             raise ValueError(" Invalid rotation value")
     else: 
-        if grade == 90:
+        if degrees == 90:
             for i in range(h):
                 pr.append([])
                 for j in range(l):
                     pr[i].append(p[i][j])
             return pr
-
-        elif grade == 180: 
+        elif degrees == 180: 
             pr = rotate(p, 90)
             pr1 = rotate(pr, 90)
             return pr1
         else:
-            if grade == 270:
+            if degrees == 270:
                 pr = rotate(p, 90)
                 pr1 = rotate(pr, 90)
                 pr2 = rotate(pr1, 90)
                 return pr2
             raise ValueError(" Invalid rotation value")
 
-var_matr = open("esempio1.txt").read().splitlines()
-var_patrn = open("pattern.txt").read().splitlines()
-
-pattern = delete_space(var_patrn)
-
-higthm = len(var_matr)
-lengthm = len(var_matr[0])
-higthp = len(pattern)
-lengthp = len(pattern[0])
-
-
-equals = True 
-l=0
-h=0
-n = 0
-coordinates = []
-
-if(correct_length(pattern) == True ):
-    if(higthm >= higthp and lengthm >= lengthp):
-        if(higthm == higthp):
-            if(lengthm == lengthp):
-                matrix=[]
-                for i2 in range(higthp):
-                    matrix.append([])
-                    for j2 in range(lengthp):
-                        matrix[i2].append(var_matr[i2][j2])
-                if(matrix == pattern):
-                    n = n+1
-                    coordinates.append([0, 0])
-            #altezza uguale e lunghezza diversa 
-            else:
-                for k in range(lengthm-lengthp+1):
+#matrix_path -> stringa del file contenente la matrice
+#pattern -> matrice di '0' e '1'
+def find_pattern(matrix_path, pattern):
+    var_matr = delete_space(open(matrix_path).read().splitlines())
+    higthm = len(var_matr)
+    lengthm = len(var_matr[0])
+    higthp = len(pattern)
+    lengthp = len(pattern[0])
+    l = 0
+    h = 0
+    n = 0
+    equals = True 
+    coordinates = []
+    if(correct_length(pattern) == True ):
+        if(higthm >= higthp and lengthm >= lengthp):
+            if(higthm == higthp):
+                if(lengthm == lengthp):
                     matrix=[]
-                    for i in range(higthp):
+                    for i2 in range(higthp):
                         matrix.append([])
-                        l=k
-                        for j in range(lengthp):
-                            matrix[i].append(var_matr[i][l])
-                            l=l+1
-                    if(pattern == matrix):
-                        n = n+1   
-                        coordinates.append([0, k])
-        else:
-            #altezza diversa e lunghezza uguale
-            if(lengthm==lengthp):
-                for w in range(higthm-higthp+1):
-                    h=w
-                    matrix=[]
-                    for i in range(higthp):
-                        matrix.append([])
-                        for j in range(lengthp):
-                            matrix[i].append(var_matr[h][j])
-                        h=h+1
-                    if(pattern == matrix):
-                        n = n+1 
-                        coordinates.append([w, 0])
-            #tutto diverso 
-            else: 
-                for w in range(higthm-higthp+1):
+                        for j2 in range(lengthp):
+                            matrix[i2].append(var_matr[i2][j2])
+                    if(matrix == pattern):
+                        n = n+1
+                        coordinates.append([0, 0])
+                #altezza uguale e lunghezza diversa 
+                else:
                     for k in range(lengthm-lengthp+1):
                         matrix=[]
                         for i in range(higthp):
                             matrix.append([])
                             l=k
                             for j in range(lengthp):
-                                matrix[i].append(var_matr[h][l])
+                                matrix[i].append(var_matr[i][l])
                                 l=l+1
-                            h=h+1
-                        h=w
                         if(pattern == matrix):
-                            n=n+1
-                            coordinates.append([w, k])
-
-        print(n) 
-        print(coordinates)
-        print(rotate(pattern, 90))
-    else: raise ValueError("Dimension of the matrix smaller than pattern's size")
-else: raise IndexError("Pattern line have different size")
+                            n = n+1   
+                            coordinates.append([0, k])
+            else:
+                #altezza diversa e lunghezza uguale
+                if(lengthm==lengthp):
+                    for w in range(higthm-higthp+1):
+                        h=w
+                        matrix=[]
+                        for i in range(higthp):
+                            matrix.append([])
+                            for j in range(lengthp):
+                                matrix[i].append(var_matr[h][j])
+                            h=h+1
+                        if(pattern == matrix):
+                            n = n+1 
+                            coordinates.append([w, 0])
+                #tutto diverso 
+                else: 
+                    for w in range(higthm-higthp+1):
+                        for k in range(lengthm-lengthp+1):
+                            matrix=[]
+                            for i in range(higthp):
+                                matrix.append([])
+                                l=k
+                                for j in range(lengthp):
+                                    matrix[i].append(var_matr[h][l])
+                                    l=l+1
+                                h=h+1
+                            h=w
+                            if(pattern == matrix):
+                                n=n+1
+                                coordinates.append([w, k])
+            return coordinates
+        else: raise ValueError("Dimensions of the matrix are smaller than pattern's")
+    else: raise IndexError("Pattern line have different sizes")
 

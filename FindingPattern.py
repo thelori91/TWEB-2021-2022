@@ -4,6 +4,7 @@ from tkinter import *
 from PIL import ImageTk
 import AutoGrid as ag
 import os
+import Algorithm
 
 # TODO
 # 1 SOLUZIONE PER UN TIMER CHE CANCELLI MESSAGGI DELLA printOutLabel NO time.sleep() or Event.wait
@@ -72,21 +73,48 @@ def column_slider_changed(event):
     sub_matrix_width = int(column_slider.get())
     automated_grid.set_matrix_width(sub_matrix_width)
 
+def draw_selected():
+    automated_grid.set_is_drawing(True)
+
+def erase_selected():
+    automated_grid.set_is_drawing(False)
+
+def search():
+    global automated_grid
+    pat = convert_boolean_to_char(automated_grid.matrix)
+    results = []
+    results.append(Algorithm.find_pattern(file_name.get(), pat))
+    results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(pat)))
+    results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(Algorithm.rotate90(pat))))
+    results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(Algorithm.rotate90(Algorithm.rotate90(pat)))))
+    print(results)
+
+
+def convert_boolean_to_char(matrix):
+    ret = []
+    for i in range(len(matrix)):
+        ret.append([])
+        for j in range(len(matrix[0])):
+            ret[i].append('1' if matrix[i][j] else '0')
+    return ret
 
 # RadioButton
-draw_radio_button = Radiobutton(content, text="draw", value=0)
-erase_radio_button = Radiobutton(content, text="erase", value=1)
+draw_radio_button = Radiobutton(content, text="draw", value=1, command = draw_selected)
+erase_radio_button = Radiobutton(content, text="erase", value=0, command = erase_selected)
+
+#TODO: fix starting value of radiobuttons
+#TODO: Add erase all button
 
 # Button
 photo = ImageTk.PhotoImage(file='fileIMG.png')
 dialog_button = Button(content, image=photo, border=0, command=open_dialog)
-search_button = Button(content, text="search pattern", border=0)  # command = avvio algoritmo
+search_button = Button(content, text="search pattern", border=0, command=search)
 
 # Sliders
 row_current_value = DoubleVar()
 column_current_value = DoubleVar()
-row_current_value.set(1)
-column_current_value.set(1)
+row_current_value.set(5)
+column_current_value.set(5)
 row_slider = ttk.Scale(content, from_=1, to=10, orient='horizontal', variable=row_current_value,
                        command=row_slider_changed)
 column_slider = ttk.Scale(content, from_=1, to=10, orient='horizontal', variable=column_current_value,
@@ -104,17 +132,17 @@ column_label.grid(column=4, row=3, sticky=(N, W), padx=5)
 column_slider.grid(column=4, row=4, sticky=(N, E, W), padx=5)
 draw_radio_button.grid(column=3, row=4, pady=100)
 erase_radio_button.grid(column=4, row=4, pady=100)
-search_button.grid(column=3, row=5, columnspan=2, )  # command = avvio algoritmo
+search_button.grid(column=3, row=5, columnspan=2)
 
 
 # triggers on window size changed
 def redraw_automated_grid():
-    # root.update()
+    root.update()
     automated_grid.recalibrate_width_height()
 
 
-# root.update()
-automated_grid = ag.Grid(canvas, 4, 5)
+root.update()
+automated_grid = ag.Grid(canvas, 5, 5)
 
 root.bind('<Configure>', lambda event: redraw_automated_grid())
 root.rowconfigure(0, weight=1)
