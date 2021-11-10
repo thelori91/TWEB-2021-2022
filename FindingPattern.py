@@ -2,7 +2,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import *
 from PIL import ImageTk
-from canvas import *
+import AutoGrid as ag
 import os
 
 # TODO
@@ -75,18 +75,14 @@ def resetFindingPattern():  # Function that restart application
 
 
 def slider_changed(event):  # DA USARE PER VALORE DELLO SLIDER 1
-    global sub_matrix_height 
     sub_matrix_height = int(slider.get())
-    initialize_matrix()
-    redraw_automated_grid()
+    automated_grid.set_matrix_height(sub_matrix_height)
 
 
 
 def slider_changed2(event):  # DA USARE PER VALORE DELLO SLIDER 2
-    global sub_matrix_width
     sub_matrix_width = int(slider2.get())
-    initialize_matrix()
-    redraw_automated_grid()
+    automated_grid.set_matrix_width(sub_matrix_width)
 
 
 # Button
@@ -115,29 +111,14 @@ slider2.grid(column=4, row=4, sticky=(N, E, W), padx=5)
 openFileButton.grid(column=3, row=4, pady=100)
 resetButton.grid(column=4, row=4, pady=100)
 
-
-def initialize_matrix():
-    global matrix
-    global sub_matrix_height
-    global sub_matrix_width
-    print('init {} {}'.format(sub_matrix_height, sub_matrix_width))
-    matrix = []
-    for i in range(sub_matrix_height):
-        matrix.append([])
-        for j in range(sub_matrix_width):
-            matrix[i].append(False)
-
+#triggers on window size changed
 def redraw_automated_grid():
-    global automated_grid
-    print('redrawing')
     root.update()
     automated_grid.recalibrate_width_height()
-    automated_grid.draw_canvas(matrix)
 
 
-initialize_matrix()
 root.update()
-automated_grid = Grid(canvas)
+automated_grid = ag.Grid(canvas, 4, 5)
 
 root.bind('<Configure>', lambda event:
         redraw_automated_grid()
