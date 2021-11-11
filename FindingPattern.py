@@ -2,17 +2,16 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import *
 from PIL import ImageTk
-import AutoGrid as ag
 import os
+import AutoGrid as ag
 import Algorithm
 
-# TODO
-# 1 SOLUZIONE PER UN TIMER CHE CANCELLI MESSAGGI DELLA printOutLabel NO time.sleep() or Event.wait
-# 2 AGGIUNGERE ALGORITMO
-
+# TODO: fix starting value of radiobuttons
+# TODO: print coordinates and number
+# fatto, potrebbe andar bene?
 
 root = Tk()
-root.minsize(600, 500)
+root.minsize(590, 590)
 root.title('Finding Pattern')
 content = ttk.Frame(root, padding=(3, 3, 12, 12))
 search_label = ttk.Label(content, text='File Name (with extension .txt)')
@@ -23,14 +22,17 @@ print_out_label = ttk.Label(content, text='')
 row_label = ttk.Label(content, text='Row')
 column_label = ttk.Label(content, text='Column')
 canvas = Canvas(content, bg='yellow', width=200, height=100)
+file_load = False
 
 
+# Class defined to handle our Exceptions
 class my_exception_handler(Exception):
     def __init__(self, value):  # codice inutile
         self.value = value
 
 
 def callback():
+    global file_load
     try:
         path_file = file_name.get()
         if path_file == '':
@@ -38,28 +40,40 @@ def callback():
         file_extension = os.path.splitext(file_name.get())
         if file_extension[1] == '.txt':
             openFileFun = open(path_file, 'r').read().splitlines()
-            row_number = len(openFileFun)
-            column_number = len(openFileFun[0])
-            print(row_number, column_number)
+            row_number = len(openFileFun)  # Solo di prova
+            column_number = len(openFileFun[0])  # Solo di prova
+            print(row_number, column_number)  # Solo di prova
+            print_out_label.configure(foreground="green")
             print_out_label['text'] = 'File correctly opened'
+            file_load = True
         else:
+            print_out_label.configure(foreground="red")
             raise my_exception_handler('File extension not accepted')
     except FileNotFoundError:
+        print_out_label.configure(foreground="red")
         print_out_label['text'] = 'File not found'
+        file_load = False
     except my_exception_handler:
+        print_out_label.configure(foreground="red")
         print_out_label['text'] = 'File extension not accepted'
+        file_load = False
 
 
-def open_dialog():  # Function that open a file with dialog
-
+# Function that open a file with dialog
+def open_dialog():
+    global file_load
     root.filename = filedialog.askopenfilename(initialdir="/", title="Select file",
                                                filetypes=(("txt files", "*.txt"), ("all files", "*.*")))
     if root.filename == '':
+        print_out_label.configure(foreground="red")
         print_out_label['text'] = 'No file selected'
+        file_load = False
     else:
         file_name.delete(0, END)
         file_name.insert(0, root.filename)
+        print_out_label.configure(foreground="green")
         print_out_label['text'] = 'File correctly opened'
+        file_load = True
 
 
 # Function that handle the row's slider event
@@ -73,21 +87,46 @@ def column_slider_changed(event):
     sub_matrix_width = int(column_slider.get())
     automated_grid.set_matrix_width(sub_matrix_width)
 
+
+# Function used by Draw's radio button to draw on canvas
 def draw_selected():
     automated_grid.set_is_drawing(True)
 
+
+# Function used by Erase's radio button to erase on canvas
 def erase_selected():
     automated_grid.set_is_drawing(False)
 
+
+# Function that use the finding pattern Algorithm
+# to search pattern and print on window the result
 def search():
     global automated_grid
-    pat = convert_boolean_to_char(automated_grid.matrix)
-    results = []
-    results.append(Algorithm.find_pattern(file_name.get(), pat))
-    results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(pat)))
-    results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(Algorithm.rotate90(pat))))
-    results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(Algorithm.rotate90(Algorithm.rotate90(pat)))))
-    print(results)
+    global file_load
+    try:
+        if file_load is True:
+            pat = convert_boolean_to_char(automated_grid.matrix)
+            results = []
+            results.append(Algorithm.find_pattern(file_name.get(), pat))
+            results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(pat)))
+            results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(Algorithm.rotate90(pat))))
+            results.append(Algorithm.find_pattern(file_name.get(),
+                                                  Algorithm.rotate90(Algorithm.rotate90(Algorithm.rotate90(pat)))))
+            print(results)
+            print_res = '0° Number of time: ' + str(results[0][0]) + ', coordinates: ' + str(results[0][1]) + '\n'
+            print_res = print_res + '90° Number of time: ' + str(results[1][0]) + ', coordinates: ' + str(
+                results[1][1]) + '\n'
+            print_res = print_res + '180° Number of time: ' + str(results[2][0]) + ', coordinates: ' + str(
+                results[2][1]) + '\n'
+            print_res = print_res + '270° Number of time: ' + str(results[3][0]) + ', coordinates: ' + str(
+                results[3][1]) + '\n'
+            print_out_label['text'] = print_res
+        else:
+            raise my_exception_handler('Please select a file')
+    except my_exception_handler:
+        print_out_label.configure(foreground="red")
+        print_out_label['text'] = 'Please select a file'
+        file_load = False
 
 
 def convert_boolean_to_char(matrix):
@@ -98,17 +137,21 @@ def convert_boolean_to_char(matrix):
             ret[i].append('1' if matrix[i][j] else '0')
     return ret
 
-# RadioButton
-draw_radio_button = Radiobutton(content, text="draw", value=1, command = draw_selected)
-erase_radio_button = Radiobutton(content, text="erase", value=0, command = erase_selected)
 
-#TODO: fix starting value of radiobuttons
-#TODO: Add erase all button
+# Function that cleans everything on cavans
+def erase_automated_grid():
+    automated_grid.initialize_matrix(int(row_slider.get()), int(column_slider.get()))
+
+
+# RadioButton
+erase_radio_button = Radiobutton(content, text='Erase', value=0, command=erase_selected)
+draw_radio_button = Radiobutton(content, text='Draw', value=1, command=draw_selected)
 
 # Button
 photo = ImageTk.PhotoImage(file='fileIMG.png')
 dialog_button = Button(content, image=photo, border=0, command=open_dialog)
-search_button = Button(content, text="search pattern", border=0, command=search)
+search_button = Button(content, text='Search Pattern', border=0, command=search)
+reset_matrix_button = Button(content, text='Erase All', border=0, command=erase_automated_grid)
 
 # Sliders
 row_current_value = DoubleVar()
@@ -132,10 +175,11 @@ column_label.grid(column=4, row=3, sticky=(N, W), padx=5)
 column_slider.grid(column=4, row=4, sticky=(N, E, W), padx=5)
 draw_radio_button.grid(column=3, row=4, pady=100)
 erase_radio_button.grid(column=4, row=4, pady=100)
-search_button.grid(column=3, row=5, columnspan=2)
+search_button.grid(column=3, row=5)
+reset_matrix_button.grid(column=4, row=5)
 
 
-# triggers on window size changed
+# Triggers on window size changed
 def redraw_automated_grid():
     root.update()
     automated_grid.recalibrate_width_height()
