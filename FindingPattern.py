@@ -6,9 +6,7 @@ import os
 import AutoGrid as ag
 import Algorithm
 
-# TODO: fix starting value of radiobuttons
 # TODO: print coordinates and number
-# fatto, potrebbe andar bene?
 
 root = Tk()
 root.minsize(590, 590)
@@ -39,10 +37,8 @@ def callback():
             raise FileNotFoundError
         file_extension = os.path.splitext(file_name.get())
         if file_extension[1] == '.txt':
-            openFileFun = open(path_file, 'r').read().splitlines()
-            row_number = len(openFileFun)  # Solo di prova
-            column_number = len(openFileFun[0])  # Solo di prova
             print_out_label.configure(foreground="green")
+            open(path_file, 'r').read().splitlines() 
             print_out_label['text'] = 'File correctly opened'
             file_load = True
         else:
@@ -111,14 +107,24 @@ def search():
             results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(Algorithm.rotate90(pat))))
             results.append(Algorithm.find_pattern(file_name.get(),
                                                   Algorithm.rotate90(Algorithm.rotate90(Algorithm.rotate90(pat)))))
-            print_res = '0° Number of time: ' + str(results[0][0]) + ', coordinates: ' + str(results[0][1]) + '\n'
-            print_res = print_res + '90° Number of time: ' + str(results[1][0]) + ', coordinates: ' + str(
+            print_res = ''
+            if results[0][0] != 0:                                      
+                print_res = '0° Number of time: ' + str(results[0][0]) + ', coordinates: ' + str(results[0][1]) + '\n'
+            if results[1][0] != 0:  
+                print_res = print_res + '90° Number of time: ' + str(results[1][0]) + ', coordinates: ' + str(
                 results[1][1]) + '\n'
-            print_res = print_res + '180° Number of time: ' + str(results[2][0]) + ', coordinates: ' + str(
+            if  results[2][0] != 0:
+                print_res = print_res + '180° Number of time: ' + str(results[2][0]) + ', coordinates: ' + str(
                 results[2][1]) + '\n'
-            print_res = print_res + '270° Number of time: ' + str(results[3][0]) + ', coordinates: ' + str(
+            if  results[3][0] != 0:   
+                print_res = print_res + '270° Number of time: ' + str(results[3][0]) + ', coordinates: ' + str(
                 results[3][1]) + '\n'
-            print_out_label['text'] = print_res
+            if print_res == '':
+                print_out_label.configure(foreground="yellow")
+                print_out_label['text'] = 'Pattern not found'
+            else: 
+                print_out_label.configure(foreground="green")   
+                print_out_label['text'] = print_res
         else:
             raise my_exception_handler('Please select a file')
     except my_exception_handler:
