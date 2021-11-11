@@ -42,7 +42,6 @@ def callback():
             openFileFun = open(path_file, 'r').read().splitlines()
             row_number = len(openFileFun)  # Solo di prova
             column_number = len(openFileFun[0])  # Solo di prova
-            print(row_number, column_number)  # Solo di prova
             print_out_label.configure(foreground="green")
             print_out_label['text'] = 'File correctly opened'
             file_load = True
@@ -112,7 +111,6 @@ def search():
             results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(Algorithm.rotate90(pat))))
             results.append(Algorithm.find_pattern(file_name.get(),
                                                   Algorithm.rotate90(Algorithm.rotate90(Algorithm.rotate90(pat)))))
-            print(results)
             print_res = '0° Number of time: ' + str(results[0][0]) + ', coordinates: ' + str(results[0][1]) + '\n'
             print_res = print_res + '90° Number of time: ' + str(results[1][0]) + ', coordinates: ' + str(
                 results[1][1]) + '\n'

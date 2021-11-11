@@ -150,7 +150,7 @@ def find_pattern(matrix_path, pattern):
                             if(pattern == matrix):
                                 n=n+1
                                 coordinates.append([w, k])
-            return coordinates
+            return n, coordinates
         else: raise ValueError("Dimensions of the matrix are smaller than pattern's")
     else: raise IndexError("Pattern line have different sizes")
 
