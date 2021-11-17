@@ -4,9 +4,7 @@ from tkinter import *
 from PIL import ImageTk
 import os
 import AutoGrid as ag
-import Algorithm
-
-# TODO: print coordinates and number
+import Algorithm as algo
 
 root = Tk()
 root.minsize(590, 590)
@@ -25,7 +23,7 @@ file_load = False
 
 # Class defined to handle our Exceptions
 class my_exception_handler(Exception):
-    def __init__(self, value):  # codice inutile
+    def __init__(self, value): 
         self.value = value
 
 
@@ -93,32 +91,49 @@ def erase_selected():
     automated_grid.set_is_drawing(False)
 
 
+def file_to_matrix(path):
+    file = open(path, 'r').read().splitlines() 
+    mat = []
+    for line in file:
+        line = list(line.replace(' ', ''))
+        wrong_character = False
+        for c in line:
+            if c not in ['0', '1']:
+                wrong_character = True
+                print('File contains unrequired character: {}, please check it'.format(c))
+                print('Skipping line...')
+        if(line != [] and not wrong_character):
+            mat.append(line)
+    return mat
+
+
 # Function that use the finding pattern Algorithm
 # to search pattern and print on window the result
-def search():
+def search_and_show_result():
     global automated_grid
     global file_load
     try:
         if file_load is True:
             pat = convert_boolean_to_char(automated_grid.matrix)
             results = []
-            results.append(Algorithm.find_pattern(file_name.get(), pat))
-            results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(pat)))
-            results.append(Algorithm.find_pattern(file_name.get(), Algorithm.rotate90(Algorithm.rotate90(pat))))
-            results.append(Algorithm.find_pattern(file_name.get(),
-                                                  Algorithm.rotate90(Algorithm.rotate90(Algorithm.rotate90(pat)))))
+
+            matrix = file_to_matrix(file_name.get())
+
+            results.append(algo.find_pattern(matrix, pat))
+            results.append(algo.find_pattern(matrix, algo.rotate90(pat)))
+            results.append(algo.find_pattern(matrix, algo.rotate90(algo.rotate90(pat))))
+            results.append(algo.find_pattern(matrix, algo.rotate90(algo.rotate90(algo.rotate90(pat)))))
+            
             print_res = ''
-            if results[0][0] != 0:                                      
-                print_res = '0° Number of time: ' + str(results[0][0]) + ', coordinates: ' + str(results[0][1]) + '\n'
-            if results[1][0] != 0:  
-                print_res = print_res + '90° Number of time: ' + str(results[1][0]) + ', coordinates: ' + str(
-                results[1][1]) + '\n'
-            if  results[2][0] != 0:
-                print_res = print_res + '180° Number of time: ' + str(results[2][0]) + ', coordinates: ' + str(
-                results[2][1]) + '\n'
-            if  results[3][0] != 0:   
-                print_res = print_res + '270° Number of time: ' + str(results[3][0]) + ', coordinates: ' + str(
-                results[3][1]) + '\n'
+            if len(results[0]) != 0:                                      
+                print_res = '0° Number of time: ' + str(len(results[0])) + ', coordinates: ' + str(results[0]) + '\n'
+            if len(results[1])!= 0:  
+                print_res = print_res + '90° Number of time: ' + str(len(results[1])) + ', coordinates: ' + str(results[1]) + '\n'
+            if len(results[2]) != 0:
+                print_res = print_res + '180° Number of time: ' + str(len(results[2])) + ', coordinates: ' + str(results[2]) + '\n'
+            if len(results[3]) != 0:   
+                print_res = print_res + '270° Number of time: ' + str(len(results[3])) + ', coordinates: ' + str(results[3]) + '\n'
+
             if print_res == '':
                 print_out_label.configure(foreground="yellow")
                 print_out_label['text'] = 'Pattern not found'
@@ -154,7 +169,7 @@ draw_radio_button = Radiobutton(content, text='Draw', value=1, command=draw_sele
 # Button
 photo = ImageTk.PhotoImage(file='fileIMG.png')
 dialog_button = Button(content, image=photo, border=0, command=open_dialog)
-search_button = Button(content, text='Search Pattern', border=0, command=search)
+search_button = Button(content, text='Search Pattern', border=0, command=search_and_show_result)
 reset_matrix_button = Button(content, text='Erase All', border=0, command=erase_automated_grid)
 
 # Sliders
