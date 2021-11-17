@@ -63,8 +63,3 @@ class Grid:
 
     def set_matrix_width(self, n):
         self.initialize_matrix(len(self.matrix), n)
-
-
-    
-
-#TODO: Rename methods

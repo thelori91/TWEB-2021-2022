@@ -167,7 +167,7 @@ erase_radio_button = Radiobutton(content, text='Erase', value=0, command=erase_s
 draw_radio_button = Radiobutton(content, text='Draw', value=1, command=draw_selected)
 
 # Button
-photo = ImageTk.PhotoImage(file='fileIMG.png')
+photo = ImageTk.PhotoImage(file='./Assets/fileIMG.png')
 dialog_button = Button(content, image=photo, border=0, command=open_dialog)
 search_button = Button(content, text='Search Pattern', border=0, command=search_and_show_result)
 reset_matrix_button = Button(content, text='Erase All', border=0, command=erase_automated_grid)
