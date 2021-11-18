@@ -36,20 +36,16 @@ def callback():
             raise FileNotFoundError
         file_extension = os.path.splitext(file_name.get())
         if file_extension[1] == '.txt':
-            print_out_label.configure(foreground="green")
             open(path_file, 'r').read().splitlines() 
-            print_out_label['text'] = 'File correctly opened'
+            set_output_label('green','File correctly opened')
             file_load = True
         else:
-            print_out_label.configure(foreground="red")
             raise my_exception_handler('File extension not accepted')
     except FileNotFoundError:
-        print_out_label.configure(foreground="red")
-        print_out_label['text'] = 'File not found'
+        set_output_label('red','File not found')
         file_load = False
     except my_exception_handler:
-        print_out_label.configure(foreground="red")
-        print_out_label['text'] = 'File extension not accepted'
+        set_output_label('red','File extension not accepted')
         file_load = False
 
 
@@ -59,25 +55,25 @@ def open_dialog():
     root.filename = filedialog.askopenfilename(initialdir="/", title="Select file",
                                                filetypes=(("txt files", "*.txt"), ("all files", "*.*")))
     if root.filename == '':
-        print_out_label.configure(foreground="red")
-        print_out_label['text'] = 'No file selected'
+        set_output_label('red','No file selected')
         file_load = False
     else:
         file_name.delete(0, END)
         file_name.insert(0, root.filename)
-        print_out_label.configure(foreground="green")
-        print_out_label['text'] = 'File correctly opened'
+        set_output_label('green','File correctly opened')
         file_load = True
 
 
 # Function that handle the row's slider event
 def row_slider_changed(event):
+    set_output_label('black','')
     sub_matrix_height = int(row_slider.get())
     automated_grid.set_matrix_height(sub_matrix_height)
 
 
 # Function that handle the column's slider2 event
 def column_slider_changed(event):
+    set_output_label('black','')
     sub_matrix_width = int(column_slider.get())
     automated_grid.set_matrix_width(sub_matrix_width)
 
@@ -136,16 +132,13 @@ def search_and_show_result():
                 print_res = print_res + '270° Number of time: ' + str(len(results[3])) + ', coordinates: ' + str(results[3]) + '\n'
 
             if print_res == '':
-                print_out_label.configure(foreground="yellow")
-                print_out_label['text'] = 'Pattern not found'
+                set_output_label('yellow', 'Pattern not found')
             else: 
-                print_out_label.configure(foreground="green")   
-                print_out_label['text'] = print_res
+                set_output_label('green', print_res)
         else:
             raise my_exception_handler('Please select a file')
     except my_exception_handler:
-        print_out_label.configure(foreground="red")
-        print_out_label['text'] = 'Please select a file'
+        set_output_label('red', 'Please select a file')
         file_load = False
 
 
@@ -160,8 +153,13 @@ def convert_boolean_to_char(matrix):
 
 # Function that cleans everything on cavans
 def erase_automated_grid():
+    set_output_label('black','')
     automated_grid.initialize_matrix(int(row_slider.get()), int(column_slider.get()))
 
+# Function that set GUI's label output
+def set_output_label(color, text):
+        print_out_label.configure(foreground=color)
+        print_out_label['text'] = text
 
 # RadioButton
 erase_radio_button = Radiobutton(content, text='Erase', value=0, command=erase_selected)
