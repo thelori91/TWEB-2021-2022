@@ -17,7 +17,7 @@ class Grid:
         self.draw_canvas()
 
     def update_matrix(self, event):
-        if self.mouse_pressed:
+        if self.mouse_pressed and event.x > 0 and event.y > 0 and event.x < self.width and event.y < self.height:
             square_height = self.height / len(self.matrix)
             square_width = self.width / len(self.matrix[0])
             col = math.floor(event.x / square_width)

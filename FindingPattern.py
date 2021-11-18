@@ -8,6 +8,7 @@ import Algorithm as algo
 
 root = Tk()
 root.minsize(590, 590)
+root.maxsize(1920, 1080)
 root.title('Finding Pattern')
 content = ttk.Frame(root, padding=(3, 3, 12, 12))
 search_label = ttk.Label(content, text='File Name (with extension .txt)')
@@ -208,6 +209,7 @@ root.update()
 automated_grid = ag.Grid(canvas, 5, 5)
 
 root.bind('<Configure>', lambda event: redraw_automated_grid())
+root.bind('<Return>', lambda event: search_and_show_result())
 root.rowconfigure(0, weight=1)
 root.columnconfigure(0, weight=1)
 content.columnconfigure(0, weight=3)
