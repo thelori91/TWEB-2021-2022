@@ -1,0 +1,9 @@
+.container-fluid {
+    flex-direction: column;
+}
+.center{
+    text-align: center;
+}
+#titleStyle{
+    font-family: Herculanum, "Eras Demi ITC", sans-serif;
+}
