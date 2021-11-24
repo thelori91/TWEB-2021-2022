@@ -4,6 +4,14 @@
 .center{
     text-align: center;
 }
+.animate__animated.animate__fadeIn {
+    --animate-duration: 3s;
+}
+#logoSize{
+    width: 50%;
+    height: auto;
+}
 #titleStyle{
     font-family: Herculanum, "Eras Demi ITC", sans-serif;
+    font-size: 400%;
 }
