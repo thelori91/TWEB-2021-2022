@@ -7,6 +7,13 @@
 .animate__animated.animate__fadeIn {
     --animate-duration: 3s;
 }
+.backgroundImage {
+    background-image: url("Background.jpg");
+}
+#puntinaSize{
+    width: 20%;
+    height: auto;
+}
 #logoSize{
     width: 50%;
     height: auto;
