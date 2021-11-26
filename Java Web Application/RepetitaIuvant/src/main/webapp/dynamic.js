@@ -33,3 +33,4 @@ function createUpcomingEvent(i) {
     rowW.appendChild(col3);
     rowW.appendChild(col4);
 }
+

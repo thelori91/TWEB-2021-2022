@@ -18,6 +18,7 @@
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
+
     <title>REPETITA IUVANT</title>
 </head>
 <body class="backgroundImage" onload="add3UpcomingEvents()">
@@ -36,14 +37,15 @@
                     <testa v-on:transit-inner="P2TOP1"></testa>
                 </div>
             </div>
-
         </div>
     </header>
     <article v-if="primaPagina" class="animate__animated animate__fadeIn">
         <div class="container-fluid center">
             <div class="row justify-content-md-center">
                 <div class="col-md-auto">
-                    <img id="logoPag1Size" src="Logo.png" alt="Logo REPETITA IUVANT">
+                    <figure>
+                        <img id="logoPag1Size" src="Logo.png" alt="Logo REPETITA IUVANT">
+                    </figure>
                 </div>
                 <div class="row justify-content-md-center">
                     <div class="col-md-auto">
@@ -60,7 +62,9 @@
     <article v-if="secondaPagina">
         <div class="container-fluid center">
             <div class="d-flex justify-content-center">
-                <img id="logoPag2Size" src="Logo.png" alt="Logo REPETITA IUVANT">
+                <figure>
+                    <img id="logoPag2Size" src="Logo.png" alt="Logo REPETITA IUVANT">
+                </figure>
                 <h1 class="titleStyle">REPETITA IUVANT</h1>
             </div>
         </div>
@@ -77,10 +81,48 @@
             </div>
         </div>
         <div class="container-fluid center">
-            <form>
-                <input type="text" id="fname" name="fname">
-                <input type="text" id="lname" name="lname">
-            </form>
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <form>
+                        <div class="row g-3 align-items-center">
+                            <div class="mb-3">
+                                <input type="text" class="form-control formStyle" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="mb-3">
+                                <input type="text" class="form-control formStyle" placeholder="Surname">
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="mb-3">
+                                <input type="email" class="form-control formStyle" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <input type="password" id="inputPassword6" class="form-control formStyle"
+                                       placeholder="Password">
+                            </div>
+                            <div class="col-auto">
+                                <span id="passwordHelpInline" class="form-text">
+                                  Must be 8-20 characters long.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid center">
+            <div class="row justify-content-md-center">
+                <p>Already a member? Sign in</p>
+            </div>
         </div>
     </article>
 </div>
@@ -93,6 +135,7 @@
 </footer>
 <script src="dynamic.js"></script>
 <script src="SPA.js"></script>
+
 </html>
 
 
