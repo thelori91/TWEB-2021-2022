@@ -10,15 +10,27 @@
 .backgroundImage {
     background-image: url("Background.jpg");
 }
+.titleStyle{
+    font-family: Herculanum, "Eras Demi ITC", sans-serif;
+    font-size: 400%;
+}
+.headButton{
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
 #puntinaSize{
     width: 20%;
     height: auto;
 }
-#logoSize{
+#logoPag1Size{
     width: 50%;
     height: auto;
 }
-#titleStyle{
-    font-family: Herculanum, "Eras Demi ITC", sans-serif;
-    font-size: 400%;
+#logoPag2Size{
+    width: 10%;
+    height: auto;
 }

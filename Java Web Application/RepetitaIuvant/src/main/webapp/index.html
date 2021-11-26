@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="HTML">
 <head>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
     <meta http-equiv="Pragma" content="no-cache"/>
@@ -20,32 +20,79 @@
 
     <title>REPETITA IUVANT</title>
 </head>
+<body class="backgroundImage" onload="add3UpcomingEvents()">
 <div id="SPA">
-    <testa></testa>
-    <body class="backgroundImage" onload="add3UpcomingEvents()">
+    <header>
+        <div v-if="primaPagina" class="container-fluid">
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <p>Username is a Role since dd/mm/yyyy</p>
+                </div>
+            </div>
+        </div>
+        <div v-if="secondaPagina">
+            <div class="container-fluid center">
+                <div class="d-flex justify-content-center">
+                    <testa v-on:transit-inner="P2TOP1"></testa>
+                </div>
+            </div>
+
+        </div>
+    </header>
     <article v-if="primaPagina" class="animate__animated animate__fadeIn">
         <div class="container-fluid center">
             <div class="row justify-content-md-center">
                 <div class="col-md-auto">
-                    <img id="logoSize" src="Logo.png" alt="Logo REPETITA IUVANT">
+                    <img id="logoPag1Size" src="Logo.png" alt="Logo REPETITA IUVANT">
                 </div>
                 <div class="row justify-content-md-center">
                     <div class="col-md-auto">
-                        <h1 id="titleStyle">REPETITA IUVANT</h1>
+                        <h1 class="titleStyle">REPETITA IUVANT</h1>
                     </div>
                 </div>
             </div>
         </div>
-        <centro v-on:transit-inner="transit"></centro>
+        <centro v-on:transit-inner="P1TOP2"></centro>
         <div class="container-fluid" id="upcomingEvents">
             <h2>Your weekly upcoming events:</h2>
         </div>
     </article>
-    </body>
-    <piede></piede>
+    <article v-if="secondaPagina">
+        <div class="container-fluid center">
+            <div class="d-flex justify-content-center">
+                <img id="logoPag2Size" src="Logo.png" alt="Logo REPETITA IUVANT">
+                <h1 class="titleStyle">REPETITA IUVANT</h1>
+            </div>
+        </div>
+        <div class="container-fluid center">
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <p>We are SO happy to see you join in!</p>
+                </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <p>Sign Up!</p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid center">
+            <form>
+                <input type="text" id="fname" name="fname">
+                <input type="text" id="lname" name="lname">
+            </form>
+        </div>
+    </article>
 </div>
+</body>
+<footer>
+    <div class="d-flex justify-content-between">
+        <div class="p-2">legal info of the company/universtiy</div>
+        <div class="p-2">Design by Andrea Cacioli, Lorenzo Cassinelli</div>
+    </div>
+</footer>
 <script src="dynamic.js"></script>
-<script src = "SPA.js"></script>
+<script src="SPA.js"></script>
 </html>
 
 

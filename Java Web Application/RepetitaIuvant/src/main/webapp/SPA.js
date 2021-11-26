@@ -1,17 +1,14 @@
 Vue.component('testa', {
-    template: '<header>\n' +
-        '    <div class="container-fluid">\n' +
-        '        <div class="row justify-content-md-center">\n' +
-        '            <div class="col-md-auto">\n' +
-        '                <p>Username is a Role since dd/mm/yyyy</p>\n' +
-        '            </div>\n' +
-        '        </div>\n' +
-        '    </div>\n' +
-        '</header>'
+    template:
+        '<div><button v-on:click="transitInner" type="button" class="headButton"><- Back to Main Menu</button></div>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
 });
 
 Vue.component('centro', {
-    props: ['title'],
     template: '<div class="container-fluid">' +
         '<div class="d-grid gap-2 col-4 mx-auto">' +
         '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Handle Reservation</button>' +
@@ -24,16 +21,6 @@ Vue.component('centro', {
     }
 });
 
-Vue.component('piede', {
-    template: '<footer>\n' +
-        '    <div class="d-flex justify-content-between">\n' +
-        '        <div class="p-2">legal info of the company/universtiy</div>\n' +
-        '        <div class="p-2">Design by Andrea Cacioli, Lorenzo Cassinelli</div>\n' +
-        '    </div>\n' +
-        '</footer>'
-});
-
-
 let app = new Vue({
     el: '#SPA',
     data: {
@@ -43,9 +30,29 @@ let app = new Vue({
         quartaPagina: false
     },
     methods: {
-        transit: function () {
+        P1TOP2: function () {
             this.secondaPagina = true;
             this.primaPagina = false;
+        },
+        P2TOP1: function () {
+            this.primaPagina = true;
+            this.secondaPagina = false;
+        },
+        P1TOP3: function () {
+            this.terzaPagina = true;
+            this.primaPagina = false;
+        },
+        P3TOP1: function () {
+            this.primaPagina = true;
+            this.terzaPagina = false;
+        },
+        P1TOP4: function () {
+            this.quartaPagina = true;
+            this.primaPagina = false;
+        },
+        P4TOP1: function () {
+            this.primaPagina = true;
+            this.quartaPagina = false;
         }
     }
 });
