@@ -17,12 +17,13 @@
     <link rel="stylesheet" href="webPageStyleSheet.css">
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href=" http://fxaeberhard.github.io/handdrawn.css/handdrawn.css"/>
 
 
     <title>REPETITA IUVANT</title>
 </head>
 <body class="backgroundImage" onload="add3UpcomingEvents()">
-<div id="SPA">
+<div id="SPA" class="fontStyle">
     <header>
         <div v-if="primaPagina" class="container-fluid">
             <div class="row justify-content-md-center">
@@ -61,11 +62,13 @@
     </article>
     <article v-if="secondaPagina">
         <div class="container-fluid center">
-            <div class="d-flex justify-content-center">
-                <figure>
-                    <img id="logoPag2Size" src="Logo.png" alt="Logo REPETITA IUVANT">
-                </figure>
-                <h1 class="titleStyle">REPETITA IUVANT</h1>
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <figure>
+                        <h1 class="titleStyle"><img id="logoPag2Size" src="Logo.png" alt="Logo REPETITA IUVANT">REPETITA
+                            IUVANT</h1>
+                    </figure>
+                </div>
             </div>
         </div>
         <div class="container-fluid center">
@@ -86,23 +89,23 @@
                     <form>
                         <div class="row g-3 align-items-center">
                             <div class="mb-3">
-                                <input type="text" class="form-control formStyle" placeholder="Name">
+                                <input type="text" class="form-control formStyle" placeholder="Name" required>
                             </div>
                         </div>
                         <div class="row g-3 align-items-center">
                             <div class="mb-3">
-                                <input type="text" class="form-control formStyle" placeholder="Surname">
+                                <input type="text" class="form-control formStyle" placeholder="Surname" required>
                             </div>
                         </div>
                         <div class="row g-3 align-items-center">
                             <div class="mb-3">
-                                <input type="email" class="form-control formStyle" placeholder="Email">
+                                <input type="email" class="form-control formStyle" placeholder="Email" required>
                             </div>
                         </div>
                         <div class="row g-3 align-items-center">
                             <div class="col-auto">
                                 <input type="password" id="inputPassword6" class="form-control formStyle"
-                                       placeholder="Password">
+                                       placeholder="Password" required>
                             </div>
                             <div class="col-auto">
                                 <span id="passwordHelpInline" class="form-text">
@@ -111,7 +114,12 @@
                             </div>
                         </div>
                         <div class="row g-3 align-items-center">
-                            <div class="mb-3">
+                            <div class="col-auto">
+                                <input type="checkbox" onclick="seePassword()">See Password
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
@@ -135,7 +143,7 @@
 </footer>
 <script src="dynamic.js"></script>
 <script src="SPA.js"></script>
-
 </html>
+
 
 

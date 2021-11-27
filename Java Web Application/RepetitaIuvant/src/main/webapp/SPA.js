@@ -1,6 +1,6 @@
 Vue.component('testa', {
     template:
-        '<div><button v-on:click="transitInner" type="button" class="headButton"><- Back to Main Menu</button></div>',
+        '<div><button v-on:click="transitInner" type="button" class=" fontStyle headButton"><- Back to Main Menu</button></div>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');

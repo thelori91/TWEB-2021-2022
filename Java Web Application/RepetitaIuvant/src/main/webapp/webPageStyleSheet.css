@@ -1,41 +1,57 @@
 .container-fluid {
     flex-direction: column;
 }
-.center{
+
+.center {
     text-align: center;
 }
+
 .animate__animated.animate__fadeIn {
     --animate-duration: 3s;
 }
+
 .backgroundImage {
     background-image: url("Background.jpg");
 }
-.titleStyle{
+
+.titleStyle {
     font-family: Herculanum, "Eras Demi ITC", sans-serif;
     font-size: 400%;
 }
-.headButton{
+
+.headButton {
     background-color: transparent;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     border: none;
-    cursor:pointer;
+    cursor: pointer;
     overflow: hidden;
-    outline:none;
+    outline: none;
 }
-.formStyle{
+
+.formStyle {
     border-color: black;
+    font-weight: bold;
     border-width: 0.3em;
 }
 
-#puntinaSize{
+.fontStyle {
+    font-weight: bolder;
+    color: black;
+}
+
+#puntinaSize {
     width: 20%;
     height: auto;
 }
-#logoPag1Size{
+
+#logoPag1Size {
     width: 50%;
     height: auto;
 }
-#logoPag2Size{
-    width: 25%;
+
+#logoPag2Size {
+    width: 10%;
     height: auto;
+    max-width: 700px;
 }
+

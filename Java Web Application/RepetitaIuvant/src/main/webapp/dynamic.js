@@ -34,3 +34,11 @@ function createUpcomingEvent(i) {
     rowW.appendChild(col4);
 }
 
+function seePassword() {
+    var x = document.getElementById("inputPassword6");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
