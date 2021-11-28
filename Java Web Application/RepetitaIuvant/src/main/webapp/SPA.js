@@ -1,6 +1,6 @@
-Vue.component('testa', {
+Vue.component('homebutton', {
     template:
-        '<div><button v-on:click="transitInner" type="button" class=" fontStyle headButton"><- Back to Main Menu</button></div>',
+        '<button v-on:click="transitInner" type="button" class="fontStyle headButton"><- Back to Main Menu</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -8,12 +8,34 @@ Vue.component('testa', {
     }
 });
 
-Vue.component('centro', {
-    template: '<div class="container-fluid">' +
-        '<div class="d-grid gap-2 col-4 mx-auto">' +
-        '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Handle Reservation</button>' +
-        '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Teachers</button>\n' +
-        '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Courses</button></div></div>',
+Vue.component('reservationbutton', {
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Handle Reservation</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+Vue.component('teacherbutton', {
+    template:
+        '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Teachers</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+Vue.component('signinbutton', {
+    template:
+        '<button v-on:click="transitInner" type="button" class="fontStyle headButton">Sign in</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+Vue.component('coursebutton', {
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Courses</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -21,38 +43,47 @@ Vue.component('centro', {
     }
 });
 
-let app = new Vue({
+new Vue({
     el: '#SPA',
     data: {
-        primaPagina: true,
-        secondaPagina: false,
-        terzaPagina: false,
-        quartaPagina: false
+        firstPage: true,
+        secondPage: false,
+        signInPage: false,
+        thirdPage: false,
+        fourthPage: false
     },
     methods: {
         P1TOP2: function () {
-            this.secondaPagina = true;
-            this.primaPagina = false;
+            this.secondPage = true;
+            this.firstPage = false;
         },
         P2TOP1: function () {
-            this.primaPagina = true;
-            this.secondaPagina = false;
+            this.firstPage = true;
+            this.secondPage = false;
+        },
+        P2TOSignIn: function () {
+            this.signInPage = true;
+            this.secondPage = false;
+        },
+        PSignInTOP1: function () {
+            this.firstPage = true;
+            this.signInPage = false;
         },
         P1TOP3: function () {
-            this.terzaPagina = true;
-            this.primaPagina = false;
+            this.thirdPage = true;
+            this.firstPage = false;
         },
         P3TOP1: function () {
-            this.primaPagina = true;
-            this.terzaPagina = false;
+            this.firstPage = true;
+            this.thirdPage = false;
         },
         P1TOP4: function () {
-            this.quartaPagina = true;
-            this.primaPagina = false;
+            this.fourthPage = true;
+            this.firstPage = false;
         },
         P4TOP1: function () {
-            this.primaPagina = true;
-            this.quartaPagina = false;
+            this.firstPage = true;
+            this.fourthPage = false;
         }
     }
 });

@@ -14,33 +14,52 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href=" http://fxaeberhard.github.io/handdrawn.css/handdrawn.css"/>
     <link rel="stylesheet" href="webPageStyleSheet.css">
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <link rel="stylesheet" href=" http://fxaeberhard.github.io/handdrawn.css/handdrawn.css"/>
-
-
     <title>REPETITA IUVANT</title>
 </head>
 <body class="backgroundImage" onload="add3UpcomingEvents()">
 <div id="SPA" class="fontStyle">
     <header>
-        <div v-if="primaPagina" class="container-fluid">
+        <div v-if="firstPage" class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-md-auto">
                     <p>Username is a Role since dd/mm/yyyy</p>
                 </div>
             </div>
         </div>
-        <div v-if="secondaPagina">
+        <div v-if="secondPage">
             <div class="container-fluid center">
                 <div class="d-flex justify-content-center">
-                    <testa v-on:transit-inner="P2TOP1"></testa>
+                    <homebutton v-on:transit-inner="P2TOP1"></homebutton>
+                </div>
+            </div>
+        </div>
+        <div v-if="signInPage">
+            <div class="container-fluid center">
+                <div class="d-flex justify-content-center">
+                    <homebutton v-on:transit-inner="PSignInTOP1"></homebutton>
+                </div>
+            </div>
+        </div>
+        <div v-if="thirdPage">
+            <div class="container-fluid center">
+                <div class="d-flex justify-content-center">
+                    <homebutton v-on:transit-inner="P3TOP1"></homebutton>
+                </div>
+            </div>
+        </div>
+        <div v-if="fourthPage">
+            <div class="container-fluid center">
+                <div class="d-flex justify-content-center">
+                    <homebutton v-on:transit-inner="P4TOP1"></homebutton>
                 </div>
             </div>
         </div>
     </header>
-    <article v-if="primaPagina" class="animate__animated animate__fadeIn">
+    <article v-if="firstPage" class="animate__animated animate__fadeIn">
         <div class="container-fluid center">
             <div class="row justify-content-md-center">
                 <div class="col-md-auto">
@@ -55,12 +74,18 @@
                 </div>
             </div>
         </div>
-        <centro v-on:transit-inner="P1TOP2"></centro>
+        <div class="container-fluid">
+            <div class="d-grid gap-2 col-4 mx-auto">
+                <reservationbutton v-on:transit-inner="P1TOP2"></reservationbutton>
+                <teacherbutton v-on:transit-inner="P1TOP3"></teacherbutton>
+                <coursebutton v-on:transit-inner="P1TOP4"></coursebutton>
+            </div>
+        </div>
         <div class="container-fluid" id="upcomingEvents">
             <h2>Your weekly upcoming events:</h2>
         </div>
     </article>
-    <article v-if="secondaPagina">
+    <article v-if="secondPage">
         <div class="container-fluid center">
             <div class="row justify-content-md-center">
                 <div class="col-md-auto">
@@ -98,6 +123,15 @@
                             </div>
                         </div>
                         <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <p>I am a:</p>
+                            </div>
+                            <div class="col-auto">
+                                <label><input type="radio" name="radio">Student</label>
+                                <label><input type="radio" name="radio">Teacher</label>
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center">
                             <div class="mb-3">
                                 <input type="email" class="form-control formStyle" placeholder="Email" required>
                             </div>
@@ -115,7 +149,10 @@
                         </div>
                         <div class="row g-3 align-items-center">
                             <div class="col-auto">
-                                <input type="checkbox" onclick="seePassword()">See Password
+                                <div class="checkbox">
+                                    <input type="checkbox" id="checkbox" onclick="seePassword()">
+                                    <label for="checkbox">See Password</label>
+                                </div>
                             </div>
                         </div>
                         <div class="row g-3 align-items-center">
@@ -129,18 +166,179 @@
         </div>
         <div class="container-fluid center">
             <div class="row justify-content-md-center">
-                <p>Already a member? Sign in</p>
+                <label>Already a member?
+                    <signinbutton v-on:transit-inner="P2TOSignIn"></signinbutton>
+                </label>
+            </div>
+        </div>
+    </article>
+    <article v-if="signInPage">
+        <div class="container-fluid center">
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <p>We are SO happy to see you again!</p>
+                </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <p>Login</p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid center">
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <form>
+                        <div class="row g-3 align-items-center">
+                            <div class="mb-3">
+                                <input type="email" class="form-control formStyle" placeholder="Email" required>
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <input type="password" id="inputPassword6" class="form-control formStyle"
+                                       placeholder="Password" required>
+                            </div>
+                            <div class="col-auto">
+                                <span id="passwordHelpInline" class="form-text">
+                                  Must be 8-20 characters long.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="checkbox" onclick="seePassword()">
+                                    <label for="checkbox">See Password</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </article>
+    <article v-if="thirdPage">
+        <div class="container-fluid center">
+            <div class="row justify-content-md-center">
+                <p>A complete list of our Teachers:</p>
+                <p>Teachers:</p> <!-- TODO DIMINUIRE DISTANZA TRA LINEA-->
+            </div>
+        </div>
+        <form>
+            <div class="d-flex justify-content-between">
+                <div class="p-2">
+                    <input type="text" class="form-control formStyle" placeholder="Filter by Name">
+                </div>
+                <div class="p-2">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Teacher</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="p-2">
+                    <div class="col-auto">
+                        <label>Only show teachers who take lessons:</label>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <div class="col-auto">
+                        <input type="radio" name="radio">
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="p-2">
+                    <div class="col-auto">
+                        <label>Only show Teachers I booked a lesson with:</label>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <div class="col-auto">
+                        <input type="radio" name="radio">
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="p-2">
+                    <button type="button" class="btn btn-secondary actionButton">Reset Filters</button>
+                </div>
+                <div class="p-2">
+                    <button type="button" class="btn btn-primary actionButton">Search</button>
+                </div>
+            </div>
+        </form>
+    </article>
+    <article v-if="fourthPage">
+        <div class="container-fluid center">
+            <div class="row justify-content-md-center">
+                <p>A complete list of our courses:</p>
+                <p>Courses:</p> <!-- TODO DIMINUIRE DISTANZA TRA LINEA-->
+            </div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <div class="p-2">
+                <input type="text" class="form-control formStyle" placeholder="Filter by Name">
+            </div>
+            <div class="p-2">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Course</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="p-2">
+                <div class="col-auto">
+                    <label>Only show reservable Courses:</label>
+                </div>
+            </div>
+            <div class="p-2">
+                <div class="col-auto">
+                    <input type="radio" name="radio">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="p-2">
+                <div class="col-auto">
+                    <label>Only show courses I booked:</label>
+                </div>
+            </div>
+            <div class="p-2">
+                <div class="col-auto">
+                    <input type="radio" name="radio">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="p-2">
+                <button type="button" class="btn btn-secondary">Reset Filters</button>
+            </div>
+            <div class="p-2">
+                <button type="button" class="btn btn-primary">Search</button>
             </div>
         </div>
     </article>
 </div>
-</body>
 <footer>
     <div class="d-flex justify-content-between">
         <div class="p-2">legal info of the company/universtiy</div>
         <div class="p-2">Design by Andrea Cacioli, Lorenzo Cassinelli</div>
     </div>
 </footer>
+</body>
 <script src="dynamic.js"></script>
 <script src="SPA.js"></script>
 </html>
