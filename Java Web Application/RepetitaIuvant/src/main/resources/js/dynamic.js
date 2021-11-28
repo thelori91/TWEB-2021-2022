@@ -14,7 +14,7 @@ function createUpcomingEvent(i) {
 
     let col0 = document.createElement("div");
     col0.className = "col col-md-1";
-    col0.innerHTML = "<img  id='puntinaSize' src='Puntina.png' alt='Puntina'>";
+    col0.innerHTML = "<img  id='puntinaSize' src='../image/Puntina.png' alt='Puntina'>";
     let col1 = document.createElement("div");
     col1.className = "col col-lg-2";
     col1.innerHTML = "<p>Lesson" + (i + 1) + ":</p>";
@@ -35,7 +35,7 @@ function createUpcomingEvent(i) {
 }
 
 function seePassword() {
-    var x = document.getElementById("inputPassword6");
+    let x = document.getElementById("inputPassword6");
     if (x.type === "password") {
         x.type = "text";
     } else {
