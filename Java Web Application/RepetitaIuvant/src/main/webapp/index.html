@@ -18,83 +18,77 @@
 
     <title>REPETITA IUVANT</title>
 </head>
-<body class="backgroundImage fontStyle" onload="add3UpcomingEvents()">
-    <div id="page-container">
-        <div id="SPA" >
-            <header>
-                <div v-if="firstPage" class="container-fluid">
-                    <div class="row justify-content-md-center">
-                        <div class="col-md-auto">
-                            <p>Username is a Role since dd/mm/yyyy</p>
-                        </div>
+<body onload="add3UpcomingEvents()">
+<div id="page-container">
+    <div id="SPA">
+        <header>
+            <div v-if="firstPage" class="container-fluid">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-auto">
+                        <p>Username is a Role since dd/mm/yyyy</p>
                     </div>
                 </div>
-                <div v-if="secondPage">
-                    <div class="container-fluid center">
-                        <div class="d-flex justify-content-center">
-                            <homebutton v-on:transit-inner="P2TOP1"></homebutton>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="signInPage">
-                    <div class="container-fluid center">
-                        <div class="d-flex justify-content-center">
-                            <homebutton v-on:transit-inner="PSignInTOP1"></homebutton>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="thirdPage">
-                    <div class="container-fluid center">
-                        <div class="d-flex justify-content-center">
-                            <homebutton v-on:transit-inner="P3TOP1"></homebutton>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="fourthPage">
-                    <div class="container-fluid center">
-                        <div class="d-flex justify-content-center">
-                            <homebutton v-on:transit-inner="P4TOP1"></homebutton>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <article v-if="firstPage" class="animate__animated animate__fadeIn">
+            </div>
+            <div v-if="secondPage">
                 <div class="container-fluid center">
-                    <div class="row justify-content-md-center">
-                        <div class="col-md-auto">
-                            <figure>
-                                <img id="logoPag1Size" src="../resources/image/Logo.png" alt="Logo REPETITA IUVANT">
-                            </figure>
-                        </div>
-                        <div class="row justify-content-md-center">
-                            <div class="col-md-auto">
-                                <h1 class="titleStyle">REPETITA IUVANT</h1>
-                            </div>
-                        </div>
+                    <div class="d-flex justify-content-center">
+                        <homebutton v-on:transit-inner="P2TOP1"></homebutton>
                     </div>
                 </div>
-                <div class="container-fluid">
-                    <div class="d-grid gap-2 col-4 mx-auto">
-                        <reservationbutton v-on:transit-inner="P1TOP2"></reservationbutton>
-                        <teacherbutton v-on:transit-inner="P1TOP3"></teacherbutton>
-                        <coursebutton v-on:transit-inner="P1TOP4"></coursebutton>
-                    </div>
-                </div>
-                <div class="container-fluid" id="upcomingEvents">
-                    <h2>Your weekly upcoming events:</h2>
-                </div>
-            </article>
-            <article v-if="secondPage">
+            </div>
+            <div v-if="signInPage">
                 <div class="container-fluid center">
+                    <div class="d-flex justify-content-center">
+                        <homebutton v-on:transit-inner="PSignInTOP1"></homebutton>
+                    </div>
+                </div>
+            </div>
+            <div v-if="thirdPage">
+                <div class="container-fluid center">
+                    <div class="d-flex justify-content-center">
+                        <homebutton v-on:transit-inner="P3TOP1"></homebutton>
+                    </div>
+                </div>
+            </div>
+            <div v-if="fourthPage">
+                <div class="container-fluid center">
+                    <div class="d-flex justify-content-center">
+                        <homebutton v-on:transit-inner="P4TOP1"></homebutton>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav v-if="firstPage" class="animate__animated animate__fadeIn">
+            <div class="container-fluid center">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-auto">
+                        <figure>
+                            <img id="logoPag1Size" src="../resources/image/Logo.png" alt="Logo REPETITA IUVANT">
+                        </figure>
+                    </div>
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
-                                <figure>
-                                    <img id="logoPag2Size" src="../resources/image/Logo.png" alt="Logo REPETITA IUVANT">
-                                </figure>
-                                <h1 class="titleStyle">REPETITA IUVANT</h1>
+                            <h1 class="titleStyle">REPETITA IUVANT</h1>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="container-fluid">
+                <div class="d-grid gap-2 col-4 mx-auto">
+                    <reservationbutton v-on:transit-inner="P1TOP2"></reservationbutton>
+                    <teacherbutton v-on:transit-inner="P1TOP3"></teacherbutton>
+                    <coursebutton v-on:transit-inner="P1TOP4"></coursebutton>
+                </div>
+            </div>
+            <div class="container-fluid" id="upcomingEvents">
+                <h2>Your weekly upcoming events:</h2>
+            </div>
+        </nav>
+        <article v-if="secondPage">
+            <section>
+                <logosection></logosection>
+            </section>
+            <section>
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
@@ -107,6 +101,8 @@
                         </div>
                     </div>
                 </div>
+            </section>
+            <section>
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-8">
@@ -118,7 +114,8 @@
                                 </div>
                                 <div class="row g-3 align-items-center">
                                     <div class="mb-3">
-                                        <input type="text" class="form-control formStyle" placeholder="Surname" required>
+                                        <input type="text" class="form-control formStyle" placeholder="Surname"
+                                               required>
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center">
@@ -137,15 +134,22 @@
                                 </div>
                                 <div class="row g-3 align-items-center">
                                     <div class="col">
-                                        <input v-model="password" @keyup="handle" type="password" id="inputPassword6" class="form-control formStyle"
-                                            placeholder="Password" required>
+                                        <input v-model="password" @keyup="handle" type="password" id="inputPassword6"
+                                               class="form-control formStyle"
+                                               placeholder="Password" required>
                                     </div>
                                     <div class="col-md-auto">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16" v-if="visiblePassword" v-on:click = "toggle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor"
+                                             class="bi bi-eye-fill" viewBox="0 0 16 16" v-if="visiblePassword"
+                                             v-on:click="toggle">
                                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                                             <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
                                         </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16" v-else v-on:click = "toggle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor"
+                                             class="bi bi-eye-slash-fill" viewBox="0 0 16 16" v-else
+                                             v-on:click="toggle">
                                             <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
                                             <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
                                         </svg>
@@ -154,16 +158,8 @@
                                 <div v-if="wrongPassword" class="row g-3 align-items-center">
                                     <div class="mb-3">
                                         <span id="passwordHelpInline" class="form-text" style="color: red;">
-                                            Password must be 8-20 characters long.
+                                            Password must be 8-20 characters long
                                         </span>
-                                    </div>
-                                </div>
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
-                                        <div class="checkbox">
-                                            <input type="checkbox" id="checkbox" onclick="seePassword()">
-                                            <label for="checkbox">See Password</label>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center">
@@ -175,6 +171,8 @@
                         </div>
                     </div>
                 </div>
+            </section>
+            <section>
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <label>Already a member?
@@ -182,8 +180,13 @@
                         </label>
                     </div>
                 </div>
-            </article>
-            <article v-if="signInPage">
+            </section>
+        </article>
+        <article v-if="signInPage">
+            <section>
+                <logosection></logosection>
+            </section>
+            <section>
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
@@ -196,51 +199,31 @@
                         </div>
                     </div>
                 </div>
+            </section>
+            <section>
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
                             <form>
-                                <div class="row g-3 align-items-center">
-                                    <div class="mb-3">
-                                        <input type="email" class="form-control formStyle" placeholder="Email" required>
-                                    </div>
-                                </div>
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
-                                        <input type="password" id="inputPassword6" class="form-control formStyle"
-                                            placeholder="Password" required>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span id="passwordHelpInline" class="form-text">
-                                        Must be 8-20 characters long.
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
-                                        <div class="checkbox">
-                                            <input type="checkbox" id="checkbox" onclick="seePassword()">
-                                            <label for="checkbox">See Password</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
-                                        <button type="submit" class="btn btn-primary">Login</button>
-                                    </div>
-                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            </article>
-            <article v-if="thirdPage">
+            </section>
+        </article>
+        <article v-if="thirdPage">
+            <section>
+                <logosection></logosection>
+            </section>
+            <section>
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <p>A complete list of our Teachers:</p>
-                        <p>Teachers:</p> <!-- TODO DIMINUIRE DISTANZA TRA LINEA-->
+                        <p>Teachers:</p>
                     </div>
                 </div>
+            </section>
+            <section>
                 <form>
                     <div class="d-flex justify-content-evenly">
                         <div class="p-2">
@@ -281,75 +264,85 @@
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="p-2">
-                            <button type="button" class="btn btn-secondary actionButton">Reset Filters</button>
+                            <button type="button" class="btn btn-secondary ">Reset Filters</button>
                         </div>
                         <div class="p-2">
-                            <button type="button" class="btn btn-primary actionButton">Search</button>
+                            <button type="button" class="btn btn-primary ">Search</button>
                         </div>
                     </div>
                 </form>
-            </article>
-            <article v-if="fourthPage">
+            </section>
+        </article>
+        <article v-if="fourthPage">
+            <section>
+                <logosection></logosection>
+            </section>
+            <section>
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <p>A complete list of our courses:</p>
-                        <p>Courses:</p> <!-- TODO DIMINUIRE DISTANZA TRA LINEA-->
+                        <p>Courses:</p>
                     </div>
                 </div>
-                <div class="d-flex justify-content-evenly">
-                    <div class="p-2">
-                        <input type="text" class="form-control formStyle" placeholder="Filter by Name">
-                    </div>
-                    <div class="p-2">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Course</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <div class="p-2">
-                        <div class="col-auto">
-                            <label>Only show reservable Courses:</label>
+            </section>
+            <section>
+                <form>
+                    <div class="d-flex justify-content-evenly">
+                        <div class="p-2">
+                            <input type="text" class="form-control formStyle" placeholder="Filter by Name">
+                        </div>
+                        <div class="p-2">
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Course</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="p-2">
-                        <div class="col-auto">
-                            <input type="radio" name="radio">
+                    <div class="d-flex justify-content-center">
+                        <div class="p-2">
+                            <div class="col-auto">
+                                <label>Only show reservable Courses:</label>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="col-auto">
+                                <input type="radio" name="radio">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <div class="p-2">
-                        <div class="col-auto">
-                            <label>Only show courses I booked:</label>
+                    <div class="d-flex justify-content-center">
+                        <div class="p-2">
+                            <div class="col-auto">
+                                <label>Only show courses I booked:</label>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="col-auto">
+                                <input type="radio" name="radio">
+                            </div>
                         </div>
                     </div>
-                    <div class="p-2">
-                        <div class="col-auto">
-                            <input type="radio" name="radio">
+                    <div class="d-flex justify-content-center">
+                        <div class="p-2">
+                            <button type="button" class="btn btn-secondary">Reset Filters</button>
+                        </div>
+                        <div class="p-2">
+                            <button type="button" class="btn btn-primary">Search</button>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <div class="p-2">
-                        <button type="button" class="btn btn-secondary">Reset Filters</button>
-                    </div>
-                    <div class="p-2">
-                        <button type="button" class="btn btn-primary">Search</button>
-                    </div>
-                </div>
-            </article>
-        </div>
-        <footer>
-            <div class="d-flex justify-content-between">
-                <div class="p-2">legal info of the company/universtiy</div>
-                <div class="p-2">Design by Andrea Cacioli, Lorenzo Cassinelli</div>
-            </div>
-        </footer>
+                </form>
+            </section>
+        </article>
     </div>
+    <footer>
+        <div class="d-flex justify-content-between">
+            <div class="p-2">legal info of the company/universtiy</div>
+            <div class="p-2">Design by Andrea Cacioli, Lorenzo Cassinelli</div>
+        </div>
+    </footer>
+</div>
 </body>
 <script src="../resources/js/dynamic.js"></script>
 <script src="../resources/js/SPA.js"></script>

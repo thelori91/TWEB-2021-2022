@@ -6,12 +6,13 @@
     text-align: center;
 }
 
-.animate__animated.animate__fadeIn {
-    --animate-duration: 3s;
-}
-
-.backgroundImage {
+body {
+    margin: 0;
+    padding: 0;
     background-image: url("../image/Background.jpg");
+    font-size: 130%;
+    font-weight: bolder;
+    color: black;
 }
 
 .titleStyle {
@@ -19,7 +20,11 @@
     font-size: 400%;
 }
 
-.headButton {
+.animate__animated.animate__fadeIn {
+    --animate-duration: 3s;
+}
+
+.homeButton {
     font-size: 130%;
     color: white;
     background-repeat: no-repeat;
@@ -30,14 +35,25 @@
     outline: none;
 }
 
-.headButton:hover {
+.homeButton:hover {
     text-decoration: underline;
     text-decoration-thickness: 0.1em;
 }
 
-.actionButton {
-    border-color: black;
-    border-width: 0.3em;
+.signInButton {
+    font-size: 130%;
+    color: black;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+.signInButton:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 0.1em;
 }
 
 .formStyle {
@@ -46,10 +62,9 @@
     border-width: 0.3em;
 }
 
-.fontStyle {
-    font-size: 130%;
-    font-weight: bolder;
-    color: black;
+.formStyle:focus {
+    outline: none;
+    box-shadow: brown;
 }
 
 #puntinaSize {
@@ -74,7 +89,7 @@ input[type=radio] {
 }
 
 input[type=radio]:checked {
-    background: url(check.svg) no-repeat center center;
+    background: url(../image/check.svg) no-repeat center center;
     background-size: 1em 1em;
 }
 
@@ -82,7 +97,7 @@ input[type=radio]:focus {
     outline-color: transparent;
 }
 
-footer{
+footer {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -91,32 +106,46 @@ footer{
     color: white;
 }
 
-header{
+header {
     background-color: rgb(0, 0, 0);
     color: white;
     margin-bottom: 5%;
 }
 
 @media screen and (min-width: 941px) {
-    .titleHolder{
+    .titleHolder {
         display: flex;
     }
-    
+
 }
 
-.titleHolder{
+.titleHolder {
     justify-content: center;
 }
 
-.titleHolder h1{
+.titleHolder h1 {
     padding-top: 3%;
 }
 
-#page-container{
+#page-container {
     position: relative;
     min-height: 100vh;
 }
 
-#SPA{
-    padding-bottom: 2.5rem;
+#SPA {
+    padding-bottom: 10rem;
+}
+
+.btn {
+    border-color: black;
+    border-width: 0.3em;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.greyHoverSelection:hover {
+    background-color: darkgray;
 }

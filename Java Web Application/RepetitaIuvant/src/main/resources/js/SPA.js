@@ -1,6 +1,6 @@
 Vue.component('homebutton', {
     template:
-        '<button v-on:click="transitInner" type="button" class="headButton"><- Back to Main Menu</button>',
+        '<button v-on:click="transitInner" type="button" class="homeButton"><- Back to Main Menu</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -9,7 +9,7 @@ Vue.component('homebutton', {
 });
 
 Vue.component('reservationbutton', {
-    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Handle Reservation</button>',
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Handle Reservation</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -18,7 +18,7 @@ Vue.component('reservationbutton', {
 });
 Vue.component('teacherbutton', {
     template:
-        '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Teachers</button>',
+        '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection">Teachers</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -27,7 +27,7 @@ Vue.component('teacherbutton', {
 });
 Vue.component('signinbutton', {
     template:
-        '<button v-on:click="transitInner" type="button" class="fontStyle headButton">Sign in</button>',
+        '<button v-on:click="transitInner" type="button" class="signInButton">Sign in</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -35,12 +35,24 @@ Vue.component('signinbutton', {
     }
 });
 Vue.component('coursebutton', {
-    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg ">Courses</button>',
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Courses</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
         }
     }
+});
+Vue.component('logosection', {
+    template: '<div class="container-fluid center">\n' +
+        '                <div class="row justify-content-md-center">\n' +
+        '                    <div class="col-md-auto">\n' +
+        '                        <figure>\n' +
+        '                            <img id="logoPag2Size" src="../resources/image/Logo.png" alt="Logo REPETITA IUVANT">\n' +
+        '                        </figure>\n' +
+        '                        <h1 class="titleStyle">REPETITA IUVANT</h1>\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>',
 });
 
 let app = new Vue({
@@ -88,10 +100,10 @@ let app = new Vue({
             this.firstPage = true;
             this.fourthPage = false;
         },
-        handle: function(){
-                this.wrongPassword = !(this.password.length >= 8 && this.password.length <= 20);
+        handle: function () {
+            this.wrongPassword = !(this.password.length >= 8 && this.password.length <= 20);
         },
-        toggle: function(){
+        toggle: function () {
             this.visiblePassword = !this.visiblePassword;
             seePassword();
         }
