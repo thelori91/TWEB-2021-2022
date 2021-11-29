@@ -1,6 +1,6 @@
 Vue.component('homebutton', {
     template:
-        '<button v-on:click="transitInner" type="button" class="fontStyle headButton"><- Back to Main Menu</button>',
+        '<button v-on:click="transitInner" type="button" class="headButton"><- Back to Main Menu</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -43,14 +43,17 @@ Vue.component('coursebutton', {
     }
 });
 
-new Vue({
+let app = new Vue({
     el: '#SPA',
     data: {
         firstPage: true,
         secondPage: false,
         signInPage: false,
         thirdPage: false,
-        fourthPage: false
+        fourthPage: false,
+        password: "",
+        wrongPassword: false,
+        visiblePassword: false
     },
     methods: {
         P1TOP2: function () {
@@ -84,6 +87,13 @@ new Vue({
         P4TOP1: function () {
             this.firstPage = true;
             this.fourthPage = false;
+        },
+        handle: function(){
+                this.wrongPassword = !(this.password.length >= 8 && this.password.length <= 20);
+        },
+        toggle: function(){
+            this.visiblePassword = !this.visiblePassword;
+            seePassword();
         }
     }
 });
