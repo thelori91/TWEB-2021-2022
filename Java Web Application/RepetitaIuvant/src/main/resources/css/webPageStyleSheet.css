@@ -97,6 +97,21 @@ input[type=radio]:focus {
     outline-color: transparent;
 }
 
+input[type=checkbox] {
+    border: 0.2em solid rgb(0, 0, 0);
+    padding: 0.5em;
+    -webkit-appearance: none;
+}
+
+input[type=checkbox]:checked {
+    background: url(../image/check.svg) no-repeat center center;
+    background-size: 1em 1em;
+}
+
+input[type=checkbox]:focus {
+    outline-color: transparent;
+}
+
 footer {
     position: absolute;
     bottom: 0;

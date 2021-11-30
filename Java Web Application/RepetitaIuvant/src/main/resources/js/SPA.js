@@ -55,6 +55,7 @@ Vue.component('logosection', {
         '            </div>',
 });
 
+
 let app = new Vue({
     el: '#SPA',
     data: {
