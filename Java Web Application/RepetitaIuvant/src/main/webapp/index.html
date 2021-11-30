@@ -17,7 +17,6 @@
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-    <!--TODO sistemare shadow bottoni-->
     <!--TODO compoment per il login-->
 
     <title>REPETITA IUVANT</title>
@@ -139,36 +138,7 @@
                                         <input type="radio" name="radio">
                                     </div>
                                 </div>
-                                <div class="row g-3 align-items-center">
-                                    <div class="mb-3">
-                                        <input type="email" class="form-control formStyle" placeholder="Email" required>
-                                    </div>
-                                </div>
-                                <div class="row g-3 align-items-center">
-                                    <div class="input-group mb-3">
-                                        <input v-model="password" @keyup="handle" type="password" id="inputPassword6"
-                                               class="form-control formStyle" placeholder="Password" required>
-                                        <button class="btn btn-outline-secondary" type="button"
-                                                v-if="visiblePassword" v-on:click="toggle"><i
-                                                class="bi bi-eye-slash-fill"></i>
-                                        </button>
-                                        <button class="btn btn-outline-secondary" type="button"
-                                                v-else v-on:click="toggle"><i class="bi bi-eye-fill"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div v-if="wrongPassword" class="row g-3 align-items-center">
-                                    <div class="mb-3">
-                                        <span id="passwordHelpInline" class="form-text" style="color: red;">
-                                            Password must be 8-20 characters long
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </div>
+                                <credentialsection></credentialsection>
                             </form>
                         </div>
                     </div>

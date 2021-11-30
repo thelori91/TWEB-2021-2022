@@ -150,12 +150,24 @@ header {
 #SPA {
     padding-bottom: 10rem;
 }
-
+.btn:active,
+.btn:focus,
+.btn:active,
+.btn:hover,
 .btn {
     border-color: black;
     border-width: 0.3em;
+    box-shadow: none !important;
 }
 
 .greyHoverSelection:hover {
     background-color: darkgray;
 }
+
+input:active,
+input:focus,
+input:active {
+    box-shadow: none !important;
+}
+
+

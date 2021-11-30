@@ -54,6 +54,40 @@ Vue.component('logosection', {
         '                </div>\n' +
         '            </div>',
 });
+Vue.component('credentialsection', {
+    template: '<div>'+
+        '<div class="row g-3 align-items-center">\n' +
+        '          <div class="mb-3">\n' +
+        '              <input type="email" class="form-control formStyle" placeholder="Email" required>\n' +
+        '          </div>\n' +
+        '      </div>\n' +
+        '      <div class="row g-3 align-items-center">\n' +
+        '           <div class="input-group mb-3">\n' +
+        '               <input v-model="password" @keyup="handle" type="password" id="inputPassword6"\n' +
+        '                                               class="form-control formStyle" placeholder="Password" required>\n' +
+        '                                        <button class="btn btn-outline-secondary" type="button"\n' +
+        '                                                v-if="visiblePassword" v-on:click="toggle"><i\n' +
+        '                                                class="bi bi-eye-slash-fill"></i>\n' +
+        '                                        </button>\n' +
+        '                                        <button class="btn btn-outline-secondary" type="button"\n' +
+        '                                                v-else v-on:click="toggle"><i class="bi bi-eye-fill"></i>\n' +
+        '                                        </button>\n' +
+        '                                    </div>\n' +
+        '                                </div>\n' +
+        '                                <div v-if="wrongPassword" class="row g-3 align-items-center">\n' +
+        '                                    <div class="mb-3">\n' +
+        '                                        <span id="passwordHelpInline" class="form-text" style="color: red;">\n' +
+        '                                            Password must be 8-20 characters long\n' +
+        '                                        </span>\n' +
+        '                                    </div>\n' +
+        '                                </div>\n' +
+        '                                <div class="row g-3 align-items-center">\n' +
+        '                                    <div class="col-auto">\n' +
+        '                                        <button type="submit" class="btn btn-primary">Submit</button>\n' +
+        '                                    </div>\n' +
+        '                                </div>'+
+        '</div>'
+});
 
 
 let app = new Vue({
