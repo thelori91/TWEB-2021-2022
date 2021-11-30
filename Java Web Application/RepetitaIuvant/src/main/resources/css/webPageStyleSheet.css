@@ -156,11 +156,6 @@ header {
     border-width: 0.3em;
 }
 
-.btn:focus {
-    outline: none;
-    box-shadow: none;
-}
-
 .greyHoverSelection:hover {
     background-color: darkgray;
 }
