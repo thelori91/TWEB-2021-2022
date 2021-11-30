@@ -1,18 +1,6 @@
-.container-fluid {
-    flex-direction: column;
-}
-
-.center {
-    text-align: center;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    background-image: url("../image/Background.jpg");
-    font-size: 130%;
-    font-weight: bolder;
-    color: black;
+/* STYLE FOR PAGE 1 */
+.animate__animated.animate__fadeIn {
+    --animate-duration: 3s;
 }
 
 .titleStyle {
@@ -20,26 +8,12 @@ body {
     font-size: 400%;
 }
 
-.animate__animated.animate__fadeIn {
-    --animate-duration: 3s;
+#logoPag1Size {
+    width: 50%;
+    height: auto;
 }
 
-.homeButton {
-    font-size: 130%;
-    color: white;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    overflow: hidden;
-    outline: none;
-}
-
-.homeButton:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 0.1em;
-}
-
+/* STYLE FOR PAGE 2 */
 .signInButton {
     font-size: 130%;
     color: black;
@@ -62,24 +36,36 @@ body {
     border-width: 0.3em;
 }
 
-.formStyle:focus {
-    outline: none;
-    box-shadow: brown;
-}
-
-#puntinaSize {
-    width: 20%;
-    height: auto;
-}
-
-#logoPag1Size {
-    width: 50%;
-    height: auto;
-}
-
 #logoPag2Size {
     width: 20%;
     height: auto;
+}
+
+/* STYLE FOR PAGE 3 */
+/* STYLE FOR PAGE 4 */
+/* COMMON STYLE  */
+header {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    margin-bottom: 5%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("../image/Background.jpg");
+    font-size: 130%;
+    font-weight: bolder;
+    color: black;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    background-color: black;
+    color: white;
 }
 
 input[type=radio] {
@@ -89,7 +75,7 @@ input[type=radio] {
 }
 
 input[type=radio]:checked {
-    background: url(../image/check.svg) no-repeat center center;
+    background: url(../image/Check.svg) no-repeat center center;
     background-size: 1em 1em;
 }
 
@@ -104,7 +90,7 @@ input[type=checkbox] {
 }
 
 input[type=checkbox]:checked {
-    background: url(../image/check.svg) no-repeat center center;
+    background: url(../image/Check.svg) no-repeat center center;
     background-size: 1em 1em;
 }
 
@@ -112,19 +98,24 @@ input[type=checkbox]:focus {
     outline-color: transparent;
 }
 
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: auto;
-    background-color: black;
-    color: white;
+input:active,
+input:focus,
+input:active {
+    box-shadow: none !important;
 }
 
-header {
-    background-color: rgb(0, 0, 0);
-    color: white;
-    margin-bottom: 5%;
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+#SPA {
+    padding-bottom: 10rem;
+}
+
+#puntinaSize {
+    width: 20%;
+    height: auto;
 }
 
 @media screen and (min-width: 941px) {
@@ -142,14 +133,30 @@ header {
     padding-top: 3%;
 }
 
-#page-container {
-    position: relative;
-    min-height: 100vh;
+.container-fluid {
+    flex-direction: column;
 }
 
-#SPA {
-    padding-bottom: 10rem;
+.center {
+    text-align: center;
 }
+
+.homeButton {
+    font-size: 130%;
+    color: white;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+.homeButton:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 0.1em;
+}
+
 .btn:active,
 .btn:focus,
 .btn:active,
@@ -164,10 +171,6 @@ header {
     background-color: darkgray;
 }
 
-input:active,
-input:focus,
-input:active {
-    box-shadow: none !important;
-}
+
 
 
