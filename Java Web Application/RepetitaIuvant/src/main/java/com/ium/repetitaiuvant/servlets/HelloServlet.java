@@ -1,4 +1,4 @@
-package com.ium.repetitaiuvant.repetitaiuvant;
+package com.ium.repetitaiuvant.servlets;
 
 import java.io.*;
 import javax.servlet.http.*;
