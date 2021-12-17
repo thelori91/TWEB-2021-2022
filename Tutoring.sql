@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Nov 25, 2021 alle 14:24
+-- Creato il: Dic 17, 2021 alle 11:51
 -- Versione del server: 10.4.21-MariaDB
 -- Versione PHP: 8.0.11
 
@@ -61,6 +61,17 @@ CREATE TABLE `Teacher` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `TeacherCourse`
+--
+
+CREATE TABLE `TeacherCourse` (
+  `Teacher` bigint(20) UNSIGNED NOT NULL,
+  `Course` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `User`
 --
 
@@ -87,15 +98,22 @@ ALTER TABLE `Course`
 --
 ALTER TABLE `Lesson`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `fkTeacher` (`Teacher`),
+  ADD KEY `fkUser` (`User`),
   ADD KEY `fkCourse` (`Course`),
-  ADD KEY `fkUser` (`User`);
+  ADD KEY `fkTeacher` (`Teacher`);
 
 --
 -- Indici per le tabelle `Teacher`
 --
 ALTER TABLE `Teacher`
   ADD PRIMARY KEY (`ID`);
+
+--
+-- Indici per le tabelle `TeacherCourse`
+--
+ALTER TABLE `TeacherCourse`
+  ADD PRIMARY KEY (`Teacher`,`Course`),
+  ADD KEY `fk_Course` (`Course`);
 
 --
 -- Indici per le tabelle `User`
@@ -127,9 +145,16 @@ ALTER TABLE `Teacher`
 -- Limiti per la tabella `Lesson`
 --
 ALTER TABLE `Lesson`
-  ADD CONSTRAINT `fkCourse` FOREIGN KEY (`Course`) REFERENCES `Course` (`Name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fkTeacher` FOREIGN KEY (`Teacher`) REFERENCES `Teacher` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkCourse` FOREIGN KEY (`Course`) REFERENCES `TeacherCourse` (`Course`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkTeacher` FOREIGN KEY (`Teacher`) REFERENCES `TeacherCourse` (`Teacher`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fkUser` FOREIGN KEY (`User`) REFERENCES `User` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limiti per la tabella `TeacherCourse`
+--
+ALTER TABLE `TeacherCourse`
+  ADD CONSTRAINT `fk_Course` FOREIGN KEY (`Course`) REFERENCES `Course` (`Name`),
+  ADD CONSTRAINT `fk_Teacher` FOREIGN KEY (`Teacher`) REFERENCES `Teacher` (`ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
