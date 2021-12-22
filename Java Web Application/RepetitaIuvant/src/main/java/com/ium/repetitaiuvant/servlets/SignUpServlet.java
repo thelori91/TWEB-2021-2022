@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.SocketTimeoutException;
 import java.util.Date;
 
 @WebServlet(name = "signUpServlet", value = "/signUp-servlet")
@@ -40,9 +41,11 @@ public class SignUpServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         ServletContext servletContext = getServletContext();
         RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/index.html");
-
         //Getting a PrintWriter to send the response
         PrintWriter out = response.getWriter();
+        //request.setAttribute("servletResponse", username);
+        out.write(username);
+        requestDispatcher.forward(request, response);
 
         //Check if Username is already in use, since it's a primary key
         /*if(DAO.existsUser(username))
@@ -56,8 +59,6 @@ public class SignUpServlet extends HttpServlet {
             DAO.addStudent(student);
             out.println("Operation Completed");
         }*/
-        out.println("Ciaooooooo");
-        requestDispatcher.forward(request, response);
     }
 
     public void destroy() {

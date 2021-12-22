@@ -1,3 +1,5 @@
+
+
 Vue.component('homebutton', {
     template:
         '<button v-on:click="transitInner" type="button" class="homeButton"><- Back to Main Menu</button>',
@@ -55,9 +57,23 @@ Vue.component('logosection', {
         '            </div>',
 });
 Vue.component('credentialsection', {
-    data: {
-        wrongPassword: true,
-        visiblePassword: false
+    methods:{
+        handle: function () {
+            this.wrongPassword = !(this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20);
+        },
+        toggle: function () {
+            this.visiblePassword = !this.visiblePassword;
+            seePassword();
+        },
+        registerNewUser: function (){
+            app.handleFun();
+        }
+    },
+    data:function() {
+        return  {
+            wrongPassword: false,
+            visiblePassword: false
+        }
     },
     template: '<div>'+
         '<div class="row g-3 align-items-center">\n' +
@@ -88,27 +104,7 @@ Vue.component('credentialsection', {
         '            <button v-on:click="registerNewUser" class="btn btn-primary">Submit</button>\n' +
         '       </div>\n' +
         '     </div>'+
-        '</div>',
-    methods:{
-        handle: function () {
-            this.wrongPassword = !(this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20);
-            console.log(this.wrongPassword);
-            //TODO: wrong password is working right, the v-if is not!
-        },
-        toggle: function () {
-            this.visiblePassword = !this.visiblePassword;
-            seePassword();
-        },
-        registerNewUser: function (){
-            let obj = {uname: this.newUserUname, password: this.newUserPassword, name: this.newUserName, surname: this.newUserSurname};
-            console.log(obj);
-            $.post("SignUpServlet", obj, function (data) {
-                //Callback
-                console.log(data);
-                this.servletResponse = data;
-            });
-        }
-    }
+        '</div>'
 });
 
 
@@ -125,7 +121,7 @@ let app = new Vue({
         newUserPassword: "",
         newUserName: "",
         newUserSurname: "",
-        servletResponse: ""
+        servletResponse: "USERNAME"
     },
     methods: {
         P1TOP2: function () {
@@ -159,6 +155,14 @@ let app = new Vue({
         P4TOP1: function () {
             this.firstPage = true;
             this.fourthPage = false;
+        },
+        handleFun: function () {
+            var self = this;
+            let obj = {uname: app.newUserUname, password: app.newUserPassword, name: app.newUserName, surname: app.newUserSurname};
+            $.post("SignUpServlet", obj, function (data) {
+                self.servletResponse = data;
+            });
         }
+
     }
 });

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="./css/webPageStyleSheet.css">
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <!--TODO compoment per il login-->
 
@@ -28,7 +29,7 @@
             <div v-if="firstPage" class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-md-auto">
-                        <p>ServletResponse: {{servletResponse}}</p>
+                        <p>ServletResponse: ${servletResponse}</p>
                     </div>
                 </div>
             </div>
