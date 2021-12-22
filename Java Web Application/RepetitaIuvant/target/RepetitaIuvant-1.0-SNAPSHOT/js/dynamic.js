@@ -14,7 +14,7 @@ function createUpcomingEvent(i) {
 
     let col0 = document.createElement("div");
     col0.className = "col col-md-1";
-    col0.innerHTML = "<img  id='puntinaSize' src='../image/Punting.png' alt='Punting'>";
+    col0.innerHTML = "<img  id='puntinaSize' src='./image/Punting.png' alt='Punting'>";
     let col1 = document.createElement("div");
     col1.className = "col col-lg-2";
     col1.innerHTML = "<p>Lesson" + (i + 1) + ":</p>";

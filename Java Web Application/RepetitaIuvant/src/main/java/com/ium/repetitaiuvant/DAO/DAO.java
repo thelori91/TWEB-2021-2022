@@ -23,6 +23,31 @@ public class DAO {
         }
     }
 
+    public static boolean existsUser(String username)
+    {
+        Connection conn1 = null;
+        String role = null;
+        try {
+            conn1 = DriverManager.getConnection(url, user, psw);
+            if (conn1 != null) {
+                System.out.println("Connected to the database Tutoring");
+            }
+            Statement st = conn1.createStatement();
+            ResultSet rs = st.executeQuery("SELECT Username FROM User WHERE User.Username = '" + username + "'");
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (conn1 != null) {
+                try {
+                    conn1.close();
+                } catch (SQLException e2) {
+                    System.out.println(e2.getMessage());
+                }
+            }
+        }
+        return true;
+    }
 
     public static Role getRole(String usr, String userPassword) {
         Connection conn1 = null;
@@ -436,6 +461,33 @@ public class DAO {
                     conn1.close();
                 } catch (SQLException e2) {
                     System.out.println(e2.getMessage());
+                }
+            }
+        }
+    }
+
+    public static void addStudent(User student) {
+        if(student.getRole() == Role.STUDENT)
+        {
+            Connection conn1 = null;
+            try {
+                conn1 = DriverManager.getConnection(url, user, psw);
+                if (conn1 != null) {
+                    System.out.println("Connected to the database test");
+                }
+                String sql = "INSERT into User(Username, Password, Role, Name, Surname) values ('" + student.getUsername() + "', '" + student.getPassword() + "', 'Student', '" + student.getName() + "' , '" +  student.getSurname() + "')";
+                Statement update = (Statement) conn1.createStatement();
+                update.executeUpdate(sql);
+                System.out.println("Student added correctly!");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (conn1 != null) {
+                    try {
+                        conn1.close();
+                    } catch (SQLException e2) {
+                        System.out.println(e2.getMessage());
+                    }
                 }
             }
         }

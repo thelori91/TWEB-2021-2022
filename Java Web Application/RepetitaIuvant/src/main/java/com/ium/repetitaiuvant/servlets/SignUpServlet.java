@@ -1,7 +1,10 @@
 package com.ium.repetitaiuvant.servlets;
 
 import com.ium.repetitaiuvant.DAO.DAO;
+import com.ium.repetitaiuvant.DAO.Role;
+import com.ium.repetitaiuvant.DAO.User;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -27,16 +30,34 @@ public class SignUpServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Ciao");
-        processRequest(request, response);
-    }
+        String username = request.getParameter("uname");
+        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        response.setContentType("text/html;charset=UTF-8");
+        ServletContext servletContext = getServletContext();
+        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/index.html");
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Getting a PrintWriter to send the response
+        PrintWriter out = response.getWriter();
 
+        //Check if Username is already in use, since it's a primary key
+        /*if(DAO.existsUser(username))
+        {
+            out.println("Username already used");
+        }
+        else
+        {
+            //Since the new student can be added, we do it
+            User student = new User(username, password, Role.STUDENT, name,surname);
+            DAO.addStudent(student);
+            out.println("Operation Completed");
+        }*/
+        out.println("Ciaooooooo");
+        requestDispatcher.forward(request, response);
     }
 
     public void destroy() {

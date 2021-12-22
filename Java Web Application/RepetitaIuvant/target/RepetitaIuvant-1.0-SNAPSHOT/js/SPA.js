@@ -55,15 +55,19 @@ Vue.component('logosection', {
         '            </div>',
 });
 Vue.component('credentialsection', {
+    data: {
+        wrongPassword: true,
+        visiblePassword: false
+    },
     template: '<div>'+
         '<div class="row g-3 align-items-center">\n' +
         '          <div class="mb-3">\n' +
-        '              <input type="email" class="form-control formStyle" placeholder="Email" required>\n' +
+        '              <input type="email" name="uname" v-model="newUserUname" class="form-control formStyle" placeholder="Email" required>\n' +
         '          </div>\n' +
         '      </div>\n' +
         '      <div class="row g-3 align-items-center">\n' +
         '           <div class="input-group mb-3">\n' +
-        '               <input v-model="password" @keyup="handle" type="password" id="inputPassword6"\n' +
+        '               <input v-model="newUserPassword" name="password" @keyup="handle" type="password" id="inputPassword6"\n' +
         '                                               class="form-control formStyle" placeholder="Password" required>\n' +
         '               <button class="btn btn-outline-secondary" type="button" v-if="visiblePassword" v-on:click="toggle"><i\n' +
         '                                                class="bi bi-eye-slash-fill"></i>\n' +
@@ -72,7 +76,7 @@ Vue.component('credentialsection', {
         '               </button>\n' +
         '           </div>\n' +
         '     </div>\n' +
-        '     <div v-if="wrongPassword" class="row g-3 align-items-center">\n' +
+        '     <div v-if="wrongPassword" class="row g-3 align-items-center" > \n' +
         '           <div class="mb-3">\n' +
         '               <span id="passwordHelpInline" class="form-text" style="color: red;">\n' +
         '                                            Password must be 8-20 characters long\n' +
@@ -81,10 +85,30 @@ Vue.component('credentialsection', {
         '     </div>\n' +
         '     <div class="row g-3 align-items-center">\n' +
         '       <div class="col-auto">\n' +
-        '            <button type="submit" class="btn btn-primary">Submit</button>\n' +
+        '            <button v-on:click="registerNewUser" class="btn btn-primary">Submit</button>\n' +
         '       </div>\n' +
         '     </div>'+
-        '</div>'
+        '</div>',
+    methods:{
+        handle: function () {
+            this.wrongPassword = !(this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20);
+            console.log(this.wrongPassword);
+            //TODO: wrong password is working right, the v-if is not!
+        },
+        toggle: function () {
+            this.visiblePassword = !this.visiblePassword;
+            seePassword();
+        },
+        registerNewUser: function (){
+            let obj = {uname: this.newUserUname, password: this.newUserPassword, name: this.newUserName, surname: this.newUserSurname};
+            console.log(obj);
+            $.post("SignUpServlet", obj, function (data) {
+                //Callback
+                console.log(data);
+                this.servletResponse = data;
+            });
+        }
+    }
 });
 
 
@@ -96,9 +120,12 @@ let app = new Vue({
         signInPage: false,
         thirdPage: false,
         fourthPage: false,
-        password: "",
-        wrongPassword: false,
-        visiblePassword: false
+
+        newUserUname: "",
+        newUserPassword: "",
+        newUserName: "",
+        newUserSurname: "",
+        servletResponse: ""
     },
     methods: {
         P1TOP2: function () {
@@ -132,13 +159,6 @@ let app = new Vue({
         P4TOP1: function () {
             this.firstPage = true;
             this.fourthPage = false;
-        },
-        handle: function () {
-            this.wrongPassword = !(this.password.length >= 8 && this.password.length <= 20);
-        },
-        toggle: function () {
-            this.visiblePassword = !this.visiblePassword;
-            seePassword();
         }
     }
 });
