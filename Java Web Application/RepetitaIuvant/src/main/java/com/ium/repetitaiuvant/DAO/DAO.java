@@ -9,9 +9,9 @@ public class DAO {
     private static String psw;
 
     public static void initDAO(String url, String user, String psw) {
-        url = url;
-        user = user;
-        psw = psw;
+        DAO.url = url;
+        DAO.user = user;
+        DAO.psw = psw;
         registerDriver();
     }
 
@@ -28,10 +28,12 @@ public class DAO {
         Connection conn1 = null;
         String role = null;
         try {
-            conn1 = DriverManager.getConnection(url, user, psw);
-            if (conn1 != null) {
-                System.out.println("Connected to the database Tutoring");
+            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+            if (conn1 == null) {
+                System.err.println("Unable to establish a connection!");
+                return true;
             }
+            System.out.println("Connected to the database Tutoring");
             Statement st = conn1.createStatement();
             ResultSet rs = st.executeQuery("SELECT Username FROM User WHERE User.Username = '" + username + "'");
             return rs.next();

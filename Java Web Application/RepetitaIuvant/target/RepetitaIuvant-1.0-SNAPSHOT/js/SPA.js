@@ -63,6 +63,8 @@ Vue.component('credentialsection', {
         },
         toggle: function () {
             this.visiblePassword = !this.visiblePassword;
+
+            //Only hand made binding!
             seePassword();
         },
         registerNewUser: function (){
@@ -157,12 +159,18 @@ let app = new Vue({
             this.fourthPage = false;
         },
         handleFun: function () {
-            var self = this;
-            let obj = {uname: app.newUserUname, password: app.newUserPassword, name: app.newUserName, surname: app.newUserSurname};
-            $.post("SignUpServlet", obj, function (data) {
-                self.servletResponse = data;
-            });
+            let request = new XMLHttpRequest();
+            request.onreadystatechange = () => {
+                if(request.readyState === 4)
+                {
+                    alert("got status: " + request.status + "\nText:" + request.responseText);
+                    this.servletResponse = request.responseText;
+                }
+            };
+            let params =  "uname=" + this.newUserUname + "&password=" + this.newUserPassword + "&name=" + this.newUserName + "&surname=" + this.newUserSurname;
+            request.open("POST", "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet", true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(params);
         }
-
     }
 });

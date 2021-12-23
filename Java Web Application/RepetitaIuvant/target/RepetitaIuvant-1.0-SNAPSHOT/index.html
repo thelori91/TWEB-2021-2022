@@ -29,7 +29,7 @@
             <div v-if="firstPage" class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-md-auto">
-                        <p>ServletResponse: ${servletResponse}</p>
+                        <p>ServletResponse: {{servletResponse}}</p>
                     </div>
                 </div>
             </div>
@@ -110,19 +110,27 @@
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-8">
-                            <form action="signUp-servlet" method="post">
-                                <div class="row g-3 align-items-center">
-                                    <div class="mb-3">
-                                        <input type="text" class="form-control formStyle" name="name" v-model="newUserName" placeholder="Name" required>
-                                    </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control formStyle" name="name" v-model="newUserName" placeholder="Name" required>
                                 </div>
-                                <div class="row g-3 align-items-center">
-                                    <div class="mb-3">
-                                        <input type="text" class="form-control formStyle" name="surname" v-model="newUserSurname" placeholder="Surname" required>
-                                    </div>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control formStyle" name="surname" v-model="newUserSurname" placeholder="Surname" required>
                                 </div>
-                                <credentialsection></credentialsection>
-                            </form>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control formStyle" name="uname" v-model="newUserUname" placeholder="Email Working" required>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control formStyle" name="password" v-model="newUserPassword" placeholder="Password Working" required>
+                                </div>
+                            </div>
+                            <credentialsection></credentialsection>
                         </div>
                     </div>
                 </div>

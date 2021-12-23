@@ -6,7 +6,7 @@
     <context-param>
         <description>URL OF DATABASE</description>
         <param-name>DB-URL</param-name>
-        <param-value>jdbc:mysql://localhost:8889/test?useSSL=false</param-value>
+        <param-value>jdbc:mysql://localhost:3306/Tutoring?useSSL=false</param-value>
     </context-param>
     <context-param>
         <description>USERNAME</description>
@@ -16,6 +16,6 @@
     <context-param>
         <description>PASSWORD</description>
         <param-name>psw</param-name>
-        <param-value>root</param-value>
+        <param-value></param-value>
     </context-param>
 </web-app>

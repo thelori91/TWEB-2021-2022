@@ -36,7 +36,7 @@ function createUpcomingEvent(i) {
 
 function seePassword() {
     let x = document.getElementById("inputPassword6");
-    if (x.type === "password") {
+    if (app.visiblePassword) {
         x.type = "text";
     } else {
         x.type = "password";

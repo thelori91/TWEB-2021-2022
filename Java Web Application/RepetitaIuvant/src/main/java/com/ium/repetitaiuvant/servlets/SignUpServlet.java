@@ -22,6 +22,7 @@ import java.util.Date;
 public class SignUpServlet extends HttpServlet {
 
     public void init(ServletConfig conf) throws ServletException {
+        //TODO change to make it work with servlet context
         super.init(conf);
         ServletContext ctx = conf.getServletContext();
         String url = ctx.getInitParameter("DB-URL");
@@ -38,17 +39,13 @@ public class SignUpServlet extends HttpServlet {
         String password = request.getParameter("password");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
-        response.setContentType("text/html;charset=UTF-8");
-        ServletContext servletContext = getServletContext();
-        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/index.html");
+        response.setContentType("text/plain;charset=UTF-8");
+
         //Getting a PrintWriter to send the response
         PrintWriter out = response.getWriter();
-        //request.setAttribute("servletResponse", username);
-        out.write(username);
-        requestDispatcher.forward(request, response);
 
         //Check if Username is already in use, since it's a primary key
-        /*if(DAO.existsUser(username))
+        if(DAO.existsUser(username))
         {
             out.println("Username already used");
         }
@@ -58,7 +55,7 @@ public class SignUpServlet extends HttpServlet {
             User student = new User(username, password, Role.STUDENT, name,surname);
             DAO.addStudent(student);
             out.println("Operation Completed");
-        }*/
+        }
     }
 
     public void destroy() {
