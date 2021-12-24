@@ -1,5 +1,6 @@
 package com.ium.repetitaiuvant.DAO;
 
+import java.net.ConnectException;
 import java.sql.*;
 import java.util.*;
 
@@ -23,7 +24,7 @@ public class DAO {
         }
     }
 
-    public static boolean existsUser(String username)
+    public static boolean existsUser(String username) throws ConnectException
     {
         Connection conn1 = null;
         String role = null;
@@ -31,7 +32,7 @@ public class DAO {
             conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
             if (conn1 == null) {
                 System.err.println("Unable to establish a connection!");
-                return true;
+                throw new ConnectException();
             }
             System.out.println("Connected to the database Tutoring");
             Statement st = conn1.createStatement();
@@ -48,7 +49,7 @@ public class DAO {
                 }
             }
         }
-        return true;
+        throw new ConnectException();
     }
 
     public static Role getRole(String usr, String userPassword) {

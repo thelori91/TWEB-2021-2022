@@ -45,16 +45,17 @@ public class SignUpServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         //Check if Username is already in use, since it's a primary key
-        if(DAO.existsUser(username))
-        {
-            out.println("Username already used");
-        }
-        else
-        {
-            //Since the new student can be added, we do it
-            User student = new User(username, password, Role.STUDENT, name,surname);
-            DAO.addStudent(student);
-            out.println("Operation Completed");
+        try {
+            if (DAO.existsUser(username)) {
+                out.println("Username already used");
+            } else {
+                //Since the new student can be added, we do it
+                User student = new User(username, password, Role.STUDENT, name, surname);
+                DAO.addStudent(student);
+                out.println("Operation Completed");
+            }
+        } catch (Exception ex) {
+            out.println("Unable to contact server");
         }
     }
 
