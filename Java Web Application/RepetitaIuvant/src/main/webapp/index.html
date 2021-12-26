@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="HTML">
+<html lang="HTML" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
     <meta http-equiv="Pragma" content="no-cache"/>
@@ -18,8 +18,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <!--TODO compoment per il login-->
-
     <title>REPETITA IUVANT</title>
 </head>
 <body onload="add3UpcomingEvents()">
@@ -29,7 +27,7 @@
             <div v-if="firstPage" class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-md-auto">
-                        <p>ServletResponse: {{servletResponse}}</p>
+                        <p>Username: {{servletResponse}}</p>
                     </div>
                 </div>
             </div>
@@ -81,7 +79,7 @@
                 <div class="d-grid gap-2 col-4 mx-auto">
                     <reservationbutton v-on:transit-inner="P1TOP2"></reservationbutton>
                     <teacherbutton v-on:transit-inner="P1TOP3"></teacherbutton>
-                    <coursebutton v-on:transit-inner="P1TOP4"></coursebutton>
+                    <coursebutton v-on:transit-inner="P1TOP4"/></coursebutton>
                 </div>
             </div>
             <div class="container-fluid" id="upcomingEvents">
@@ -112,25 +110,42 @@
                         <div class="col-md-8">
                             <div class="row g-3 align-items-center">
                                 <div class="mb-3">
-                                    <input type="text" class="form-control formStyle" name="name" v-model="newUserName" placeholder="Name" required>
+                                    <input type="text" class="form-control formStyle" name="name" v-model="newUserName" placeholder="Name">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="mb-3">
-                                    <input type="text" class="form-control formStyle" name="surname" v-model="newUserSurname" placeholder="Surname" required>
+                                    <input type="text" class="form-control formStyle" name="surname" v-model="newUserSurname" placeholder="Surname">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="mb-3">
-                                    <input type="text" class="form-control formStyle" name="uname" v-model="newUserUname" placeholder="Email Working" required>
+                                    <input type="email" name="uname" v-model="newUserUname"
+                                           class="form-control formStyle" placeholder="Email">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center">
-                                <div class="mb-3">
-                                    <input type="text" class="form-control formStyle" name="password" v-model="newUserPassword" placeholder="Password Working" required>
+                                <div class="input-group mb-3">
+                                    <input v-model="newUserPassword" name="password" @keyup="handle" type="password" id="inputPassword6"
+                                           class="form-control formStyle" placeholder="Password">
+                                    <button class="btn btn-outline-secondary" type="button" v-if="visiblePassword"
+                                            v-on:click="toggle"><i
+                                            class="bi bi-eye-slash-fill"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" v-else v-on:click="toggle">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <credentialsection></credentialsection>
+                            <div v-if="wrongPassword" class="row g-3 align-items-center">
+                                <div class="mb-3">
+                                    <span id="passwordHelpInline" class="form-text" style="color: red;">Password must be 8-20 characters long</span>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <button v-on:click="registerNewUser" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -160,16 +175,6 @@
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
                             <p>Login</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section>
-                <div class="container-fluid center">
-                    <div class="row justify-content-md-center">
-                        <div class="col-md-auto">
-                            <form>
-                            </form>
                         </div>
                     </div>
                 </div>
