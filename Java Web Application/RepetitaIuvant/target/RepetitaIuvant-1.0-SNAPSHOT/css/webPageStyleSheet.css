@@ -13,6 +13,12 @@
     height: auto;
 }
 
+#signInFirstPage{
+    background-color: rgb(0, 0, 0);
+    color: white;
+    margin-bottom: 5%;
+}
+
 /* STYLE FOR PAGE 2 */
 .signInButton {
     font-size: 130%;

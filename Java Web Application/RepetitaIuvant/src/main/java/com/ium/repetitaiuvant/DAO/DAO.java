@@ -24,8 +24,7 @@ public class DAO {
         }
     }
 
-    public static boolean existsUser(String username) throws ConnectException
-    {
+    public static boolean existsUser(String username) throws ConnectException {
         Connection conn1 = null;
         String role = null;
         try {
@@ -37,6 +36,33 @@ public class DAO {
             System.out.println("Connected to the database Tutoring");
             Statement st = conn1.createStatement();
             ResultSet rs = st.executeQuery("SELECT Username FROM User WHERE User.Username = '" + username + "'");
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (conn1 != null) {
+                try {
+                    conn1.close();
+                } catch (SQLException e2) {
+                    System.out.println(e2.getMessage());
+                }
+            }
+        }
+        throw new ConnectException();
+    }
+
+    public static boolean logInFunction(String username, String password) throws ConnectException {
+        Connection conn1 = null;
+        String role = null;
+        try {
+            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+            if (conn1 == null) {
+                System.err.println("Unable to establish a connection!");
+                throw new ConnectException();
+            }
+            System.out.println("Connected to the database Tutoring");
+            Statement st = conn1.createStatement();
+            ResultSet rs = st.executeQuery("SELECT Username, Password FROM User WHERE User.Username = '" + username + "' && User.Password = '" + password + "'");
             return rs.next();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -470,15 +496,14 @@ public class DAO {
     }
 
     public static void addStudent(User student) {
-        if(student.getRole() == Role.STUDENT)
-        {
+        if (student.getRole() == Role.STUDENT) {
             Connection conn1 = null;
             try {
                 conn1 = DriverManager.getConnection(url, user, psw);
                 if (conn1 != null) {
                     System.out.println("Connected to the database test");
                 }
-                String sql = "INSERT into User(Username, Password, Role, Name, Surname) values ('" + student.getUsername() + "', '" + student.getPassword() + "', 'Student', '" + student.getName() + "' , '" +  student.getSurname() + "')";
+                String sql = "INSERT into User(Username, Password, Role, Name, Surname) values ('" + student.getUsername() + "', '" + student.getPassword() + "', 'Student', '" + student.getName() + "' , '" + student.getSurname() + "')";
                 Statement update = (Statement) conn1.createStatement();
                 update.executeUpdate(sql);
                 System.out.println("Student added correctly!");

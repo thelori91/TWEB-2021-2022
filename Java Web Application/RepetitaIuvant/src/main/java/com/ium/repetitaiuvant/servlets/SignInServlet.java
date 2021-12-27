@@ -8,8 +8,8 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.util.*;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
-public class HelloServlet extends HttpServlet {
+@WebServlet(name = "signInServlet", value = "/signIn-servlet")
+public class SignInServlet extends HttpServlet {
 
     public void init(ServletConfig conf) throws ServletException {
         super.init(conf);
@@ -29,16 +29,43 @@ public class HelloServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /* SESSIONE UTENTE */
         response.setContentType("text/html;charset=UTF-8");
-        String username = request.getParameter("username");
+        String username = request.getParameter("uname");
+        String password = request.getParameter("password");
         HttpSession s = request.getSession();
-        if (username != null)
+        String jsessionID = s.getId();
+        if (username != null && password != null) {
             s.setAttribute("username", username);
-        String url = response.encodeURL("hello-servlet");
+            s.setAttribute("password", password);
+        }
+        String url = response.encodeURL("signIn-servlet");
         PrintWriter out = response.getWriter();
-        try {
-            out.println("<p>Sei collegato come: " + s.getAttribute("userName") + "</p>");
+        System.out.println(username);
+        System.out.println(password);
+        if (!DAO.existsUser(username)) {
+            out.println(" Error User doesn't exists");
+        } else if (!DAO.logInFunction(username, password)) {
+            out.println(" Error Password is not correct! ");
+        } else {
+            out.println(" Log in Successfully! ");
+            out.println(" Nice to see you again " + username);
+        }
+
+        String azione = request.getParameter("action");
+        if (azione != null && azione.equals("logOut")) {
+            s.invalidate();
+            out.println(" Log Out Successfully");
+        } else {
+            out.print("Stato della sessione: ");
+            if (s.isNew())
+                out.println(" nuova sessione ");
+            else out.println(" vecchia sessione ");
+            out.println("ID di sessione: " + s.getId());
+            out.println(" Invalida <a href=\"" + url + "?action=invalida\"> la sessione</a></p>");
+            out.println("Ricarica <a href=\"" + url + "\"> la pagina</a></p>");
+        }
+
+        /*
             String azione = request.getParameter("action");
             out.println("<p>URL: " + url + "</p>");
             if (azione != null && azione.equals("logout")) {
@@ -59,9 +86,9 @@ public class HelloServlet extends HttpServlet {
             }
             out.println("</body>");
             out.println("</html>");
-        } finally {
-            out.close();
-        }
+        } catch (Exception ex) {
+            out.println(" Unable to contact server ");
+        }*/
     }
 
     public void destroy() {

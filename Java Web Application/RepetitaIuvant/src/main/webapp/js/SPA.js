@@ -1,4 +1,3 @@
-
 Vue.component('homebutton', {
     template:
         '<button v-on:click="transitInner" type="button" class="homeButton"><- Back to Main Menu</button>',
@@ -33,6 +32,9 @@ Vue.component('signinbutton', {
         transitInner: function () {
             this.$emit('transit-inner');
         }
+    },
+    data:{
+
     }
 });
 Vue.component('coursebutton', {
@@ -72,7 +74,8 @@ let app = new Vue({
         newUserName: "",
         newUserSurname: "",
         servletResponse: "",
-        linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet"
+        linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet",
+        linkSingInServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signIn-servlet"
     },
     methods: {
         P1TOP2: function () {
@@ -86,6 +89,10 @@ let app = new Vue({
         P2TOSignIn: function () {
             this.signInPage = true;
             this.secondPage = false;
+        },
+        P1TOPSignIn: function () {
+            this.signInPage = true;
+            this.firstPage = false;
         },
         PSignInTOP1: function () {
             this.firstPage = true;
@@ -116,19 +123,19 @@ let app = new Vue({
             //Only hand made binding!
             seePassword();
         },
-        AjaxOldMethod: function () {
-            let request = new XMLHttpRequest();
-            request.onreadystatechange = () => {
-                if (request.readyState === 4) {
-                    alert("got status: " + request.status + "\nText:" + request.responseText);
-                    this.servletResponse = request.responseText;
-                }
-            };
-            let params = "uname=" + this.newUserUname + "&password=" + this.newUserPassword + "&name=" + this.newUserName + "&surname=" + this.newUserSurname;
-            request.open("POST", "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet", true);
-            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            request.send(params);
-        },
+        /* AjaxOldMethod: function () {
+             let request = new XMLHttpRequest();
+             request.onreadystatechange = () => {
+                 if (request.readyState === 4) {
+                     alert("got status: " + request.status + "\nText:" + request.responseText);
+                     this.servletResponse = request.responseText;
+                 }
+             };
+             let params = "uname=" + this.newUserUname + "&password=" + this.newUserPassword + "&name=" + this.newUserName + "&surname=" + this.newUserSurname;
+             request.open("POST", "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet", true);
+             request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+             request.send(params);
+         },*/
         registerNewUser: function () {
             var self = this;
             $.post(this.linkSingUpServlet, {
@@ -141,6 +148,18 @@ let app = new Vue({
                 const response = data.toString().split(" ");
                 if (response[0] !== "Error")
                     self.servletResponse = response[0];
+            });
+        },
+        signInUser: function () {
+            var self = this;
+            $.get(this.linkSingInServlet, {
+                uname: this.newUserUname,
+                password: this.newUserPassword,
+            }, function (data) {
+                alert("got : " + data);
+                const response = data.toString().split(" ");
+                if (response[0] !== "Error")
+                    self.servletResponse = response[10];
             });
         }
     }

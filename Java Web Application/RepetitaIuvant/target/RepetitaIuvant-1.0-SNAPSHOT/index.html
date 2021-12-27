@@ -24,9 +24,18 @@
 <div id="page-container">
     <div id="SPA">
         <header>
-            <div v-if="firstPage" class="container-fluid">
-                <div class="row justify-content-md-center">
+            <div id="firstPage" v-if="firstPage" class="container-fluid">
+                <div class="d-flex justify-content-end">
                     <div class="col-md-auto">
+                        <signinbutton id="signInFirstPage" type="button" v-on:transit-inner="P1TOPSignIn"></signinbutton>
+                    </div>
+                    <div class="col-md-auto">
+                        <p>Log Out</p>
+                    </div>
+                </div>
+
+                <div class="container-fluid center">
+                    <div class="d-flex justify-content-center">
                         <p>Username: {{servletResponse}}</p>
                     </div>
                 </div>
@@ -147,7 +156,7 @@
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="col-auto">
-                                    <button v-on:click="registerNewUser" class="btn btn-primary">Submit</button>
+                                    <button v-on:click="registerNewUser" class="btn btn-primary">Sign Up</button>
                                 </div>
                             </div>
                         </div>
@@ -159,7 +168,7 @@
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
                             <p>Already a member?</p>
-                            <signinbutton v-on:transit-inner="P2TOSignIn"></signinbutton>
+                            <signinbutton id="signInSecondPage" v-on:transit-inner="P2TOSignIn"></signinbutton>
                         </div>
                     </div>
                 </div>
@@ -189,18 +198,6 @@
                         <div class="col-md-8">
                             <div class="row g-3 align-items-center">
                                 <div class="mb-3">
-                                    <input type="text" class="form-control formStyle" name="name" v-model="newUserName"
-                                           placeholder="Name">
-                                </div>
-                            </div>
-                            <div class="row g-3 align-items-center">
-                                <div class="mb-3">
-                                    <input type="text" class="form-control formStyle" name="surname"
-                                           v-model="newUserSurname" placeholder="Surname">
-                                </div>
-                            </div>
-                            <div class="row g-3 align-items-center">
-                                <div class="mb-3">
                                     <input type="email" name="uname" v-model="newUserUname"
                                            class="form-control formStyle" placeholder="Email">
                                 </div>
@@ -226,7 +223,7 @@
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="col-auto">
-                                    <button v-on:click="registerNewUser" class="btn btn-primary">Submit</button>
+                                    <button v-on:click="signInUser" class="btn btn-primary">Sign In</button>
                                 </div>
                             </div>
                         </div>
