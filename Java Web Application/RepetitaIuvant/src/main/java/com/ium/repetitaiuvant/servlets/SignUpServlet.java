@@ -42,6 +42,7 @@ public class SignUpServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         if (username == null || password == null || username.trim().isEmpty() || password.trim().isEmpty()) {
             out.println(" Error not valid Username or/and Password ");
+
         } else if (password.length() < 8 || password.length() > 20) {
             out.println(" Error password must have from 8 to 20 chars, your password length is " + password.length());
 

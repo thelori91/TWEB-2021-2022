@@ -33,9 +33,7 @@ Vue.component('signinbutton', {
             this.$emit('transit-inner');
         }
     },
-    data:{
-
-    }
+    data: {}
 });
 Vue.component('coursebutton', {
     template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Courses</button>',
@@ -73,7 +71,8 @@ let app = new Vue({
         newUserPassword: "",
         newUserName: "",
         newUserSurname: "",
-        servletResponse: "",
+        username: "",
+        role: "",
         linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet",
         linkSingInServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signIn-servlet"
     },
@@ -123,44 +122,57 @@ let app = new Vue({
             //Only hand made binding!
             seePassword();
         },
-        /* AjaxOldMethod: function () {
-             let request = new XMLHttpRequest();
-             request.onreadystatechange = () => {
-                 if (request.readyState === 4) {
-                     alert("got status: " + request.status + "\nText:" + request.responseText);
-                     this.servletResponse = request.responseText;
-                 }
-             };
-             let params = "uname=" + this.newUserUname + "&password=" + this.newUserPassword + "&name=" + this.newUserName + "&surname=" + this.newUserSurname;
-             request.open("POST", "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet", true);
-             request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-             request.send(params);
-         },*/
-        registerNewUser: function () {
+        checkFields: function () {
+            let nothingIsNull = this.newUserPassword != null && this.newUserName != null && this.newUserSurname != null && this.newUserUname != null;
+            if (!nothingIsNull) return false;
+
+            this.newUserPassword = this.newUserPassword.trim();
+            this.newUserUname = this.newUserUname.trim();
+            this.newUserName = this.newUserName.trim();
+            this.newUserSurname = this.newUserSurname.trim();
+
+            let nothingEmpty = this.newUserPassword.localeCompare('') !== 0 && this.newUserName.localeCompare('') !== 0 && this.newUserSurname.localeCompare('') !== 0 && this.newUserUname.localeCompare('') !== 0;
+            let passwordLength = this.newUserPassword.length < 20 && this.newUserPassword.length > 8;
+
+            console.log(nothingEmpty);
+            console.log(passwordLength);
+
+            let allRight = nothingEmpty && passwordLength;
+
+            if(!allRight) alert("Please fill everything");
+            return allRight;
+
+        }, registerNewUser: function () {
             var self = this;
-            $.post(this.linkSingUpServlet, {
-                uname: this.newUserUname,
-                password: this.newUserPassword,
-                name: this.newUserName,
-                surname: this.newUserSurname
-            }, function (data) {
-                alert("got : " + data);
-                const response = data.toString().split(" ");
-                if (response[0] !== "Error")
-                    self.servletResponse = response[0];
-            });
+            let nothingIsEmpty = this.checkFields();
+            if (nothingIsEmpty) {
+                $.post(this.linkSingUpServlet, {
+                    uname: this.newUserUname,
+                    password: this.newUserPassword,
+                    name: this.newUserName,
+                    surname: this.newUserSurname
+                }, function (data) {
+                    alert("got : " + data);
+                    const response = data.toString().split(" ");
+                    if (response[0] !== "Error")
+                        self.servletResponse = response[0];
+                });
+            }
         },
         signInUser: function () {
             var self = this;
-            $.get(this.linkSingInServlet, {
-                uname: this.newUserUname,
-                password: this.newUserPassword,
-            }, function (data) {
-                alert("got : " + data);
-                const response = data.toString().split(" ");
-                if (response[0] !== "Error")
-                    self.servletResponse = response[10];
-            });
+            let nothingIsEmpty = this.checkFields();
+            if (nothingIsEmpty) {
+                $.get(this.linkSingInServlet, {
+                    uname: this.newUserUname,
+                    password: this.newUserPassword,
+                }, function (data) {
+                    alert("got : " + data);
+                    const response = data.toString().split(" ");
+                    if (response[0] !== "Error")
+                        self.servletResponse = response[10];
+                });
+            }
         }
     }
 });
