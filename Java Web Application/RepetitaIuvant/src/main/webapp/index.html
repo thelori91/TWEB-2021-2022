@@ -23,7 +23,7 @@
 
     <title>REPETITA IUVANT</title>
 </head>
-<body onload="add3UpcomingEvents()">
+<body onload="">
 <div id="page-container">
     <div id="SPA">
         <header>
@@ -33,7 +33,7 @@
                         <signinbutton id="signInFirstPage" type="button" v-on:transit-inner="P1TOPSignIn"></signinbutton>
                     </div>
                     <div class="col-md-auto">
-                        <button type="button" v-on:click="logOut"></button>
+                        <button type="button" id="logOutFirstPage" v-on:click="logOut">Log Out</button>
                     </div>
                 </div>
                 <div class="container-fluid center">

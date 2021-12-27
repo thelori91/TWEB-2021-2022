@@ -20,37 +20,36 @@ public class SignInServlet extends HttpServlet {
         DAO.initDAO(url, user, pwd);
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         String username = request.getParameter("uname");
         String password = request.getParameter("password");
         HttpSession s = request.getSession();
-        String jsessionID = s.getId();
         if (username != null && password != null) {
             s.setAttribute("username", username);
             s.setAttribute("password", password);
-        }
-        String url = response.encodeURL("signIn-servlet");
+
         PrintWriter out = response.getWriter();
-        if (!DAO.existsUser(username)) {
+        if (!DAO.existsUser((String)s.getAttribute("username"))) {
             out.println("Error:");
             out.println("user doesn't exists");
-        } else if (!DAO.logInFunction(username, password)) {
+        } else if (!DAO.logInFunction((String)s.getAttribute("username"), (String)s.getAttribute("password"))) {
             out.println("Error:");
             out.println("password is not correct!");
         } else {
             out.println("Success:");
-            out.println(username);
-            Role role = DAO.getRole(username, password);
+            out.println((String)s.getAttribute("username"));
+            Role role = DAO.getRole((String)s.getAttribute("username"), (String)s.getAttribute("password"));
             out.println(Conversions.roleToString(role));
+        }
         }
     }
 

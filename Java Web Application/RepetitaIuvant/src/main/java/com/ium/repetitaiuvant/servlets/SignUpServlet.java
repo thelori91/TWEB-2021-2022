@@ -20,7 +20,6 @@ import java.io.PrintWriter;
 public class SignUpServlet extends HttpServlet {
 
     public void init(ServletConfig conf) throws ServletException {
-        //TODO change to make it work with servlet context
         super.init(conf);
         ServletContext ctx = conf.getServletContext();
         String url = ctx.getInitParameter("DB-URL");
