@@ -33,7 +33,6 @@
                         <p>Log Out</p>
                     </div>
                 </div>
-
                 <div class="container-fluid center">
                     <div class="d-flex justify-content-center">
                         <p>Username: {{servletResponse}}</p>
@@ -206,7 +205,7 @@
                                 <div class="input-group mb-3">
                                     <input v-model="newUserPassword" name="password" @keyup="handle" type="password"
                                            data-target=".tab-group-2 #inputPassword6"
-                                           class="form-control formStyle" placeholder="Password">
+                                           class="form-control formStyle switchable" placeholder="Password">
                                     <button class="btn btn-outline-secondary" type="button" v-if="visiblePassword"
                                             v-on:click="toggle"><i
                                             class="bi bi-eye-slash-fill"></i></button>
