@@ -124,22 +124,24 @@ let app = new Vue({
             seePassword();
         },
         checkFields: function (isLogIn) {
-            let nothingIsNull = this.newUserPassword != null && this.newUserName != null && this.newUserSurname != null && this.newUserUname != null;
+            let nothingIsNull = this.newUserName != null && this.newUserSurname != null && this.newUserUname != null && this.newUserPassword != null;
+
             if (!nothingIsNull) return false;
 
             if (!isLogIn) {
                 this.newUserName = this.newUserName.trim();
                 this.newUserSurname = this.newUserSurname.trim();
             }
-            this.newUserPassword = this.newUserPassword.trim();
             this.newUserUname = this.newUserUname.trim();
+            this.newUserPassword = this.newUserPassword.trim();
 
-            let nothingEmptySignUp = this.newUserSurname.localeCompare('') !== 0 && this.newUserName.localeCompare('') !== 0;
+
+            let nothingEmptySignUp = this.newUserName.localeCompare('') !== 0 && this.newUserSurname.localeCompare('') !== 0;
             let nothingEmpty = this.newUserUname.localeCompare('') !== 0 && this.newUserPassword.localeCompare('') !== 0;
             if (!isLogIn) {
                 nothingEmpty = nothingEmpty && nothingEmptySignUp;
             }
-            let passwordLength = this.newUserPassword.length <= 20 && this.newUserPassword.length >= 8;
+            let passwordLength = this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20;
 
             let allRight = nothingEmpty && passwordLength;
 

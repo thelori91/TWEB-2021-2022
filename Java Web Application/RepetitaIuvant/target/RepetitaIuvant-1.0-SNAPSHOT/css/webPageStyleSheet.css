@@ -13,12 +13,42 @@
     height: auto;
 }
 
-#signInFirstPage{
-    background-color: rgb(0, 0, 0);
+#signInFirstPage {
+    font-size: 130%;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
     color: white;
     margin-bottom: 5%;
 }
 
+#signInFirstPage:hover {
+    background-color: gray;
+}
+
+#logOutFirstPage {
+    font-size: 130%;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    color: white;
+    margin-bottom: 5%;
+}
+
+#logOutFirstPage:hover {
+    background-color: gray;
+}
+ul {
+    list-style: none !important;
+    padding: 0;
+    margin: 0;
+}
 /* STYLE FOR PAGE 2 */
 .signInButton {
     font-size: 130%;
@@ -50,7 +80,7 @@
 /* STYLE FOR PAGE 3 */
 /* STYLE FOR PAGE 4 */
 /* COMMON STYLE  */
-header {
+header nav {
     background-color: rgb(0, 0, 0);
     color: white;
     margin-bottom: 5%;

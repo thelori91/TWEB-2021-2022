@@ -27,49 +27,47 @@
 <div id="page-container">
     <div id="SPA">
         <header>
-            <div id="firstPage" v-if="firstPage" class="container-fluid">
-                <div class="d-flex justify-content-end">
-                    <div class="col-md-auto">
-                        <signinbutton id="signInFirstPage" type="button" v-on:transit-inner="P1TOPSignIn"></signinbutton>
-                    </div>
-                    <div class="col-md-auto">
-                        <button type="button" id="logOutFirstPage" v-on:click="logOut">Log Out</button>
-                    </div>
-                </div>
-                <div class="container-fluid center">
-                    <div class="d-flex justify-content-center">
-                        <p v-if="username.localeCompare('') !== 0">Username: {{username}} Role: {{role}}</p>
-                    </div>
-                </div>
-            </div>
-            <div v-if="secondPage">
+            <nav v-if="firstPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
+                <p class="navbar-brand col-sm-3 col-md-2 mr-0">
+                    <img src="./image/Logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                    Repetita Iuvant
+                </p>
+                <p v-if="username.localeCompare('') !== 0">Username: {{username}} Role: {{role}}</p>
+                <ul class="navbar-nav px-3 nobull">
+                    <li class="nav-item text-nowrap nobull">
+                        <button id="signInFirstPage" type="button" v-on:click="P1TOPSignIn">Sign In</button>
+                        <button id="logOutFirstPage" type="button" v-on:click="logOut">Log Out</button>
+                    </li>
+                </ul>
+            </nav>
+            <nav v-if="secondPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
                 <div class="container-fluid center">
                     <div class="d-flex justify-content-center">
                         <homebutton v-on:transit-inner="P2TOP1"></homebutton>
                     </div>
                 </div>
-            </div>
-            <div v-if="signInPage">
+            </nav>
+            <nav v-if="signInPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
                 <div class="container-fluid center">
                     <div class="d-flex justify-content-center">
                         <homebutton v-on:transit-inner="PSignInTOP1"></homebutton>
                     </div>
                 </div>
-            </div>
-            <div v-if="thirdPage">
+            </nav>
+            <nav v-if="thirdPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
                 <div class="container-fluid center">
                     <div class="d-flex justify-content-center">
                         <homebutton v-on:transit-inner="P3TOP1"></homebutton>
                     </div>
                 </div>
-            </div>
-            <div v-if="fourthPage">
+            </nav>
+            <nav v-if="fourthPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
                 <div class="container-fluid center">
                     <div class="d-flex justify-content-center">
                         <homebutton v-on:transit-inner="P4TOP1"></homebutton>
                     </div>
                 </div>
-            </div>
+            </nav>
         </header>
         <nav v-if="firstPage" class="animate__animated animate__fadeIn">
             <div class="container-fluid center">
