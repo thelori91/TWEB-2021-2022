@@ -41,33 +41,40 @@ public class SignUpServlet extends HttpServlet {
         //Getting a PrintWriter to send the response
         PrintWriter out = response.getWriter();
         if (username == null || password == null || username.trim().isEmpty() || password.trim().isEmpty()) {
-            out.println(" Error not valid Username or/and Password ");
+            out.println("Error:");
+            out.println("not valid Username or/and Password ");
 
         } else if (password.length() < 8 || password.length() > 20) {
-            out.println(" Error password must have from 8 to 20 chars, your password length is " + password.length());
+            out.println("Error:");
+            out.println("password must have from 8 to 20 chars, your password length is" + password.length());
 
         } else {
+
             HttpSession s = request.getSession();
+
             String jsessionID = s.getId(); // session ID
 
             if (username != null) {
                 s.setAttribute("username", username); //Saving username in session
+                s.setAttribute("password", password); //Saving username in session
             }
 
             //Check if Username is already in use, since it's a primary key
             try {
                 if (DAO.existsUser(username)) {
-                    out.println(" Username already used ");
+                    out.println("Error:");
+                    out.println("username already used");
                 } else {
                     //Since the new student can be added, we do it
                     User student = new User(username, password, Role.STUDENT, name, surname);
                     DAO.addStudent(student);
+                    out.println("Success:");
                     out.println(username);
-                    out.println(" Operation Completed ");
-
+                    out.println("Student");
                 }
             } catch (Exception ex) {
-                out.println(" Unable to contact server ");
+                out.println("Error:");
+                out.println("unable to contact server");
             }
         }
     }

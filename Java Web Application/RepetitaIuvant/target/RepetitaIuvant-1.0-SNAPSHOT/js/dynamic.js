@@ -35,12 +35,11 @@ function createUpcomingEvent(i) {
 }
 
 function seePassword() {
-    let x = document.getElementsByName("password");
-
+    let x = document.getElementsByClassName("form-control formStyle switchable");
     console.log(x);
     if (app.visiblePassword) {
-        x.type = "text";
+        x[0].type = "text";
     } else {
-        x.type = "password";
+        x[0].type = "password";
     }
 }
