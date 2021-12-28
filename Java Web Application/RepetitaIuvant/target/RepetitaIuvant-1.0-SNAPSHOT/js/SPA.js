@@ -62,9 +62,10 @@ let app = new Vue({
     data: {
         firstPage: true,
         secondPage: false,
-        signInPage: false,
         thirdPage: false,
         fourthPage: false,
+        signInPage: false,
+        signUpPage: false,
         wrongPassword: false,
         visiblePassword: false,
         newUserUname: "",
@@ -78,41 +79,53 @@ let app = new Vue({
         linkLogOutServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/logOut-servlet"
     },
     methods: {
-        P1TOP2: function () {
-            this.secondPage = true;
-            this.firstPage = false;
-        },
-        P2TOP1: function () {
+        TOP1: function () {
             this.firstPage = true;
             this.secondPage = false;
-        },
-        P2TOSignIn: function () {
-            this.signInPage = true;
-            this.secondPage = false;
-        },
-        P1TOPSignIn: function () {
-            this.signInPage = true;
-            this.firstPage = false;
-        },
-        PSignInTOP1: function () {
-            this.firstPage = true;
-            this.signInPage = false;
-        },
-        P1TOP3: function () {
-            this.thirdPage = true;
-            this.firstPage = false;
-        },
-        P3TOP1: function () {
-            this.firstPage = true;
             this.thirdPage = false;
-        },
-        P1TOP4: function () {
-            this.fourthPage = true;
-            this.firstPage = false;
-        },
-        P4TOP1: function () {
-            this.firstPage = true;
             this.fourthPage = false;
+            this.signInPage = false;
+            this.signUpPage = false;
+        },
+        TOP2: function () {
+            this.firstPage = false;
+            this.secondPage = true;
+            this.thirdPage = false;
+            this.fourthPage = false;
+            this.signInPage = false;
+            this.signUpPage = false;
+        },
+        TOP3: function () {
+            this.firstPage = false;
+            this.secondPage = false;
+            this.thirdPage = true;
+            this.fourthPage = false;
+            this.signInPage = false;
+            this.signUpPage = false;
+        },
+        TOP4: function () {
+            this.firstPage = false;
+            this.secondPage = false;
+            this.thirdPage = false;
+            this.fourthPage = true;
+            this.signInPage = false;
+            this.signUpPage = false;
+        },
+        TOPSignIn: function () {
+            this.firstPage = false;
+            this.secondPage = false;
+            this.thirdPage = false;
+            this.fourthPage = false;
+            this.signInPage = true;
+            this.signUpPage = false;
+        },
+        TOPSignUp: function () {
+            this.firstPage = false;
+            this.secondPage = false;
+            this.thirdPage = false;
+            this.fourthPage = false;
+            this.signInPage = false;
+            this.signUpPage = true;
         },
         handle: function () {
             this.wrongPassword = !(this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20);

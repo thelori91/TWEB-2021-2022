@@ -224,7 +224,7 @@ public class DAO {
         return teachersCourses;
     }
 
-    public static ArrayList<Lesson> getLessons() {
+    public static ArrayList<Lesson> getLessons(String username) {
         Connection conn1 = null;
         ArrayList<Lesson> lessons = new ArrayList<>();
         try {
@@ -234,7 +234,12 @@ public class DAO {
             }
 
             Statement st = conn1.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Lesson join Teacher T on T.ID = Lesson.Teacher join Course C on C.Name = Lesson.Course join User U on U.Username = Lesson.User");
+            String sql = "SELECT * FROM Lesson join Teacher T on T.ID = Lesson.Teacher join Course C on C.Name = Lesson.Course join User U on U.Username = Lesson.User";
+            if(username != null)
+            {
+                sql += "WHERE U.Username = '" + username + "'";
+            }
+            ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
 
                 Teacher teacher = new Teacher(rs.getLong("T.ID"), rs.getString("T.Name"), rs.getString("T.Surname"));

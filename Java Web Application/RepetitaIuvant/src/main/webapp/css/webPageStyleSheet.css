@@ -12,6 +12,21 @@
     width: 50%;
     height: auto;
 }
+#signUpFirstPage {
+    background-color: rgb(0, 96, 252);
+    color: white;
+    font-size: 130%;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    margin-bottom: 5%;
+}
+
+#signInFirstPage:hover {
+    background-color: gray;
+}
 
 #signInFirstPage {
     font-size: 130%;
@@ -54,16 +69,17 @@ ol li {
     #navbarLogo {
         display: none;
     }
-    #usernameText{
-        justify-content: right;
-    }
-    #navbarButton{
-        justify-content: center;
+
+    #navbarButton {
+        margin-left: auto;
     }
 
 }
 
-/* STYLE FOR PAGE 2 */
+/* STYLE FOR PAGE 3 */
+/* STYLE FOR PAGE 4 */
+
+/* STYLE FOR PAGE SIGN UP */
 .signInButton {
     font-size: 130%;
     color: black;
@@ -86,13 +102,6 @@ ol li {
     border-width: 0.3em;
 }
 
-#logoPag2Size {
-    width: 20%;
-    height: auto;
-}
-
-/* STYLE FOR PAGE 3 */
-/* STYLE FOR PAGE 4 */
 /* COMMON STYLE  */
 header nav {
     background-color: rgb(0, 0, 0);

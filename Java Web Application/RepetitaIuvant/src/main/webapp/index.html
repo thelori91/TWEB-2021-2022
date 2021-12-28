@@ -18,7 +18,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <!--TODO: aggiustare login/logout in alto-->
     <!--TODO: aggiustare password-->
 
     <title>REPETITA IUVANT</title>
@@ -32,37 +31,17 @@
                     <img  src="./image/Logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
                     Repetita Iuvant
                 </p>
-                <p id="usernameText" v-if="username.localeCompare('') !== 0">Username: {{username}} Role: {{role}}</p>
+                <p id="usernameText" v-if="username.localeCompare('') !== 0" >Username: {{username}} Role: {{role}}</p>
                 <div id="navbarButton" class="d-flex flex-row-reverse">
-                    <button id="logOutFirstPage" type="button" v-on:click="logOut">Log Out</button>
-                    <button id="signInFirstPage" type="button" v-on:click="P1TOPSignIn">Sign In</button>
+                    <button v-if="username.localeCompare('') !== 0" id="logOutFirstPage" type="button" v-on:click="logOut">Log Out</button>
+                    <button v-if="username.localeCompare('') === 0" id="signInFirstPage" type="button" v-on:click="TOPSignIn">Sign In</button>
+                    <button v-if="username.localeCompare('') === 0" id="signUpFirstPage" type="button" v-on:click="TOPSignUp">Sign Up</button>
                 </div>
             </nav>
-            <nav v-if="secondPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
+            <nav v-else class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
                 <div class="container-fluid center">
                     <div class="d-flex justify-content-center">
-                        <homebutton v-on:transit-inner="P2TOP1"></homebutton>
-                    </div>
-                </div>
-            </nav>
-            <nav v-if="signInPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
-                <div class="container-fluid center">
-                    <div class="d-flex justify-content-center">
-                        <homebutton v-on:transit-inner="PSignInTOP1"></homebutton>
-                    </div>
-                </div>
-            </nav>
-            <nav v-if="thirdPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
-                <div class="container-fluid center">
-                    <div class="d-flex justify-content-center">
-                        <homebutton v-on:transit-inner="P3TOP1"></homebutton>
-                    </div>
-                </div>
-            </nav>
-            <nav v-if="fourthPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
-                <div class="container-fluid center">
-                    <div class="d-flex justify-content-center">
-                        <homebutton v-on:transit-inner="P4TOP1"></homebutton>
+                        <homebutton v-on:transit-inner="TOP1"></homebutton>
                     </div>
                 </div>
             </nav>
@@ -84,16 +63,16 @@
             </div>
             <div class="container-fluid">
                 <div class="d-grid gap-2 col-4 mx-auto">
-                    <reservationbutton v-on:transit-inner="P1TOP2"></reservationbutton>
-                    <teacherbutton v-on:transit-inner="P1TOP3"></teacherbutton>
-                    <coursebutton v-on:transit-inner="P1TOP4"></coursebutton>
+                    <reservationbutton v-on:transit-inner="TOP2"></reservationbutton>
+                    <teacherbutton v-on:transit-inner="TOP3"></teacherbutton>
+                    <coursebutton v-on:transit-inner="TOP4"></coursebutton>
                 </div>
             </div>
             <div class="container-fluid" id="upcomingEvents">
                 <h2>Your weekly upcoming events:</h2>
             </div>
         </nav>
-        <article v-if="secondPage">
+        <article v-if="signUpPage">
             <section>
                 <logosection></logosection>
             </section>
@@ -166,7 +145,7 @@
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
                             <p>Already a member?</p>
-                            <signinbutton id="signInSecondPage" v-on:transit-inner="P2TOSignIn"></signinbutton>
+                            <signinbutton v-on:transit-inner="TOPSignIn"></signinbutton>
                         </div>
                     </div>
                 </div>

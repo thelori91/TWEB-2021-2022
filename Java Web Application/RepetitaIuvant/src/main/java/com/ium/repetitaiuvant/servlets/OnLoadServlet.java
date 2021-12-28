@@ -1,10 +1,12 @@
 package com.ium.repetitaiuvant.servlets;
 
 import com.ium.repetitaiuvant.DAO.*;
+import org.json.simple.JSONObject;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import java.util.ArrayList;
 
 
 @WebServlet(name = "OnLoadServlet", value = "/onLoadServlet-servlet")
@@ -33,7 +35,14 @@ public class OnLoadServlet extends HttpServlet {
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");
 
-        //TODO creare JSON con tutte info sulle lezioni e login
+        //Check if user password are correct
+        if(DAO.logInFunction(username, password))
+        {
+            JSONObject out = new JSONObject();
+            //Get all lessons from db for the given user
+            ArrayList<Lesson> lessons = DAO.getLessons();
+        }
+
 
     }
 
