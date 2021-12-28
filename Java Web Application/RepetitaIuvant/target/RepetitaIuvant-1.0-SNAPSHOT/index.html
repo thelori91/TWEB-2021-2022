@@ -27,18 +27,16 @@
 <div id="page-container">
     <div id="SPA">
         <header>
-            <nav v-if="firstPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
-                <p class="navbar-brand col-sm-3 col-md-2 mr-0">
-                    <img src="./image/Logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            <nav v-if="firstPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0 justify-content-between">
+                <p id="navbarLogo" class="navbar-brand col-sm-3 col-md-2 mr-0">
+                    <img  src="./image/Logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
                     Repetita Iuvant
                 </p>
-                <p v-if="username.localeCompare('') !== 0">Username: {{username}} Role: {{role}}</p>
-                <ul class="navbar-nav px-3 nobull">
-                    <li class="nav-item text-nowrap nobull">
-                        <button id="signInFirstPage" type="button" v-on:click="P1TOPSignIn">Sign In</button>
-                        <button id="logOutFirstPage" type="button" v-on:click="logOut">Log Out</button>
-                    </li>
-                </ul>
+                <p id="usernameText" v-if="username.localeCompare('') !== 0">Username: {{username}} Role: {{role}}</p>
+                <div id="navbarButton" class="d-flex flex-row-reverse">
+                    <button id="logOutFirstPage" type="button" v-on:click="logOut">Log Out</button>
+                    <button id="signInFirstPage" type="button" v-on:click="P1TOPSignIn">Sign In</button>
+                </div>
             </nav>
             <nav v-if="secondPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
                 <div class="container-fluid center">

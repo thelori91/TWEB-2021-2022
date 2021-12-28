@@ -44,11 +44,25 @@
 #logOutFirstPage:hover {
     background-color: gray;
 }
-ul {
-    list-style: none !important;
-    padding: 0;
-    margin: 0;
+
+ol li {
+    list-style-type: none;
+
 }
+
+@media screen and (max-width: 820px) {
+    #navbarLogo {
+        display: none;
+    }
+    #usernameText{
+        justify-content: right;
+    }
+    #navbarButton{
+        justify-content: center;
+    }
+
+}
+
 /* STYLE FOR PAGE 2 */
 .signInButton {
     font-size: 130%;
