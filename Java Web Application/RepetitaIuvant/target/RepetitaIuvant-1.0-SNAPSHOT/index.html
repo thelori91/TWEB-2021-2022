@@ -22,7 +22,7 @@
 
     <title>REPETITA IUVANT</title>
 </head>
-<body onload="">
+<body >
 <div id="page-container">
     <div id="SPA">
         <header>
@@ -70,6 +70,9 @@
             </div>
             <div class="container-fluid" id="upcomingEvents">
                 <h2>Your weekly upcoming events:</h2>
+                <ul>
+                    <li v-for="lesson in upcomingEventsCollection">Teacher: {{lesson.teacherName}} {{lesson.teacherSurname}} Course: {{lesson.course}} on {{lesson.day}} at {{lesson.time}}</li>
+                </ul>
             </div>
         </nav>
         <article v-if="signUpPage">

@@ -168,7 +168,7 @@ public class DAO {
         try {
             conn1 = DriverManager.getConnection(url, user, psw);
             if (conn1 != null) {
-                System.out.println("Connected to the database test");
+                System.out.println("Connected to the database Tutoring");
             }
 
             Statement st = conn1.createStatement();
@@ -199,7 +199,7 @@ public class DAO {
         try {
             conn1 = DriverManager.getConnection(url, user, psw);
             if (conn1 != null) {
-                System.out.println("Connected to the database test");
+                System.out.println("Connected to the database Tutoring");
             }
 
             Statement st = conn1.createStatement();
@@ -230,14 +230,14 @@ public class DAO {
         try {
             conn1 = DriverManager.getConnection(url, user, psw);
             if (conn1 != null) {
-                System.out.println("Connected to the database test");
+                System.out.println("Connected to the database Tutoring");
             }
 
             Statement st = conn1.createStatement();
             String sql = "SELECT * FROM Lesson join Teacher T on T.ID = Lesson.Teacher join Course C on C.Name = Lesson.Course join User U on U.Username = Lesson.User";
             if(username != null)
             {
-                sql += "WHERE U.Username = '" + username + "'";
+                sql += " WHERE U.Username = '" + username + "';";
             }
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {

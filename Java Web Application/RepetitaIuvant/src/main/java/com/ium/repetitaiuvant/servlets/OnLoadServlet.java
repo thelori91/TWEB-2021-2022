@@ -1,15 +1,18 @@
 package com.ium.repetitaiuvant.servlets;
 
 import com.ium.repetitaiuvant.DAO.*;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 
-@WebServlet(name = "OnLoadServlet", value = "/onLoadServlet-servlet")
+@WebServlet(name = "OnLoadServlet", value = "/onLoad-servlet")
 public class OnLoadServlet extends HttpServlet {
 
     public void init(ServletConfig conf) throws ServletException {
@@ -35,12 +38,33 @@ public class OnLoadServlet extends HttpServlet {
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");
 
-        //Check if user password are correct
-        if(DAO.logInFunction(username, password))
-        {
-            JSONObject out = new JSONObject();
-            //Get all lessons from db for the given user
-            ArrayList<Lesson> lessons = DAO.getLessons();
+        try {
+            PrintWriter out = response.getWriter();
+            try {
+                //Check if user password are correct
+                if (DAO.logInFunction(username, password)) {
+                    JSONArray outArray = new JSONArray();
+                    //Get all lessons from db for the given user
+                    ArrayList<Lesson> lessons = DAO.getLessons(username);
+                    for (Lesson lesson : lessons) {
+                        JSONObject lessonJSON = new JSONObject();
+                        lessonJSON.put("username", lesson.getUser().getUsername());
+                        lessonJSON.put("role", Conversions.roleToString(lesson.getUser().getRole()));
+                        lessonJSON.put("course", lesson.getCourse().getName());
+                        lessonJSON.put("teacherName", lesson.getTeacher().getName());
+                        lessonJSON.put("teacherSurname" , lesson.getTeacher().getSurname());
+                        lessonJSON.put("day", Conversions.dayToString(lesson.getDay()));
+                        lessonJSON.put("time", Conversions.timeToString(lesson.getTime()));
+                        outArray.add(lessonJSON);
+                    }
+                    out.print(outArray.toJSONString());
+                }
+            } catch (Exception ex) {
+                out.println("Error:");
+                out.println("Unable to perform the operation");
+            }
+        } catch (IOException ioException) {
+            System.out.println("Error: can't use PrintWriter");
         }
 
 

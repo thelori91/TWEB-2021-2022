@@ -9,11 +9,11 @@ public class TeacherCourse {
         this.course = course;
     }
 
-    public Teacher getCorsi() {
+    public Teacher getTeachers() {
         return teacher;
     }
 
-    public Course getDocenti() {
+    public Course getCourses() {
         return course;
     }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Dic 17, 2021 alle 11:51
+-- Creato il: Dic 28, 2021 alle 17:15
 -- Versione del server: 10.4.21-MariaDB
 -- Versione PHP: 8.0.11
 
@@ -31,6 +31,17 @@ CREATE TABLE `Course` (
   `Name` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dump dei dati per la tabella `Course`
+--
+
+INSERT INTO `Course` (`Name`) VALUES
+('Comunicazione'),
+('Elettronica'),
+('Fisica'),
+('Matematica'),
+('Scienze');
+
 -- --------------------------------------------------------
 
 --
@@ -46,6 +57,14 @@ CREATE TABLE `Lesson` (
   `Time` enum('08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dump dei dati per la tabella `Lesson`
+--
+
+INSERT INTO `Lesson` (`Teacher`, `Course`, `User`, `Day`, `ID`, `Time`) VALUES
+(15, 'Matematica', 'Polletto!', 'Monday', 3, '09:00'),
+(17, 'Matematica', 'Polletto!', 'Tuesday', 4, '10:00');
+
 -- --------------------------------------------------------
 
 --
@@ -58,6 +77,17 @@ CREATE TABLE `Teacher` (
   `Surname` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dump dei dati per la tabella `Teacher`
+--
+
+INSERT INTO `Teacher` (`Name`, `ID`, `Surname`) VALUES
+('Alberto', 13, 'Angela'),
+('Piero', 14, 'Angela'),
+('Nadir', 15, 'Murru'),
+('Andrea', 16, 'Grosso'),
+('Roberta', 17, 'Sirovich');
+
 -- --------------------------------------------------------
 
 --
@@ -68,6 +98,17 @@ CREATE TABLE `TeacherCourse` (
   `Teacher` bigint(20) UNSIGNED NOT NULL,
   `Course` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dump dei dati per la tabella `TeacherCourse`
+--
+
+INSERT INTO `TeacherCourse` (`Teacher`, `Course`) VALUES
+(13, 'Fisica'),
+(13, 'Scienze'),
+(14, 'Scienze'),
+(15, 'Matematica'),
+(17, 'Matematica');
 
 -- --------------------------------------------------------
 
@@ -82,6 +123,14 @@ CREATE TABLE `User` (
   `Name` varchar(15) NOT NULL,
   `Surname` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dump dei dati per la tabella `User`
+--
+
+INSERT INTO `User` (`Username`, `Password`, `Role`, `Name`, `Surname`) VALUES
+('Polletto!', 'ginogino', 'Student', 'Andrea', 'Cacioli'),
+('TheLori91', 'giobin69', 'Admin', 'Lorenzo', 'Cassinelli');
 
 --
 -- Indici per le tabelle scaricate
@@ -129,13 +178,13 @@ ALTER TABLE `User`
 -- AUTO_INCREMENT per la tabella `Lesson`
 --
 ALTER TABLE `Lesson`
-  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella `Teacher`
 --
 ALTER TABLE `Teacher`
-  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Limiti per le tabelle scaricate

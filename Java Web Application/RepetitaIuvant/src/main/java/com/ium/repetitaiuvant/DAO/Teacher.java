@@ -17,11 +17,11 @@ public class Teacher {
         return ID;
     }
 
-    public String getNome() {
+    public String getName() {
         return name;
     }
 
-    public String getCognome() {
+    public String getSurname() {
         return surname;
     }
 

@@ -48,7 +48,7 @@ Vue.component('logosection', {
         '                <div class="row justify-content-md-center">\n' +
         '                    <div class="col-md-auto">\n' +
         '                        <figure>\n' +
-        '                            <img id="logoPag2Size" src="./image/Logo.png" alt="Logo REPETITA IUVANT">\n' +
+        '                            <img id="logoSize" src="./image/Logo.png" alt="Logo REPETITA IUVANT">\n' +
         '                        </figure>\n' +
         '                        <h1 class="titleStyle">REPETITA IUVANT</h1>\n' +
         '                    </div>\n' +
@@ -56,6 +56,14 @@ Vue.component('logosection', {
         '            </div>',
 });
 
+function seePassword() {
+    let x = document.getElementsByClassName("form-control formStyle switchable");
+    if (app.visiblePassword) {
+        x[0].type = "text";
+    } else {
+        x[0].type = "password";
+    }
+}
 
 let app = new Vue({
     el: '#SPA',
@@ -74,9 +82,11 @@ let app = new Vue({
         newUserSurname: "",
         username: "",
         role: "",
+        upcomingEventsCollection: [],
         linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet",
         linkSingInServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signIn-servlet",
-        linkLogOutServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/logOut-servlet"
+        linkLogOutServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/logOut-servlet",
+        linkOnLoadServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/onLoad-servlet"
     },
     methods: {
         TOP1: function () {
@@ -176,7 +186,8 @@ let app = new Vue({
                     if (response[0].localeCompare("Success:") === 0) {
                         self.username = response[1];
                         self.role = response[2];
-                        self.P2TOP1();
+                        self.onPageLoad();
+                        self.TOP1();
                     } else
                         alert(data);
                 });
@@ -194,7 +205,8 @@ let app = new Vue({
                     if (response[0].localeCompare("Success:") === 0) {
                         self.username = response[1];
                         self.role = response[2];
-                        self.PSignInTOP1();
+                        self.onPageLoad();
+                        self.TOP1();
                     } else
                         alert(data);
                 });
@@ -209,6 +221,20 @@ let app = new Vue({
                     self.newUserPassword = "";
                 });
             }
+        },
+        onPageLoad: function () {
+            var self = this;
+            $.get(this.linkOnLoadServlet, function (data) {
+                let obj = JSON.parse(data);
+                self.upcomingEventsCollection = obj;
+                self.username = obj.username.toString();
+                self.role = obj.role;
+                console.log('Username = ' + self.username);
+            });
         }
+    },
+    beforeMount() {
+        console.log('Request done ');
+        this.onPageLoad();
     }
 });

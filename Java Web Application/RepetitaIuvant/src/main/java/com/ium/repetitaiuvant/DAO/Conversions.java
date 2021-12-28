@@ -24,6 +24,18 @@ public class Conversions {
         else return null;
     }
 
+    public static String dayToString(Day day) {
+        if (day == Day.MONDAY) return "Monday";
+        if (day == Day.TUESDAY) return "Tuesday";
+        if (day == Day.WEDNESDAY) return "Wednesday";
+        if (day == Day.THURSDAY) return "Thursday";
+        if (day == Day.FRIDAY) return "Friday";
+        if (day == Day.SATURDAY) return "Saturday";
+        if (day == Day.SUNDAY) return "Sunday";
+        else return null;
+    }
+
+
     public static Time stringToTime(String string) {
         if (string.equals("08:00")) return Time.EIGHT;
         if (string.equals("09:00")) return Time.NINE;
@@ -37,6 +49,22 @@ public class Conversions {
         if (string.equals("17:00")) return Time.SEVENTEEN;
         if (string.equals("18:00")) return Time.EIGHTEEN;
         if (string.equals("19:00")) return Time.NINETEEN;
+        else return null;
+    }
+
+    public static String timeToString(Time time) {
+        if (time == Time.EIGHT) return "08:00";
+        if (time == Time.NINE) return "09:00";
+        if (time == Time.TEN) return "10:00";
+        if (time == Time.ELEVEN) return "11:00";
+        if (time == Time.TWELVE) return "12:00";
+        if (time == Time.THIRTEEN) return "13:00";
+        if (time == Time.FOURTEEN) return "14:00";
+        if (time == Time.FIFTEEN) return "15:00";
+        if (time == Time.SIXTEEN) return "16:00";
+        if (time == Time.SEVENTEEN) return "17:00";
+        if (time == Time.EIGHTEEN) return "18:00";
+        if (time == Time.NINETEEN) return "19:00";
         else return null;
     }
 }
