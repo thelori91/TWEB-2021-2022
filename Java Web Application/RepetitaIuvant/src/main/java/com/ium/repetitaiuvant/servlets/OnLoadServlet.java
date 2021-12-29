@@ -34,6 +34,7 @@ public class OnLoadServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        response.setContentType("text/plain;charset=UTF-8");
         if (session == null) return;
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");
@@ -55,6 +56,7 @@ public class OnLoadServlet extends HttpServlet {
                         lessonJSON.put("teacherSurname" , lesson.getTeacher().getSurname());
                         lessonJSON.put("day", Conversions.dayToString(lesson.getDay()));
                         lessonJSON.put("time", Conversions.timeToString(lesson.getTime()));
+                        lessonJSON.put("state", Conversions.stateToString(lesson.getState()));
                         outArray.add(lessonJSON);
                     }
                     out.print(outArray.toJSONString());

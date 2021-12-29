@@ -247,7 +247,8 @@ public class DAO {
                 User user1 = new User(rs.getString("U.username"), rs.getString("U.Password"), Conversions.stringToRole(rs.getString("U.Role")), rs.getString("U.Name"), rs.getString("U.Surname"));
                 Day day = Conversions.stringToDay(rs.getString("Lesson.Day"));
                 Time time = Conversions.stringToTime(rs.getString("Lesson.Time"));
-                Lesson lesson = new Lesson(rs.getLong("Lesson.ID"), teacher, course, user1, day, time);
+                State state = Conversions.stringToState(rs.getString("Lesson.state"));
+                Lesson lesson = new Lesson(rs.getLong("Lesson.ID"), teacher, course, user1, day, time, state);
                 lessons.add(lesson);
             }
         } catch (SQLException e) {

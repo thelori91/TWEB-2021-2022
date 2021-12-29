@@ -67,4 +67,19 @@ public class Conversions {
         if (time == Time.NINETEEN) return "19:00";
         else return null;
     }
+
+    public static State stringToState(String string){
+        if(string.equals("Active")) return State.ACTIVE;
+        if(string.equals("Done")) return State.DONE;
+        if(string.equals("Cancelled")) return State.CANCELLED;
+        else return null;
+    }
+
+    public static String stateToString(State state)
+    {
+        if (state == State.ACTIVE) return "Active";
+        if (state == State.DONE) return "Done";
+        if (state == State.CANCELLED) return "Cancelled";
+        else return null;
+    }
 }

@@ -76,6 +76,8 @@ let app = new Vue({
         signUpPage: false,
         wrongPassword: false,
         visiblePassword: false,
+        showMore: false,
+        showMoreText: "Show Cancelled/Done lessons",
         newUserUname: "",
         newUserPassword: "",
         newUserName: "",
@@ -219,22 +221,33 @@ let app = new Vue({
                     self.username = "";
                     self.role = "";
                     self.newUserPassword = "";
+                    self.upcomingEventsCollection = [];
                 });
             }
         },
         onPageLoad: function () {
             var self = this;
             $.get(this.linkOnLoadServlet, function (data) {
-                let obj = JSON.parse(data);
-                self.upcomingEventsCollection = obj;
-                self.username = obj.username.toString();
-                self.role = obj.role;
-                console.log('Username = ' + self.username);
+                try {
+                    let obj = JSON.parse(data);
+                    self.upcomingEventsCollection = obj;
+                    self.username = obj[0].username;
+                    self.role = obj[0].role;
+                } catch (e) {
+                    console.log(e);
+                }
             });
+        },
+        showMoreLess: function() {
+            this.showMore = !this.showMore;
+            if(this.showMore){
+                this.showMoreText = "Hide Cancelled/Done lessons"
+            }else{
+                this.showMoreText = "Show Cancelled/Done lessons"
+            }
         }
     },
     beforeMount() {
-        console.log('Request done ');
         this.onPageLoad();
     }
 });

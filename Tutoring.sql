@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Dic 28, 2021 alle 17:15
+-- Creato il: Dic 29, 2021 alle 17:00
 -- Versione del server: 10.4.21-MariaDB
 -- Versione PHP: 8.0.11
 
@@ -54,16 +54,19 @@ CREATE TABLE `Lesson` (
   `User` varchar(30) NOT NULL,
   `Day` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
   `ID` bigint(20) UNSIGNED NOT NULL,
-  `Time` enum('08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00') NOT NULL
+  `Time` enum('08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00') NOT NULL,
+  `State` enum('Active','Done','Cancelled') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `Lesson`
 --
 
-INSERT INTO `Lesson` (`Teacher`, `Course`, `User`, `Day`, `ID`, `Time`) VALUES
-(15, 'Matematica', 'Polletto!', 'Monday', 3, '09:00'),
-(17, 'Matematica', 'Polletto!', 'Tuesday', 4, '10:00');
+INSERT INTO `Lesson` (`Teacher`, `Course`, `User`, `Day`, `ID`, `Time`, `State`) VALUES
+(15, 'Matematica', 'Polletto!', 'Monday', 3, '09:00', 'Active'),
+(17, 'Matematica', 'Polletto!', 'Tuesday', 4, '10:00', 'Active'),
+(14, 'Fisica', 'Polletto!', 'Thursday', 5, '14:00', 'Cancelled'),
+(14, 'Fisica', 'Polletto!', 'Monday', 6, '12:00', 'Done');
 
 -- --------------------------------------------------------
 
@@ -178,7 +181,7 @@ ALTER TABLE `User`
 -- AUTO_INCREMENT per la tabella `Lesson`
 --
 ALTER TABLE `Lesson`
-  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT per la tabella `Teacher`

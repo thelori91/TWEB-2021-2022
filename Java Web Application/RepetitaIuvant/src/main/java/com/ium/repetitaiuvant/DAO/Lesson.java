@@ -10,15 +10,18 @@ public class Lesson {
     //Other fields
     private Day day;
     private Time time;
+    private State state;
 
 
-    public Lesson(long id, Teacher teacher, Course course, User user, Day day, Time time) {
+
+    public Lesson(long id, Teacher teacher, Course course, User user, Day day, Time time, State state) {
         this.id = id;
         this.teacher = teacher;
         this.course = course;
         this.user = user;
         this.day = day;
         this.time = time;
+        this.state = state;
     }
 
     //Setters
@@ -46,6 +49,10 @@ public class Lesson {
         this.time = time;
     }
 
+    public void setState(State state) {
+        this.state = state;
+    }
+
     //Getters
     public long getId() {
         return id;
@@ -69,5 +76,9 @@ public class Lesson {
 
     public Time getTime() {
         return time;
+    }
+
+    public State getState() {
+        return state;
     }
 }
