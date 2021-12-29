@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="stylesheet" href="https://fxaeberhard.github.io/handdrawn.css/handdrawn.css"/>
     <link rel="stylesheet" href="./css/webPageStyleSheet.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merienda">
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -26,20 +26,20 @@
 <div id="page-container">
     <div id="SPA">
         <header>
-            <nav v-if="firstPage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0 justify-content-between">
+            <nav v-if="homePage" class="navbar navbar-dark sticky-top flex-md-nowrap p-0 justify-content-between">
                 <p id="navbarLogo" class="navbar-brand col-sm-3 col-md-2 mr-0">
                     <img src="./image/Logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
                     Repetita Iuvant
                 </p>
                 <p id="usernameText" v-if="username.localeCompare('') !== 0">Username: {{username}} Role: {{role}}</p>
                 <div id="navbarButton" class="d-flex flex-row-reverse">
-                    <button v-if="username.localeCompare('') !== 0" id="logOutFirstPage" type="button"
+                    <button v-if="username.localeCompare('') !== 0" id="signInLogOutShowMSButton" type="button"
                             v-on:click="logOut">Log Out
                     </button>
-                    <button v-if="username.localeCompare('') === 0" id="signInFirstPage" type="button"
+                    <button v-if="username.localeCompare('') === 0" id="signInLogOutShowMSButton" type="button"
                             v-on:click="TOPSignIn">Sign In
                     </button>
-                    <button v-if="username.localeCompare('') === 0" id="signUpFirstPage" type="button"
+                    <button v-if="username.localeCompare('') === 0" id="signUpHomePage" type="button"
                             v-on:click="TOPSignUp">Sign Up
                     </button>
                 </div>
@@ -47,12 +47,12 @@
             <nav v-else class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
                 <div class="container-fluid center">
                     <div class="d-flex justify-content-center">
-                        <homebutton v-on:transit-inner="TOP1"></homebutton>
+                        <homebutton v-on:transit-inner="TOPHome"></homebutton>
                     </div>
                 </div>
             </nav>
         </header>
-        <nav v-if="firstPage" class="animate__animated animate__fadeIn">
+        <article v-if="homePage" class="animate__animated animate__fadeIn">
             <div class="container-fluid center">
                 <div class="row justify-content-md-center">
                     <div class="col-md-auto">
@@ -69,37 +69,79 @@
             </div>
             <div class="container-fluid">
                 <div class="d-grid gap-2 col-4 mx-auto">
-                    <reservationbutton v-on:transit-inner="TOP2"></reservationbutton>
+                    <!--TODO FARE UNICO COMPONENT-->
+                    <button v-on:click="TOPnewReservation" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">New Reservation</button>
+                    <reservationbutton v-on:transit-inner="TOPHandleReservation"></reservationbutton>
                     <teacherbutton v-on:transit-inner="TOP3"></teacherbutton>
                     <coursebutton v-on:transit-inner="TOP4"></coursebutton>
                 </div>
             </div>
             <div v-if="username.localeCompare('') !== 0" class="container-fluid" id="upcomingEvents">
                 <h2>Your weekly upcoming events:</h2>
-                <ol class="punting">
-                    <!--TODO aggiungere puntina e aggiustare noticeMe-->
-                    <li v-for="lesson in upcomingEventsCollection">
-                        <div v-if="lesson.state.localeCompare('Active') === 0">
-                            <b class="noticeMe">{{lesson.course}}</b> on
-                            <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
-                            <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
-                        </div>
+                <ul>
+                    <li v-for="lesson in upcomingEventsCollection" v-if="lesson.state.localeCompare('Active') === 0">
+                        <span>✍️</span>
+                        <b class="noticeMe">{{lesson.course}}</b> on
+                        <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
+                        <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
                     </li>
-                </ol>
-                <button type="button" v-on:click="showMoreLess">{{showMoreText}}</button>
-                <ol v-if="showMore">
-                    <li v-for="lesson in upcomingEventsCollection">
-                        <div v-if="lesson.state.localeCompare('Active') !== 0">
-                            <b class="noticeMe">{{lesson.course}}</b> on
-                            <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
-                            <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
-                            <span v-if="lesson.state.localeCompare('Done') === 0">✔️</span>
-                            <span v-if="lesson.state.localeCompare('Cancelled') === 0">🗙</span>
-                        </div>
+                </ul>
+                <button id="signInLogOutShowMSButton" type="button" v-on:click="showMoreLess">{{showMoreText}}</button>
+                <ul v-if="showMore">
+                    <li v-for="lesson in upcomingEventsCollection" v-if="lesson.state.localeCompare('Active') !== 0">
+                        <span>✍️</span>
+                        <b class="noticeMe">{{lesson.course}}</b> on
+                        <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
+                        <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
+                        <span v-if="lesson.state.localeCompare('Done') === 0">✔️</span>
+                        <span v-if="lesson.state.localeCompare('Cancelled') === 0">🗙</span>
                     </li>
-                </ol>
+                </ul>
             </div>
-        </nav>
+        </article>
+        <article v-if="handleReservationPage">
+            <section>
+            </section>
+        </article>
+        <article v-if="newReservationPage">
+            <section>
+                <div v-for="reservation in newReservations">
+                    <h3>Reservation #{{newReservations.indexOf(reservation) + 1}}</h3>
+                    <div>
+                        <div>
+                            <label> Subject: {{reservation.subject}}
+                                <select v-model="reservation.subject">
+                                    <option>1</option>
+                                    <option>2</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div v-if="reservation.subject.localeCompare('') !== 0">
+                            <label> Teacher: {{reservation.teacher}}
+                                <select v-model="reservation.teacher">
+                                    <option>1</option>
+                                    <option>2</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div>
+                            <label v-if="reservation.teacher.localeCompare('') !== 0"> Day: {{reservation.day}}
+                                <select v-model="reservation.day">
+                                    <option>1</option>
+                                    <option>2</option>
+                                </select>
+                            </label>
+                            <label  v-if="reservation.day.localeCompare('') !== 0"> Time: {{reservation.time}}
+                                <select v-model="reservation.time">
+                                    <option>1</option>
+                                    <option>2</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
         <article v-if="signUpPage">
             <section>
                 <logosection></logosection>
@@ -136,8 +178,8 @@
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="mb-3">
-                                    <input type="email" name="uname" v-model="newUserUname"
-                                           class="form-control formStyle" placeholder="Email">
+                                    <input type="text" name="uname" v-model="newUserUname"
+                                           class="form-control formStyle" placeholder="Username">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center">
@@ -203,8 +245,8 @@
                         <div class="col-md-8">
                             <div class="row g-3 align-items-center">
                                 <div class="mb-3">
-                                    <input type="email" name="uname" v-model="newUserUname"
-                                           class="form-control formStyle" placeholder="Email">
+                                    <input type="text" name="uname" v-model="newUserUname"
+                                           class="form-control formStyle" placeholder="Username">
                                 </div>
                             </div>
                             <div class="row g-3 align-items-center">
@@ -247,8 +289,6 @@
                         <p>Teachers:</p>
                     </div>
                 </div>
-            </section>
-            <section>
                 <form>
                     <div class="d-flex justify-content-evenly">
                         <div class="p-2">
@@ -309,8 +349,6 @@
                         <p>Courses:</p>
                     </div>
                 </div>
-            </section>
-            <section>
                 <form>
                     <div class="d-flex justify-content-evenly">
                         <div class="p-2">

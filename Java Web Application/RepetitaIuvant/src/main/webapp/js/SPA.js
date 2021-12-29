@@ -8,6 +8,15 @@ Vue.component('homebutton', {
     }
 });
 
+Vue.component('homepagebuttons', {
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Handle Reservation</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
 Vue.component('reservationbutton', {
     template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Handle Reservation</button>',
     methods: {
@@ -16,6 +25,7 @@ Vue.component('reservationbutton', {
         }
     }
 });
+
 Vue.component('teacherbutton', {
     template:
         '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection">Teachers</button>',
@@ -25,6 +35,7 @@ Vue.component('teacherbutton', {
         }
     }
 });
+
 Vue.component('signinbutton', {
     template:
         '<button v-on:click="transitInner" type="button" class="signInButton">Sign in</button>',
@@ -35,6 +46,7 @@ Vue.component('signinbutton', {
     },
     data: {}
 });
+
 Vue.component('coursebutton', {
     template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Courses</button>',
     methods: {
@@ -43,6 +55,7 @@ Vue.component('coursebutton', {
         }
     }
 });
+
 Vue.component('logosection', {
     template: '<div class="container-fluid center">\n' +
         '                <div class="row justify-content-md-center">\n' +
@@ -68,8 +81,9 @@ function seePassword() {
 let app = new Vue({
     el: '#SPA',
     data: {
-        firstPage: true,
-        secondPage: false,
+        homePage: true,
+        handleReservationPage: false,
+        newReservationPage: false,
         thirdPage: false,
         fourthPage: false,
         signInPage: false,
@@ -85,55 +99,79 @@ let app = new Vue({
         username: "",
         role: "",
         upcomingEventsCollection: [],
+        //New Lesson Variables
+        newReservations: [{
+            user: "",
+            subject: "",
+            teacher: "",
+            day: "",
+            time: ""
+        }],
+        //////////////////////
         linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet",
         linkSingInServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signIn-servlet",
         linkLogOutServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/logOut-servlet",
         linkOnLoadServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/onLoad-servlet"
     },
     methods: {
-        TOP1: function () {
-            this.firstPage = true;
-            this.secondPage = false;
+        TOPHome: function () {
+            this.homePage = true;
+            this.handleReservationPage = false;
+            this.newReservationPage = false;
             this.thirdPage = false;
             this.fourthPage = false;
             this.signInPage = false;
             this.signUpPage = false;
         },
-        TOP2: function () {
-            this.firstPage = false;
-            this.secondPage = true;
+        TOPHandleReservation: function () {
+            this.homePage = false;
+            this.handleReservationPage = true;
+            this.newReservationPage = false;
+            this.thirdPage = false;
+            this.fourthPage = false;
+            this.signInPage = false;
+            this.signUpPage = false;
+        },
+        TOPnewReservation: function () {
+            this.homePage = false;
+            this.handleReservationPage = false;
+            this.newReservationPage = true;
             this.thirdPage = false;
             this.fourthPage = false;
             this.signInPage = false;
             this.signUpPage = false;
         },
         TOP3: function () {
-            this.firstPage = false;
-            this.secondPage = false;
+            this.homePage = false;
+            this.handleReservationPage = false;
+            this.newReservationPage = false;
             this.thirdPage = true;
             this.fourthPage = false;
             this.signInPage = false;
             this.signUpPage = false;
         },
         TOP4: function () {
-            this.firstPage = false;
-            this.secondPage = false;
+            this.homePage = false;
+            this.handleReservationPage = false;
+            this.newReservationPage = false;
             this.thirdPage = false;
             this.fourthPage = true;
             this.signInPage = false;
             this.signUpPage = false;
         },
         TOPSignIn: function () {
-            this.firstPage = false;
-            this.secondPage = false;
+            this.homePage = false;
+            this.handleReservationPage = false;
+            this.newReservationPage = false;
             this.thirdPage = false;
             this.fourthPage = false;
             this.signInPage = true;
             this.signUpPage = false;
         },
         TOPSignUp: function () {
-            this.firstPage = false;
-            this.secondPage = false;
+            this.homePage = false;
+            this.handleReservationPage = false;
+            this.newReservationPage = false;
             this.thirdPage = false;
             this.fourthPage = false;
             this.signInPage = false;
@@ -189,7 +227,7 @@ let app = new Vue({
                         self.username = response[1];
                         self.role = response[2];
                         self.onPageLoad();
-                        self.TOP1();
+                        self.TOPHome();
                     } else
                         alert(data);
                 });
@@ -208,7 +246,7 @@ let app = new Vue({
                         self.username = response[1];
                         self.role = response[2];
                         self.onPageLoad();
-                        self.TOP1();
+                        self.TOPHome();
                     } else
                         alert(data);
                 });

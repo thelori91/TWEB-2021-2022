@@ -13,7 +13,7 @@
     height: auto;
 }
 
-#signUpFirstPage {
+#signUpHomePage {
     background-color: rgb(0, 96, 252);
     color: white;
     font-size: 130%;
@@ -24,19 +24,19 @@
     outline: none;
     margin-bottom: 5%;
     transition-duration: 0.4s;
+    border-radius: 10px;
 }
 
-#signUpFirstPage:hover {
+#signUpHomePage:hover {
     background-color: gray;
     color: white;
 }
 
-#signUpFirstPage:active {
+#signUpHomePage:active {
     background-color: #D7A417;
-    co: black;
+    color: black;
 }
-
-#signInFirstPage {
+.signInLogOutShowMSButton{
     font-size: 130%;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -47,46 +47,17 @@
     color: white;
     margin-bottom: 5%;
     transition-duration: 0.4s;
+    border-radius: 10px;
 }
 
-#signInFirstPage:hover {
+.signInLogOutShowMSButton:hover {
     background-color: gray;
     color: white;
 }
 
-#signInFirstPage:active {
+.signInLogOutShowMSButton:active {
     background-color: #D7A417;
     color: black;
-}
-
-#logOutFirstPage {
-    font-size: 130%;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    overflow: hidden;
-    outline: none;
-    color: white;
-    margin-bottom: 5%;
-}
-
-#logOutFirstPage:hover {
-    background-color: gray;
-    color: white;
-}
-
-#logOutFirstPage:active {
-    background-color: #D7A417;
-    color: black;
-}
-
-ol li {
-    list-style-type: none;
-}
-
-ol.punting {
-    list-style-image: url('../image/Punting.png');
 }
 
 .noticeMe {
@@ -101,7 +72,6 @@ ol.punting {
     #navbarButton {
         margin-left: auto;
     }
-
 }
 
 #logoSize {
@@ -149,6 +119,7 @@ body {
     font-size: 130%;
     font-weight: bolder;
     color: black;
+    font-family: 'Merienda', Helvetica, sans-serif;
 }
 
 footer {
