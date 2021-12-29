@@ -8,8 +8,8 @@ Vue.component('homebutton', {
     }
 });
 
-Vue.component('homepagebuttons', {
-    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Handle Reservation</button>',
+Vue.component('newreservationbutton', {
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">New Reservation</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -26,6 +26,16 @@ Vue.component('reservationbutton', {
     }
 });
 
+Vue.component('signinbutton', {
+    template:
+        '<button v-on:click="transitInner" type="button" class="signInButton">Sign in</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
 Vue.component('teacherbutton', {
     template:
         '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection">Teachers</button>',
@@ -34,17 +44,6 @@ Vue.component('teacherbutton', {
             this.$emit('transit-inner');
         }
     }
-});
-
-Vue.component('signinbutton', {
-    template:
-        '<button v-on:click="transitInner" type="button" class="signInButton">Sign in</button>',
-    methods: {
-        transitInner: function () {
-            this.$emit('transit-inner');
-        }
-    },
-    data: {}
 });
 
 Vue.component('coursebutton', {
@@ -276,11 +275,11 @@ let app = new Vue({
                 }
             });
         },
-        showMoreLess: function() {
+        showMoreLess: function () {
             this.showMore = !this.showMore;
-            if(this.showMore){
+            if (this.showMore) {
                 this.showMoreText = "Hide Cancelled/Done lessons"
-            }else{
+            } else {
                 this.showMoreText = "Show Cancelled/Done lessons"
             }
         }

@@ -33,10 +33,10 @@
                 </p>
                 <p id="usernameText" v-if="username.localeCompare('') !== 0">Username: {{username}} Role: {{role}}</p>
                 <div id="navbarButton" class="d-flex flex-row-reverse">
-                    <button v-if="username.localeCompare('') !== 0" id="signInLogOutShowMSButton" type="button"
+                    <button v-if="username.localeCompare('') !== 0" class="signInLogOutShowMSButton" type="button"
                             v-on:click="logOut">Log Out
                     </button>
-                    <button v-if="username.localeCompare('') === 0" id="signInLogOutShowMSButton" type="button"
+                    <button v-if="username.localeCompare('') === 0" class="signInLogOutShowMSButton" type="button"
                             v-on:click="TOPSignIn">Sign In
                     </button>
                     <button v-if="username.localeCompare('') === 0" id="signUpHomePage" type="button"
@@ -69,8 +69,7 @@
             </div>
             <div class="container-fluid">
                 <div class="d-grid gap-2 col-4 mx-auto">
-                    <!--TODO FARE UNICO COMPONENT-->
-                    <button v-on:click="TOPnewReservation" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">New Reservation</button>
+                    <newreservationbutton v-on:transit-inner="TOPnewReservation"></newreservationbutton>
                     <reservationbutton v-on:transit-inner="TOPHandleReservation"></reservationbutton>
                     <teacherbutton v-on:transit-inner="TOP3"></teacherbutton>
                     <coursebutton v-on:transit-inner="TOP4"></coursebutton>
