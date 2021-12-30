@@ -338,9 +338,10 @@ let app = new Vue({
                 self.allCoursesWithTeachers = arrayOfCourses;
                 self.initCourseOptions();
             });
-            //$.get(this.linkGetAllLessonsServlet, function (data) {
-
-            //});
+            $.get(this.linkGetAllLessonsServlet, function (data) {
+                let teacherWithLessonsArray = JSON.parse(data)
+                self.allLessons = teacherWithLessonsArray;
+            });
         },
         initCourseOptions: function () {
             for (let i = 0; i < this.newReservations.length; i++) {
@@ -349,6 +350,22 @@ let app = new Vue({
                     this.newReservations[i].courseOptions.push(this.allCoursesWithTeachers[j].courseName);
                 }
             }
+        },
+        updateDayOptions: function (reservation) {
+            let teacher = reservation.teacher;
+            let teacherId = teacher.split(" ")[teacher.split(" ").length - 1];
+            let indexOfTeacher = -1;
+            for(let i = 0 ; i < this.allLessons; i++)
+            {
+                if(teacherId.localeCompare(this.allLessons[i].teacherId) === 0) {indexOfTeacher = i;}
+            }
+            reservation.dayOptions = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            
+
+
+
+            //reservation.timeOptions = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+
         },
         updateTeacherOptions: function (reservation) {
             let selectedSubject = reservation.subject;
@@ -363,7 +380,8 @@ let app = new Vue({
             for (let i = 0; i < arrayOfTeachers.length; i++) {
                 let name = arrayOfTeachers[i].teacherName;
                 let surname = arrayOfTeachers[i].teacherSurname;
-                let option = name + " " + surname;
+                let id = arrayOfTeachers[i].teacherId;
+                let option = name + " " + surname + " " + id;
                 reservation.teacherOptions.push(option);
             }
         }

@@ -338,9 +338,10 @@ let app = new Vue({
                 self.allCoursesWithTeachers = arrayOfCourses;
                 self.initCourseOptions();
             });
-            //$.get(this.linkGetAllLessonsServlet, function (data) {
-
-            //});
+            $.get(this.linkGetAllLessonsServlet, function (data) {
+                let teacherWithLessonsArray = JSON.parse(data)
+                console.log(teacherWithLessonsArray);
+            });
         },
         initCourseOptions: function () {
             for (let i = 0; i < this.newReservations.length; i++) {

@@ -115,7 +115,7 @@
                                     </div>
                                     <div v-if="reservation.subject.localeCompare('') !== 0">
                                         <label> Teacher: {{reservation.teacher}}
-                                            <select v-model="reservation.teacher">
+                                            <select v-model="reservation.teacher" v-on:change="updateDayOptions(reservation)">
                                                 <option v-for="option in reservation.teacherOptions">{{option}}</option>
                                             </select>
                                         </label>
@@ -124,15 +124,13 @@
                                         <label v-if="reservation.teacher.localeCompare('') !== 0"> Day:
                                             {{reservation.day}}
                                             <select v-model="reservation.day">
-                                                <option>1</option>
-                                                <option>2</option>
+                                                <option v-for="option in reservation.dayOptions">{{option}}</option>
                                             </select>
                                         </label>
                                         <label v-if="reservation.day.localeCompare('') !== 0"> Time:
                                             {{reservation.time}}
                                             <select v-model="reservation.time">
-                                                <option>1</option>
-                                                <option>2</option>
+                                                <option v-for="option in reservation.timeOptions">{{option}}</option>
                                             </select>
                                         </label>
                                     </div>
