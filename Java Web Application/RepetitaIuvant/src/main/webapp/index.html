@@ -104,13 +104,12 @@
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
                             <div v-for="reservation in newReservations">
-                                <h2>Reservation #{{newReservations.indexOf(reservation) + 1}}</h2>
+                                <h2>Reservation #{{newReservations.indexOf(reservation) + 1}} for {{reservation.user}}</h2>
                                 <div>
                                     <div>
                                         <label> Subject: {{reservation.subject}}
                                             <select v-model="reservation.subject">
-                                                <option>1</option>
-                                                <option>2</option>
+                                                <option v-for="option in reservation.courseOptions">{{option}}</option>
                                             </select>
                                         </label>
                                     </div>
@@ -118,7 +117,6 @@
                                         <label> Teacher: {{reservation.teacher}}
                                             <select v-model="reservation.teacher">
                                                 <option>1</option>
-                                                <option>2</option>
                                             </select>
                                         </label>
                                     </div>
@@ -138,16 +136,12 @@
                                             </select>
                                         </label>
                                     </div>
-                                    <div>
-                                        <!-- TODO se va bene grafica cambio nome id-->
-                                        <button class="signInLogOutShowMSButton" type="button"
-                                                v-if="reservation.time.localeCompare('') !== 0"
-                                                v-on:click="bookLesson">
-                                            reserve/book
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
+                            <!-- TODO se va bene grafica cambio nome id-->
+                            <button class="signInLogOutShowMSButton" type="button" v-on:click="bookLessons">
+                                Book All
+                            </button>
                             <button class="signInLogOutShowMSButton" onclick="moreReservation()">Add More</button>
                             <button class="signInLogOutShowMSButton" onclick="lessReservation()">Remove</button>
                         </div>

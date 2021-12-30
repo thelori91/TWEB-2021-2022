@@ -79,12 +79,17 @@ function seePassword() {
 
 function moreReservation() {
     app.newReservations.push({
-        user: "",
+        user: app.username,
         subject: "",
         teacher: "",
         day: "",
-        time: ""
+        time: "",
+        courseOptions: [],
+        teacherOptions: [],
+        dayOptions:[],
+        timeOptions: []
     });
+    app.initCourseOptions();
 }
 
 function lessReservation() {
@@ -114,17 +119,28 @@ let app = new Vue({
         upcomingEventsCollection: [],
         //New Lesson Variables
         newReservations: [{
-            user: "",
+            user: this.username,
             subject: "",
             teacher: "",
             day: "",
-            time: ""
+            time: "",
+            //Options shown in the page
+            courseOptions: [],
+            teacherOptions: [],
+            dayOptions:[],
+            timeOptions: []
         }],
+            //Internal, not used in html
+        allCoursesWithTeachers: [],
+        allLessons: [],
         //////////////////////
         linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet",
         linkSingInServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signIn-servlet",
         linkLogOutServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/logOut-servlet",
-        linkOnLoadServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/onLoad-servlet"
+        linkOnLoadServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/onLoad-servlet",
+        linkReservationServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/reservation-servlet",
+        linkGetAllTeacherCoursesServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllTeacherCourses-servlet",
+        linkGetAllLessonsServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllLessons-servlet"
     },
     methods: {
         TOPHome: function () {
@@ -153,6 +169,7 @@ let app = new Vue({
             this.fourthPage = false;
             this.signInPage = false;
             this.signUpPage = false;
+            this.loadAllForNewReservation();
         },
         TOP3: function () {
             this.homePage = false;
@@ -297,10 +314,43 @@ let app = new Vue({
                 this.showMoreText = "Show Cancelled/Done lessons"
             }
         },
-        bookLesson: function () {
+        bookLessons: function () {
             var self = this;
-            $.post(this.linkSingInServlet, {}, function (data) {
+            $.post(this.linkReservationServlet, {}, function (data) {
             });
+        },
+        loadAllForNewReservation: function () {
+            //TODO check login
+            this.newReservations = [{
+                user: this.username,
+                subject: "",
+                teacher: "",
+                day: "",
+                time: "",
+                courseOptions: ["option1", "option2"],
+                teacherOptions: [],
+                dayOptions:[],
+                timeOptions: []
+            }];
+            var self = this;
+            $.get(this.linkGetAllTeacherCoursesServlet, function (data) {
+                let arrayOfCourses = JSON.parse(data);
+                self.allCoursesWithTeachers = arrayOfCourses;
+                self.initCourseOptions();
+            });
+            //$.get(this.linkGetAllLessonsServlet, function (data) {
+
+            //});
+        },
+        initCourseOptions: function () {
+            for(let i = 0; i < this.newReservations.length; i++)
+            {
+                this.newReservations[i].courseOptions = [];
+                for(let j = 0; j < this.allCoursesWithTeachers.length; j++)
+                {
+                    this.newReservations[i].courseOptions.push(this.allCoursesWithTeachers[j].courseName);
+                }
+            }
         }
     },
     beforeMount() {
