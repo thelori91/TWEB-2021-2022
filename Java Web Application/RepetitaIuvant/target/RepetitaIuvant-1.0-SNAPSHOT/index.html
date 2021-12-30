@@ -85,7 +85,7 @@
                         <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
                     </li>
                 </ul>
-                <button id="signInLogOutShowMSButton" type="button" v-on:click="showMoreLess">{{showMoreText}}</button>
+                <button class="signInLogOutShowMSButton" type="button" v-on:click="showMoreLess">{{showMoreText}}</button>
                 <ul v-if="showMore">
                     <li v-for="lesson in upcomingEventsCollection" v-if="lesson.state.localeCompare('Active') !== 0">
                         <span>✍️</span>
@@ -98,47 +98,65 @@
                 </ul>
             </div>
         </article>
-        <article v-if="handleReservationPage">
-            <section>
-            </section>
-        </article>
         <article v-if="newReservationPage">
             <section>
-                <div v-for="reservation in newReservations">
-                    <h3>Reservation #{{newReservations.indexOf(reservation) + 1}}</h3>
-                    <div>
-                        <div>
-                            <label> Subject: {{reservation.subject}}
-                                <select v-model="reservation.subject">
-                                    <option>1</option>
-                                    <option>2</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div v-if="reservation.subject.localeCompare('') !== 0">
-                            <label> Teacher: {{reservation.teacher}}
-                                <select v-model="reservation.teacher">
-                                    <option>1</option>
-                                    <option>2</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div>
-                            <label v-if="reservation.teacher.localeCompare('') !== 0"> Day: {{reservation.day}}
-                                <select v-model="reservation.day">
-                                    <option>1</option>
-                                    <option>2</option>
-                                </select>
-                            </label>
-                            <label  v-if="reservation.day.localeCompare('') !== 0"> Time: {{reservation.time}}
-                                <select v-model="reservation.time">
-                                    <option>1</option>
-                                    <option>2</option>
-                                </select>
-                            </label>
+                <div class="container-fluid center">
+                    <div class="row justify-content-md-center">
+                        <div class="col-md-auto">
+                            <div v-for="reservation in newReservations">
+                                <h2>Reservation #{{newReservations.indexOf(reservation) + 1}}</h2>
+                                <div>
+                                    <div>
+                                        <label> Subject: {{reservation.subject}}
+                                            <select v-model="reservation.subject">
+                                                <option>1</option>
+                                                <option>2</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div v-if="reservation.subject.localeCompare('') !== 0">
+                                        <label> Teacher: {{reservation.teacher}}
+                                            <select v-model="reservation.teacher">
+                                                <option>1</option>
+                                                <option>2</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label v-if="reservation.teacher.localeCompare('') !== 0"> Day:
+                                            {{reservation.day}}
+                                            <select v-model="reservation.day">
+                                                <option>1</option>
+                                                <option>2</option>
+                                            </select>
+                                        </label>
+                                        <label v-if="reservation.day.localeCompare('') !== 0"> Time:
+                                            {{reservation.time}}
+                                            <select v-model="reservation.time">
+                                                <option>1</option>
+                                                <option>2</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <!-- TODO se va bene grafica cambio nome id-->
+                                        <button class="signInLogOutShowMSButton" type="button"
+                                                v-if="reservation.time.localeCompare('') !== 0"
+                                                v-on:click="bookLesson">
+                                            reserve/book
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="signInLogOutShowMSButton" onclick="moreReservation()">Add More</button>
+                            <button class="signInLogOutShowMSButton" onclick="lessReservation()">Remove</button>
                         </div>
                     </div>
                 </div>
+            </section>
+        </article>
+        <article v-if="handleReservationPage">
+            <section>
             </section>
         </article>
         <article v-if="signUpPage">
@@ -222,18 +240,15 @@
         </article>
         <article v-if="signInPage">
             <section>
-                <logosection></logosection>
-            </section>
-            <section>
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
-                            <p>We are SO happy to see you again!</p>
+                            <h2>We are SO happy to see you again!</h2>
                         </div>
                     </div>
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
-                            <p>Login</p>
+                            <h3>Login</h3>
                         </div>
                     </div>
                 </div>
@@ -406,7 +421,6 @@
     </footer>
 </div>
 </body>
-<script src="./js/dynamic.js"></script>
 <script src="./js/SPA.js"></script>
 </html>
 

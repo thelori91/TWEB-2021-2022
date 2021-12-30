@@ -85,7 +85,7 @@
                         <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
                     </li>
                 </ul>
-                <button id="signInLogOutShowMSButton" type="button" v-on:click="showMoreLess">{{showMoreText}}</button>
+                <button class="signInLogOutShowMSButton" type="button" v-on:click="showMoreLess">{{showMoreText}}</button>
                 <ul v-if="showMore">
                     <li v-for="lesson in upcomingEventsCollection" v-if="lesson.state.localeCompare('Active') !== 0">
                         <span>✍️</span>
@@ -138,8 +138,18 @@
                                             </select>
                                         </label>
                                     </div>
+                                    <div>
+                                        <!-- TODO se va bene grafica cambio nome id-->
+                                        <button class="signInLogOutShowMSButton" type="button"
+                                                v-if="reservation.time.localeCompare('') !== 0"
+                                                v-on:click="bookLesson">
+                                            reserve/book
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                            <button class="signInLogOutShowMSButton" onclick="moreReservation()">Add More</button>
+                            <button class="signInLogOutShowMSButton" onclick="lessReservation()">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -411,7 +421,6 @@
     </footer>
 </div>
 </body>
-<script src="./js/dynamic.js"></script>
 <script src="./js/SPA.js"></script>
 </html>
 

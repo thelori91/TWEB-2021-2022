@@ -77,6 +77,20 @@ function seePassword() {
     }
 }
 
+function moreReservation() {
+    app.newReservations.push({
+        user: "",
+        subject: "",
+        teacher: "",
+        day: "",
+        time: ""
+    });
+}
+
+function lessReservation() {
+    app.newReservations.pop();
+}
+
 let app = new Vue({
     el: '#SPA',
     data: {
@@ -282,6 +296,11 @@ let app = new Vue({
             } else {
                 this.showMoreText = "Show Cancelled/Done lessons"
             }
+        },
+        bookLesson: function () {
+            var self = this;
+            $.post(this.linkSingInServlet, {}, function (data) {
+            });
         }
     },
     beforeMount() {
