@@ -86,7 +86,7 @@ function moreReservation() {
         time: "",
         courseOptions: [],
         teacherOptions: [],
-        dayOptions:[],
+        dayOptions: [],
         timeOptions: []
     });
     app.initCourseOptions();
@@ -127,10 +127,10 @@ let app = new Vue({
             //Options shown in the page
             courseOptions: [],
             teacherOptions: [],
-            dayOptions:[],
+            dayOptions: [],
             timeOptions: []
         }],
-            //Internal, not used in html
+        //Internal, not used in html
         allCoursesWithTeachers: [],
         allLessons: [],
         //////////////////////
@@ -327,9 +327,9 @@ let app = new Vue({
                 teacher: "",
                 day: "",
                 time: "",
-                courseOptions: ["option1", "option2"],
+                courseOptions: [],
                 teacherOptions: [],
-                dayOptions:[],
+                dayOptions: [],
                 timeOptions: []
             }];
             var self = this;
@@ -343,13 +343,28 @@ let app = new Vue({
             //});
         },
         initCourseOptions: function () {
-            for(let i = 0; i < this.newReservations.length; i++)
-            {
+            for (let i = 0; i < this.newReservations.length; i++) {
                 this.newReservations[i].courseOptions = [];
-                for(let j = 0; j < this.allCoursesWithTeachers.length; j++)
-                {
+                for (let j = 0; j < this.allCoursesWithTeachers.length; j++) {
                     this.newReservations[i].courseOptions.push(this.allCoursesWithTeachers[j].courseName);
                 }
+            }
+        },
+        updateTeacherOptions: function (reservation) {
+            let selectedSubject = reservation.subject;
+            reservation.teacherOptions = [];
+            reservation.teacher = "";
+            let indexOfSubject = -1;
+            for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
+                if (this.allCoursesWithTeachers[i].courseName.localeCompare(selectedSubject) === 0) indexOfSubject = i;
+            }
+            let arrayOfTeachers = this.allCoursesWithTeachers[indexOfSubject].teachers;
+
+            for (let i = 0; i < arrayOfTeachers.length; i++) {
+                let name = arrayOfTeachers[i].teacherName;
+                let surname = arrayOfTeachers[i].teacherSurname;
+                let option = name + " " + surname;
+                reservation.teacherOptions.push(option);
             }
         }
     },

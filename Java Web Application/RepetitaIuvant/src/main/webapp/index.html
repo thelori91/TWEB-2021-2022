@@ -108,15 +108,15 @@
                                 <div>
                                     <div>
                                         <label> Subject: {{reservation.subject}}
-                                            <select v-model="reservation.subject">
-                                                <option v-for="option in reservation.courseOptions">{{option}}</option>
+                                            <select v-model="reservation.subject" v-on:change="updateTeacherOptions(reservation)">
+                                                <option  v-for="option in reservation.courseOptions">{{option}}</option>
                                             </select>
                                         </label>
                                     </div>
                                     <div v-if="reservation.subject.localeCompare('') !== 0">
                                         <label> Teacher: {{reservation.teacher}}
                                             <select v-model="reservation.teacher">
-                                                <option>1</option>
+                                                <option v-for="option in reservation.teacherOptions">{{option}}</option>
                                             </select>
                                         </label>
                                     </div>
@@ -195,7 +195,7 @@
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="input-group mb-3">
-                                    <input v-model="newUserPassword" name="password" @keyup="handle" type="password"
+                                    <input v-model="newUserPassword" name="password" oninput="handle" type="password"
                                            data-target=".tab-group-1 #inputPassword6"
                                            class="form-control formStyle switchable" placeholder="Password">
                                     <button class="btn btn-outline-secondary" type="button" v-if="visiblePassword"
@@ -259,7 +259,7 @@
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="input-group mb-3">
-                                    <input v-model="newUserPassword" name="password" @keyup="handle" type="password"
+                                    <input v-model="newUserPassword" name="password" oninput="handle" type="password"
                                            data-target=".tab-group-2 #inputPassword6"
                                            class="form-control formStyle switchable" placeholder="Password">
                                     <button class="btn btn-outline-secondary" type="button" v-if="visiblePassword"
