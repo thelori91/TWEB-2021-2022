@@ -340,7 +340,7 @@ let app = new Vue({
             });
             $.get(this.linkGetAllLessonsServlet, function (data) {
                 let teacherWithLessonsArray = JSON.parse(data)
-                console.log(teacherWithLessonsArray);
+                self.allLessons = teacherWithLessonsArray;
             });
         },
         initCourseOptions: function () {
@@ -355,6 +355,10 @@ let app = new Vue({
             let selectedSubject = reservation.subject;
             reservation.teacherOptions = [];
             reservation.teacher = "";
+            reservation.dayOptions = [];
+            reservation.day = "";
+            reservation.timeOptions = [];
+            reservation.time = "";
             let indexOfSubject = -1;
             for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
                 if (this.allCoursesWithTeachers[i].courseName.localeCompare(selectedSubject) === 0) indexOfSubject = i;
@@ -364,8 +368,107 @@ let app = new Vue({
             for (let i = 0; i < arrayOfTeachers.length; i++) {
                 let name = arrayOfTeachers[i].teacherName;
                 let surname = arrayOfTeachers[i].teacherSurname;
-                let option = name + " " + surname;
+                let id = arrayOfTeachers[i].teacherId;
+                let option = name + " " + surname + " " + id;
                 reservation.teacherOptions.push(option);
+            }
+        },
+        updateDayOptions: function (reservation) {
+            if (typeof reservation.teacher !== 'undefined') {
+                reservation.dayOptions = [];
+                reservation.day = "";
+                reservation.timeOptions = [];
+                reservation.time = "";
+                let allDayOptions = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                let dayOptionsTmp = [];
+                let teacher = reservation.teacher;
+                let teacherId = teacher.split(" ")[teacher.split(" ").length - 1];
+                let indexOfTeacher = -1;
+
+                //Find indexOfteacher in allLessons array
+                for (let i = 0; i < this.allLessons.length; i++) {
+                    if (this.allLessons[i].teacherId.toString().localeCompare(teacherId) === 0) {
+                        indexOfTeacher = i;
+                    }
+                }
+
+                if (indexOfTeacher === -1) {
+                    reservation.dayOptions = allDayOptions;
+                } else {
+/*
+                    //Save his lessons array
+                    let arrayOfLessons = this.allLessons[indexOfTeacher].lessons;
+
+                    //Check his free time
+                    //TODO da rivedere cond
+                    for (let i = 0; i < arrayOfLessons.length; i++) {
+                        let cond1 = reservation.subject.localeCompare(arrayOfLessons[i].lessonCourse) === 0;
+                        let day = arrayOfLessons[i].lessonDay;
+                        let cond2 = !dayOptionsTmp.includes(day);
+                        if (cond1 && cond2) {
+                            dayOptionsTmp.push(day);
+                            console.log(day);
+                        }
+                    }
+*/
+                    if (dayOptionsTmp.length === 0) {
+                        reservation.dayOptions = allDayOptions;
+                    } else {
+                        for (let i = 0; i < allDayOptions.length; i++) {
+                            if (!dayOptionsTmp.includes(allDayOptions[i])) {
+                                reservation.dayOptions.push(allDayOptions[i]);
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        updateTimeOptions: function (reservation) {
+            if (typeof reservation.teacher !== 'undefined') {
+                reservation.timeOptions = [];
+                reservation.time = "";
+                let allTimeOptions = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+                let timeOptionsTmp = [];
+                let teacher = reservation.teacher;
+                let teacherId = teacher.split(" ")[teacher.split(" ").length - 1];
+                let indexOfTeacher = -1;
+                for (let i = 0; i < this.allLessons.length; i++) {
+                    if (this.allLessons[i].teacherId.toString().localeCompare(teacherId) === 0) {
+                        indexOfTeacher = i;
+                    }
+                }
+
+                if (indexOfTeacher === -1) {
+                    reservation.timeOptions = allTimeOptions;
+                } else {
+
+                    let arrayOfLessons = this.allLessons[indexOfTeacher].lessons;
+
+                    for (let i = 0; i < arrayOfLessons.length; i++) {
+                        let cond1 = reservation.subject.localeCompare(arrayOfLessons[i].lessonCourse) === 0;
+                        let time = arrayOfLessons[i].lessonTime;
+                        let cond2 = !timeOptionsTmp.includes(time);
+                        console.log(cond2)
+                        let cond3 = reservation.day.localeCompare(arrayOfLessons[i].lessonDay) === 0;
+                        console.log(cond3)
+                        let cond5 = arrayOfLessons[i].lessonTime !== "Active";
+                        console.log(cond5)
+                        if (cond1 && cond2 && cond3  && cond5){
+                            let time = arrayOfLessons[i].lessonTime;
+                            timeOptionsTmp.push(time);
+                        }
+                    }
+
+                    if (timeOptionsTmp.length === 0) {
+                        reservation.timeOptions = allTimeOptions;
+                    } else {
+                        for (let i = 0; i < allTimeOptions.length; i++) {
+                            if (!timeOptionsTmp.includes(allTimeOptions[i])) {
+                                reservation.timeOptions.push(allTimeOptions[i]);
+                            }
+                        }
+                    }
+                }
             }
         }
     },
