@@ -235,8 +235,7 @@ public class DAO {
 
             Statement st = conn1.createStatement();
             String sql = "SELECT * FROM Lesson join Teacher T on T.ID = Lesson.Teacher join Course C on C.Name = Lesson.Course join User U on U.Username = Lesson.User";
-            if(username != null)
-            {
+            if (username != null) {
                 sql += " WHERE U.Username = '" + username + "';";
             }
             ResultSet rs = st.executeQuery(sql);
@@ -265,26 +264,25 @@ public class DAO {
         return lessons;
     }
 
-    public static void addLesson(long teacher, String course, String user, Day day, int ID, Time time) {
+    public static void addLesson(long teacher, String course, String user, Day day, Time time) throws SQLException {
         Connection conn1 = null;
         try {
-            conn1 = DriverManager.getConnection(url, user, psw);
+            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
             if (conn1 != null) {
-                System.out.println("Connected to the database test");
+                System.out.println("Connected to the database Tutoring");
             }
-            //TODO fare controllo TeacherCourse prima di aggiungere
-            String sql = "INSERT INTO Lesson(Teacher, Course, User, Day, ID, Time)" + "VALUES(?,?,?,?,?,?)";
+            String sql = "INSERT INTO Lesson(Teacher, Course, User, Day, Time)" + "VALUES(?,?,?,?,?)";
             PreparedStatement st = conn1.prepareStatement(sql);
             st.setLong(1, teacher);
             st.setString(2, course);
             st.setString(3, user);
-            st.setObject(4, day);
-            st.setInt(5, ID);
-            st.setObject(6, time);
+            st.setString(4, Conversions.dayToString(day));
+            st.setString(5, Conversions.timeToString(time));
             st.executeUpdate();
             st.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
         } finally {
             if (conn1 != null) {
                 try {

@@ -124,6 +124,7 @@ let app = new Vue({
             teacher: "",
             day: "",
             time: "",
+
             //Options shown in the page
             courseOptions: [],
             teacherOptions: [],
@@ -133,6 +134,7 @@ let app = new Vue({
         //Internal, not used in html
         allCoursesWithTeachers: [],
         allLessons: [],
+        pendingOperation: false,
         //////////////////////
         linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet",
         linkSingInServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signIn-servlet",
@@ -316,32 +318,67 @@ let app = new Vue({
         },
         bookLessons: function () {
             var self = this;
-            $.post(this.linkReservationServlet, {}, function (data) {
+
+            //Before sending everything to the servlet, we check some things
+            if (this.username.localeCompare('') === 0) {
+                alert('Please, Sign In before you book any lesson.\nIf you are new, please, Sign Up!');
+                this.pendingOperation = true;
+                this.TOPSignUp();
+                return;
+            }
+
+            let allRight = true;
+            for (let i = 0; i < this.newReservations.length && allRight; i++) {
+                let reservation = this.newReservations[i];
+                if (reservation.subject.localeCompare('') === 0) allRight = false;
+                if (reservation.teacher.localeCompare('') === 0) allRight = false;
+                if (reservation.day.localeCompare('') === 0) allRight = false;
+                if (reservation.time.localeCompare('') === 0) allRight = false;
+            }
+
+            let array = [];
+            this.newReservations.forEach(reservation => {
+                let obj = {
+                    course: reservation.subject,
+                    teacherId: reservation.teacher.split(" ")[reservation.teacher.split(" ").length - 1],
+                    day: reservation.day,
+                    time: reservation.time
+                };
+                array.push(obj);
+            });
+            $.post(this.linkReservationServlet, {reservations: JSON.stringify(array)}, function (data) {
+                alert(data);
+                if(data.split("\n")[0].localeCompare("Error:") !== 0)
+                {
+                    self.pendingOperation = false;
+                    self.TOPHome();
+                }
             });
         },
         loadAllForNewReservation: function () {
-            //TODO check login
-            this.newReservations = [{
-                user: this.username,
-                subject: "",
-                teacher: "",
-                day: "",
-                time: "",
-                courseOptions: [],
-                teacherOptions: [],
-                dayOptions: [],
-                timeOptions: []
-            }];
-            var self = this;
-            $.get(this.linkGetAllTeacherCoursesServlet, function (data) {
-                let arrayOfCourses = JSON.parse(data);
-                self.allCoursesWithTeachers = arrayOfCourses;
-                self.initCourseOptions();
-            });
-            $.get(this.linkGetAllLessonsServlet, function (data) {
-                let teacherWithLessonsArray = JSON.parse(data)
-                self.allLessons = teacherWithLessonsArray;
-            });
+            if (!this.pendingOperation) {
+                this.newReservations = [{
+                    user: this.username,
+                    subject: "",
+                    teacher: "",
+                    day: "",
+                    time: "",
+                    courseOptions: [],
+                    teacherOptions: [],
+                    dayOptions: [],
+                    timeOptions: []
+                }];
+                var self = this;
+                $.get(this.linkGetAllTeacherCoursesServlet, function (data) {
+                    let arrayOfCourses = JSON.parse(data);
+                    self.allCoursesWithTeachers = arrayOfCourses;
+                    self.initCourseOptions();
+                });
+                $.get(this.linkGetAllLessonsServlet, function (data) {
+                    let teacherWithLessonsArray = JSON.parse(data)
+                    self.allLessons = teacherWithLessonsArray;
+                });
+            }
         },
         initCourseOptions: function () {
             for (let i = 0; i < this.newReservations.length; i++) {
