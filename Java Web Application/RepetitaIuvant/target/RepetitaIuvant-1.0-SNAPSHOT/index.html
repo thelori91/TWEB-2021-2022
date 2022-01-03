@@ -85,7 +85,8 @@
                         <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
                     </li>
                 </ul>
-                <button class="signInLogOutShowMSButton" type="button" v-on:click="showMoreLess">{{showMoreText}}</button>
+                <button class="signInLogOutShowMSButton" type="button" v-on:click="showMoreLess">{{showMoreText}}
+                </button>
                 <ul v-if="showMore">
                     <li v-for="lesson in upcomingEventsCollection" v-if="lesson.state.localeCompare('Active') !== 0">
                         <span>✍️</span>
@@ -104,31 +105,38 @@
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
                             <div v-for="reservation in newReservations">
-                                <h2 v-if="username.localeCompare('') === 0">Reservation #{{newReservations.indexOf(reservation) + 1}}</h2>
-                                <h2 v-else>Reservation #{{newReservations.indexOf(reservation) + 1}} for {{reservation.user}}</h2>
+                                <h2 v-if="username.localeCompare('') === 0">Reservation
+                                    #{{newReservations.indexOf(reservation) + 1}}</h2>
+                                <h2 v-else>Reservation #{{newReservations.indexOf(reservation) + 1}} for
+                                    {{reservation.user}}</h2>
                                 <div>
                                     <div>
                                         <label> Subject: {{reservation.subject}}
-                                            <select v-model="reservation.subject" v-on:change="updateTeacherOptions(reservation)">
-                                                <option  v-for="option in reservation.courseOptions">{{option}}</option>
+                                            <select v-model="reservation.subject"
+                                                    v-on:change="updateTeacherOptions(reservation)">
+                                                <option v-for="option in reservation.courseOptions">{{option}}</option>
                                             </select>
                                         </label>
                                     </div>
                                     <div v-if="reservation.subject !== undefined && reservation.subject.localeCompare('') !== 0">
                                         <label> Teacher: {{reservation.teacher}}
-                                            <select v-model="reservation.teacher" v-on:change="updateDayOptions(reservation)">
+                                            <select v-model="reservation.teacher"
+                                                    v-on:change="updateDayOptions(reservation)">
                                                 <option v-for="option in reservation.teacherOptions">{{option}}</option>
                                             </select>
                                         </label>
                                     </div>
                                     <div>
-                                        <label v-if="reservation.teacher !== undefined && reservation.teacher.localeCompare('') !== 0"> Day:
+                                        <label v-if="reservation.teacher !== undefined && reservation.teacher.localeCompare('') !== 0">
+                                            Day:
                                             {{reservation.day}}
-                                            <select v-model="reservation.day" v-on:change="updateTimeOptions(reservation)">
+                                            <select v-model="reservation.day"
+                                                    v-on:change="updateTimeOptions(reservation)">
                                                 <option v-for="option in reservation.dayOptions">{{option}}</option>
                                             </select>
                                         </label>
-                                        <label v-if="reservation.day !== undefined && reservation.day.localeCompare('') !== 0"> Time:
+                                        <label v-if="reservation.day !== undefined && reservation.day.localeCompare('') !== 0">
+                                            Time:
                                             {{reservation.time}}
                                             <select v-model="reservation.time">
                                                 <option v-for="option in reservation.timeOptions">{{option}}</option>
@@ -138,7 +146,8 @@
                                 </div>
                             </div>
                             <!-- TODO se va bene grafica cambio nome id-->
-                            <button v-if="username.localeCompare('') !== 0" class="signInLogOutShowMSButton" type="button" v-on:click="bookLessons">
+                            <button v-if="username.localeCompare('') !== 0" class="signInLogOutShowMSButton"
+                                    type="button" v-on:click="bookLessons">
                                 Book All
                             </button>
                             <button class="signInLogOutShowMSButton" onclick="moreReservation()">Add More</button>

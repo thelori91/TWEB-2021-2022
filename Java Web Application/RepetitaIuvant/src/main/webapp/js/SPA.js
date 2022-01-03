@@ -375,48 +375,59 @@ let app = new Vue({
         },
         updateDayOptions: function (reservation) {
             if (typeof reservation.teacher !== 'undefined') {
-                reservation.dayOptions = [];
+                const allDayOptions = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                reservation.dayOptions = allDayOptions;
                 reservation.day = "";
                 reservation.timeOptions = [];
                 reservation.time = "";
-                let allDayOptions = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-                let dayOptionsTmp = [];
                 let teacher = reservation.teacher;
                 let teacherId = teacher.split(" ")[teacher.split(" ").length - 1];
                 let indexOfTeacher = -1;
 
                 //Find indexOfteacher in allLessons array
                 for (let i = 0; i < this.allLessons.length; i++) {
+                    console.log(this.allLessons[i].teacherId);
+
                     if (this.allLessons[i].teacherId.toString().localeCompare(teacherId) === 0) {
                         indexOfTeacher = i;
                     }
                 }
 
-                if (indexOfTeacher === -1) {
-                    reservation.dayOptions = allDayOptions;
-                } else {
-/*
-                    //Save his lessons array
-                    let arrayOfLessons = this.allLessons[indexOfTeacher].lessons;
+                if (indexOfTeacher !== -1) {
 
-                    //Check his free time
-                    //TODO da rivedere cond
-                    for (let i = 0; i < arrayOfLessons.length; i++) {
-                        let cond1 = reservation.subject.localeCompare(arrayOfLessons[i].lessonCourse) === 0;
-                        let day = arrayOfLessons[i].lessonDay;
-                        let cond2 = !dayOptionsTmp.includes(day);
-                        if (cond1 && cond2) {
-                            dayOptionsTmp.push(day);
-                            console.log(day);
-                        }
-                    }
-*/
-                    if (dayOptionsTmp.length === 0) {
-                        reservation.dayOptions = allDayOptions;
-                    } else {
-                        for (let i = 0; i < allDayOptions.length; i++) {
-                            if (!dayOptionsTmp.includes(allDayOptions[i])) {
-                                reservation.dayOptions.push(allDayOptions[i]);
+                    //For the given teacher
+                    for (let k = 0; k < this.allLessons.length; k++) {
+                        let teacher = this.allLessons[k];
+                        console.log('teacher = ');
+                        console.log(teacher);
+                        //Find Id
+                        let teacherId = reservation.teacher.split(" ")[reservation.teacher.split(" ").length - 1];
+                        console.log('teacherId = ' + teacherId);
+                        if (teacher.teacherId.toString().localeCompare(teacherId) === 0) {
+                            //for a specific day
+                            for (let i = 0; i < allDayOptions.length; i++) {
+                                let day = allDayOptions[i];
+                                let daysAvailableTimes = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+                                //find out if teacher is available
+                                for (let j = 0; j < teacher.lessons.length; j++) {
+                                    let lesson = teacher.lessons[j];
+
+                                    console.log(lesson.lessonDay.localeCompare(day) === 0);
+                                    console.log(lesson.lessonState.localeCompare("Active") === 0);
+
+                                    if (lesson.lessonDay.localeCompare(day) === 0 && lesson.lessonState.localeCompare("Cancelled") !== 0) {
+                                        //If already booked, remove time slot
+                                        daysAvailableTimes = daysAvailableTimes.filter(function (value, index, arr) {
+                                            return value !== lesson.lessonTime;
+                                        });
+                                    }
+                                }
+                                //If no time slot is left, we hide the option for that day
+                                if (daysAvailableTimes.length === 0) {
+                                    reservation.dayOptions = reservation.dayOptions.filter(function (value, index, arr) {
+                                        return value.localeCompare(day) !== 0;
+                                    });
+                                }
                             }
                         }
                     }
@@ -425,10 +436,9 @@ let app = new Vue({
         },
         updateTimeOptions: function (reservation) {
             if (typeof reservation.teacher !== 'undefined') {
-                reservation.timeOptions = [];
+                const allTimeOptions = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+                reservation.timeOptions = allTimeOptions;
                 reservation.time = "";
-                let allTimeOptions = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
-                let timeOptionsTmp = [];
                 let teacher = reservation.teacher;
                 let teacherId = teacher.split(" ")[teacher.split(" ").length - 1];
                 let indexOfTeacher = -1;
@@ -438,35 +448,18 @@ let app = new Vue({
                     }
                 }
 
-                if (indexOfTeacher === -1) {
-                    reservation.timeOptions = allTimeOptions;
-                } else {
+                if (indexOfTeacher !== -1) {
 
                     let arrayOfLessons = this.allLessons[indexOfTeacher].lessons;
 
                     for (let i = 0; i < arrayOfLessons.length; i++) {
-                        let cond1 = reservation.subject.localeCompare(arrayOfLessons[i].lessonCourse) === 0;
-                        let time = arrayOfLessons[i].lessonTime;
-                        let cond2 = !timeOptionsTmp.includes(time);
-                        console.log(cond2)
-                        let cond3 = reservation.day.localeCompare(arrayOfLessons[i].lessonDay) === 0;
-                        console.log(cond3)
-                        let cond5 = arrayOfLessons[i].lessonTime !== "Active";
-                        console.log(cond5)
-                        if (cond1 && cond2 && cond3 && cond5){
-                            let time = arrayOfLessons[i].lessonTime;
-                            timeOptionsTmp.push(time);
+                        let lesson = arrayOfLessons[i];
+                        if (lesson.lessonState.localeCompare('Cancelled') !== 0 && lesson.lessonDay.localeCompare(reservation.day) === 0) {
+                            reservation.timeOptions = reservation.timeOptions.filter(function (value, index, array) {
+                                return value.localeCompare(lesson.lessonTime) !== 0;
+                            });
                         }
-                    }
 
-                    if (timeOptionsTmp.length === 0) {
-                        reservation.timeOptions = allTimeOptions;
-                    } else {
-                        for (let i = 0; i < allTimeOptions.length; i++) {
-                            if (!timeOptionsTmp.includes(allTimeOptions[i])) {
-                                reservation.timeOptions.push(allTimeOptions[i]);
-                            }
-                        }
                     }
                 }
             }
