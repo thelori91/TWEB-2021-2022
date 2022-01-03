@@ -104,13 +104,13 @@
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
-                            <div v-for="reservation in newReservations">
+                            <div v-for="reservation in newReservations" class="spacing">
                                 <h2 v-if="username.localeCompare('') === 0">Reservation
                                     #{{newReservations.indexOf(reservation) + 1}}</h2>
                                 <h2 v-else>Reservation #{{newReservations.indexOf(reservation) + 1}} for
                                     {{reservation.user}}</h2>
                                 <div>
-                                    <div>
+                                    <div class="spacing">
                                         <label> Subject: {{reservation.subject}}
                                             <select v-model="reservation.subject"
                                                     v-on:change="updateTeacherOptions(reservation)">
@@ -118,7 +118,8 @@
                                             </select>
                                         </label>
                                     </div>
-                                    <div v-if="reservation.subject !== undefined && reservation.subject.localeCompare('') !== 0">
+                                    <div class="spacing"
+                                         v-if="reservation.subject !== undefined && reservation.subject.localeCompare('') !== 0">
                                         <label> Teacher: {{reservation.teacher}}
                                             <select v-model="reservation.teacher"
                                                     v-on:change="updateDayOptions(reservation)">
@@ -145,12 +146,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <button  class="signInLogOutShowMSButton"
+                            <button class="commonStyleButton"
                                     type="button" v-on:click="bookLessons">
                                 Book All
                             </button>
-                            <button class="signInLogOutShowMSButton" onclick="moreReservation()">Add More</button>
-                            <button class="signInLogOutShowMSButton" onclick="lessReservation()">Remove</button>
+                            <button class="commonStyleButton" onclick="moreReservation()">Add More</button>
+                            <button class="commonStyleButton" onclick="lessReservation()">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -158,6 +159,59 @@
         </article>
         <article v-if="handleReservationPage">
             <section>
+                <!--TODO unico component con passaggio di parametro?-->
+                <div class="container-fluid center">
+                    <div class="row justify-content-md-center">
+                        <div class="col-md-auto">
+                            <h1 v-if="upcomingEventsCollection.length == 0"> No Events to be Handled</h1>
+                            <div v-else>
+                                <div class="animate__animated animate__fadeInDown">
+                                    <h1>Handle your Reservation</h1>
+                                    <h2 class="spacing">Active</h2>
+                                    <ul>
+                                        <li v-for="lesson in upcomingEventsCollection"
+                                            v-if="lesson.state.localeCompare('Active') === 0"
+                                            class="animate__animated animate__fadeInDown">
+                                            <span>✍️</span>
+                                            <b class="noticeMe">{{lesson.course}}</b> on
+                                            <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
+                                            <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
+                                            <donestatebutton v-on:transit-inner="changeStateToDone"></donestatebutton>
+                                            <cancelstatebutton v-on:transit-inner="changeStateToCancelled"></cancelstatebutton>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="animate__animated animate__fadeInDown doneDiv">
+                                    <h2 class="spacing">Done</h2>
+                                    <ul>
+                                        <li v-for="lesson in upcomingEventsCollection"
+                                            v-if="lesson.state.localeCompare('Done') === 0">
+                                            <span>✍️</span>
+                                            <b class="noticeMe">{{lesson.course}}</b> on
+                                            <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
+                                            <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
+                                            <cancelstatebutton v-on:transit-inner="changeStateToCancelled"></cancelstatebutton>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="animate__animated animate__fadeInDown cancelDiv">
+                                    <h2 class="spacing">Cancelled</h2>
+                                    <ul>
+                                        <li v-for="lesson in upcomingEventsCollection"
+                                            v-if="lesson.state.localeCompare('Cancelled') === 0"
+                                            class="animate__animated animate__fadeInDown">
+                                            <span>✍️</span>
+                                            <b class="noticeMe">{{lesson.course}}</b> on
+                                            <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
+                                            <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
+                                            <donestatebutton v-on:transit-inner="changeStateToDone"></donestatebutton>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </article>
         <article v-if="signUpPage">

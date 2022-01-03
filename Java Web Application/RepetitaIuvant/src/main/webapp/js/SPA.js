@@ -68,6 +68,26 @@ Vue.component('logosection', {
         '            </div>',
 });
 
+Vue.component('donestatebutton', {
+    template:
+        '<button v-on:click="transitInner" type="button" class="commonStyleButton">Done</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
+Vue.component('cancelstatebutton', {
+    template:
+        '<button v-on:click="transitInner" type="button" class="commonStyleButton">Cancel</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
 function seePassword() {
     let x = document.getElementsByClassName("form-control formStyle switchable");
     if (app.visiblePassword) {
@@ -216,6 +236,12 @@ let app = new Vue({
             //Only hand made binding!
             seePassword();
         },
+        changeStateToDone:function (){
+
+        },
+        changeStateToCancelled:function (){
+
+        },
         checkFields: function (isLogIn) {
             let nothingIsNull = this.newUserName != null && this.newUserSurname != null && this.newUserUname != null && this.newUserPassword != null;
 
@@ -309,9 +335,9 @@ let app = new Vue({
         showMoreLess: function () {
             this.showMore = !this.showMore;
             if (this.showMore) {
-                this.showMoreText = "Hide Cancelled/Done lessons"
+                this.showMoreText = "Hide Done/Cancelled lessons"
             } else {
-                this.showMoreText = "Show Cancelled/Done lessons"
+                this.showMoreText = "Show Done/Cancelled lessons"
             }
         },
         bookLessons: function () {
@@ -346,8 +372,7 @@ let app = new Vue({
             });
             $.post(this.linkReservationServlet, {reservations: JSON.stringify(array)}, function (data) {
                 alert(data);
-                if(data.split("\n")[0].localeCompare("Error:") !== 0)
-                {
+                if (data.split("\n")[0].localeCompare("Error:") !== 0) {
                     self.pendingOperation = false;
                     self.TOPHome();
                 }

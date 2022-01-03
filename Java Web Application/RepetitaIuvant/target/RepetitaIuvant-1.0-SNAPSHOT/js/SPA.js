@@ -68,6 +68,26 @@ Vue.component('logosection', {
         '            </div>',
 });
 
+Vue.component('donestatebutton', {
+    template:
+        '<button v-on:click="transitInner" type="button" class="commonStyleButton">Done</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
+Vue.component('cancelstatebutton', {
+    template:
+        '<button v-on:click="transitInner" type="button" class="commonStyleButton">Cancel</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
 function seePassword() {
     let x = document.getElementsByClassName("form-control formStyle switchable");
     if (app.visiblePassword) {
@@ -79,7 +99,6 @@ function seePassword() {
 
 function moreReservation() {
     app.newReservations.push({
-        user: app.username,
         subject: "",
         teacher: "",
         day: "",
@@ -119,7 +138,6 @@ let app = new Vue({
         upcomingEventsCollection: [],
         //New Lesson Variables
         newReservations: [{
-            user: this.username,
             subject: "",
             teacher: "",
             day: "",
@@ -217,6 +235,12 @@ let app = new Vue({
 
             //Only hand made binding!
             seePassword();
+        },
+        changeStateToDone:function (){
+
+        },
+        changeStateToCancelled:function (){
+
         },
         checkFields: function (isLogIn) {
             let nothingIsNull = this.newUserName != null && this.newUserSurname != null && this.newUserUname != null && this.newUserPassword != null;
@@ -348,8 +372,7 @@ let app = new Vue({
             });
             $.post(this.linkReservationServlet, {reservations: JSON.stringify(array)}, function (data) {
                 alert(data);
-                if(data.split("\n")[0].localeCompare("Error:") !== 0)
-                {
+                if (data.split("\n")[0].localeCompare("Error:") !== 0) {
                     self.pendingOperation = false;
                     self.TOPHome();
                 }
@@ -358,7 +381,6 @@ let app = new Vue({
         loadAllForNewReservation: function () {
             if (!this.pendingOperation) {
                 this.newReservations = [{
-                    user: this.username,
                     subject: "",
                     teacher: "",
                     day: "",
