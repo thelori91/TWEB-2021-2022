@@ -8,6 +8,7 @@ public class DAO {
     private static String url;
     private static String user;
     private static String psw;
+    private static Connection conn;
 
     public static void initDAO(String url, String user, String psw) {
         DAO.url = url;
@@ -16,14 +17,38 @@ public class DAO {
         registerDriver();
     }
 
+    /* CONNECTION */
+    private static void openConnection() {
+        try {
+            DAO.conn = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+            if (DAO.conn != null) {
+                System.out.println("Connected to the database Tutoring");
+            }
+        } catch (SQLException SQLex) {
+            System.out.println("Error: Problem with connection to Database Tutoring");
+            SQLex.printStackTrace();
+        }
+    }
+
+    public static void closeConnection() {
+        try {
+            if (DAO.conn != null)
+                DAO.conn.close();
+        } catch (SQLException SQLex) {
+            System.out.println("Error: Problem with closing Database Tutoring");
+            SQLex.printStackTrace();
+        }
+    }
+
     public static void registerDriver() {
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         } catch (SQLException e) {
-            System.out.println("Errore: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
+    /* SELECT */
     public static boolean existsUser(String username) throws ConnectException {
         Connection conn1 = null;
         String role = null;
@@ -264,6 +289,7 @@ public class DAO {
         return lessons;
     }
 
+    /* INSERT */
     public static void addLesson(long teacher, String course, String user, Day day, Time time) throws SQLException {
         Connection conn1 = null;
         try {
@@ -523,5 +549,27 @@ public class DAO {
                 }
             }
         }
+    }
+
+    /* UPDATE */
+    public static void updateLesson(long teacherId, String course, String user, String day, String time, String state) throws Exception {
+        openConnection();
+        String newState = " lesson.State= " + "?";
+        String tId = " WHERE Lesson.Teacher= " + "?";
+        String c = " && Lesson.Course= " + "?";
+        String usr = " && Lesson.User= " + "?";
+        String d = " && Lesson.Day= " + "?";
+        String t = " && Lesson.Time= " + "?";
+        String sql = "UPDATE Lesson SET" + newState + tId + c + usr + d + t;
+        PreparedStatement st = DAO.conn.prepareStatement(sql);
+        st.setString(1, state);
+        st.setLong(2, teacherId);
+        st.setString(3, course);
+        st.setString(4, user);
+        st.setString(5, day);
+        st.setString(6, time);
+        st.executeUpdate();
+        st.close();
+        closeConnection();
     }
 }

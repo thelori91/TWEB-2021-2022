@@ -94,7 +94,7 @@
                         <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
                         <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
                         <span v-if="lesson.state.localeCompare('Done') === 0">✔️</span>
-                        <span v-if="lesson.state.localeCompare('Cancelled') === 0">🗙</span>
+                        <span v-if="lesson.state.localeCompare('Cancelled') === 0">❌</span>
                     </li>
                 </ul>
             </div>
@@ -176,8 +176,8 @@
                                             <b class="noticeMe">{{lesson.course}}</b> on
                                             <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
                                             <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
-                                            <donestatebutton v-on:transit-inner="changeStateToDone"></donestatebutton>
-                                            <cancelstatebutton v-on:transit-inner="changeStateToCancelled"></cancelstatebutton>
+                                            <donestatebutton v-on:transit-inner="changeState(lesson, 'Done')"></donestatebutton>
+                                            <cancelstatebutton v-on:transit-inner="changeState(lesson, 'Cancelled')"></cancelstatebutton>
                                         </li>
                                     </ul>
                                 </div>
@@ -186,11 +186,11 @@
                                     <ul>
                                         <li v-for="lesson in upcomingEventsCollection"
                                             v-if="lesson.state.localeCompare('Done') === 0">
-                                            <span>✍️</span>
+                                            <span>✔️</span>
                                             <b class="noticeMe">{{lesson.course}}</b> on
                                             <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
                                             <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
-                                            <cancelstatebutton v-on:transit-inner="changeStateToCancelled"></cancelstatebutton>
+                                            <cancelstatebutton v-on:transit-inner="changeState(lesson, 'Cancelled')"></cancelstatebutton>
                                         </li>
                                     </ul>
                                 </div>
@@ -200,11 +200,11 @@
                                         <li v-for="lesson in upcomingEventsCollection"
                                             v-if="lesson.state.localeCompare('Cancelled') === 0"
                                             class="animate__animated animate__fadeInDown">
-                                            <span>✍️</span>
+                                            <span>❌️</span>
                                             <b class="noticeMe">{{lesson.course}}</b> on
                                             <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
                                             <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
-                                            <donestatebutton v-on:transit-inner="changeStateToDone"></donestatebutton>
+                                            <donestatebutton v-on:transit-inner="changeState(lesson, 'Done')"></donestatebutton>
                                         </li>
                                     </ul>
                                 </div>
@@ -222,12 +222,12 @@
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
-                            <p>We are SO happy to see you join in!</p>
+                            <h2 class="spacing">We are SO happy to see you join in!</h2>
                         </div>
                     </div>
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
-                            <p>Sign Up!</p>
+                            <h2 class="doubleSpacing">Sign Up!</h2>
                         </div>
                     </div>
                 </div>
@@ -298,12 +298,12 @@
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
-                            <h2>We are SO happy to see you again!</h2>
+                            <h1 class="spacing">We are SO happy to see you again!</h1>
                         </div>
                     </div>
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
-                            <h3>Login</h3>
+                            <h2 class="doubleSpacing">Login</h2>
                         </div>
                     </div>
                 </div>

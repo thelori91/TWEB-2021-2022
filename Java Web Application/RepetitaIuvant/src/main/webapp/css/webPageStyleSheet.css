@@ -81,22 +81,71 @@
 }
 
 /* STYLE FOR PAGE NEW RESERVATION */
-.spacing {
-    margin-bottom: 1em;
-}
 
 /* STYLE FOR PAGE HANDLE RESERVATION */
 .animate__animated.animate__fadeInDown {
     --animate-duration: 3s;
 }
+
 .animate__animated.animate__fadeInDown.doneDiv {
     --animate-duration: 3s;
     --animate-delay: 4s;
 }
+
 .animate__animated.animate__fadeInDown.cancelDiv {
     --animate-duration: 3s;
     --animate-delay: 8s;
 }
+
+.doneButton {
+    font-size: 130%;
+    background-repeat: no-repeat;
+    background-color: forestgreen;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    color: black;
+    margin-bottom: 5%;
+    transition-duration: 0.4s;
+    border-radius: 10px;
+}
+
+.doneButton:hover {
+    background-color: gray;
+    color: white;
+}
+
+.doneButton:active {
+    background-color: #D7A417;
+    color: black;
+}
+
+.cancelButton {
+    font-size: 130%;
+    background-repeat: no-repeat;
+    background-color: red;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    color: white;
+    margin-bottom: 5%;
+    transition-duration: 0.4s;
+    border-radius: 10px;
+}
+
+.cancelButton:hover {
+    background-color: gray;
+    color: white;
+}
+
+.cancelButton:active {
+    background-color: #D7A417;
+    color: black;
+}
+
+/* STYLE FOR PAGE SIGN IN */
 
 /* STYLE FOR PAGE SIGN UP */
 .signInButton {
@@ -274,5 +323,12 @@ input:active {
     color: black;
 }
 
+.spacing {
+    margin-bottom: 1em;
+}
+
+.doubleSpacing {
+    margin-bottom: 2em;
+}
 
 

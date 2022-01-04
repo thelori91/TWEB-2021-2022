@@ -70,7 +70,7 @@ Vue.component('logosection', {
 
 Vue.component('donestatebutton', {
     template:
-        '<button v-on:click="transitInner" type="button" class="commonStyleButton">Done</button>',
+        '<button v-on:click="transitInner" type="button" class="doneButton">Done</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -80,7 +80,7 @@ Vue.component('donestatebutton', {
 
 Vue.component('cancelstatebutton', {
     template:
-        '<button v-on:click="transitInner" type="button" class="commonStyleButton">Cancel</button>',
+        '<button v-on:click="transitInner" type="button" class="cancelButton">Cancel</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -160,7 +160,8 @@ let app = new Vue({
         linkOnLoadServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/onLoad-servlet",
         linkReservationServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/reservation-servlet",
         linkGetAllTeacherCoursesServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllTeacherCourses-servlet",
-        linkGetAllLessonsServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllLessons-servlet"
+        linkGetAllLessonsServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllLessons-servlet",
+        linkUpdateLessonServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/updateLesson-servlet",
     },
     methods: {
         TOPHome: function () {
@@ -236,10 +237,19 @@ let app = new Vue({
             //Only hand made binding!
             seePassword();
         },
-        changeStateToDone:function (){
-
-        },
-        changeStateToCancelled:function (){
+        changeState: function (lesson, eventState) {
+            var self = this;
+            $.post(this.linkUpdateLessonServlet, {
+                teacherId: lesson.teacherId,
+                course: lesson.course,
+                username: this.username,
+                day: lesson.day,
+                time: lesson.time,
+                state: eventState
+            }, function (data) {
+                alert(data);
+            });
+            this.onPageLoad();
 
         },
         checkFields: function (isLogIn) {
@@ -335,9 +345,9 @@ let app = new Vue({
         showMoreLess: function () {
             this.showMore = !this.showMore;
             if (this.showMore) {
-                this.showMoreText = "Hide Cancelled/Done lessons"
+                this.showMoreText = "Hide Done/Cancelled lessons"
             } else {
-                this.showMoreText = "Show Cancelled/Done lessons"
+                this.showMoreText = "Show Done/Cancelled lessons"
             }
         },
         bookLessons: function () {

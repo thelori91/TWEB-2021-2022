@@ -54,6 +54,7 @@ public class OnLoadServlet extends HttpServlet {
                         lessonJSON.put("course", lesson.getCourse().getName());
                         lessonJSON.put("teacherName", lesson.getTeacher().getName());
                         lessonJSON.put("teacherSurname" , lesson.getTeacher().getSurname());
+                        lessonJSON.put("teacherId" , lesson.getTeacher().getID());
                         lessonJSON.put("day", Conversions.dayToString(lesson.getDay()));
                         lessonJSON.put("time", Conversions.timeToString(lesson.getTime()));
                         lessonJSON.put("state", Conversions.stateToString(lesson.getState()));
