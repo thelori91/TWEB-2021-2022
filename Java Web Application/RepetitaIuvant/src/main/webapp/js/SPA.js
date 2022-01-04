@@ -9,7 +9,7 @@ Vue.component('homebutton', {
 });
 
 Vue.component('newreservationbutton', {
-    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">New Reservation</button>',
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg commonStyleButton">New Reservation</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -18,7 +18,7 @@ Vue.component('newreservationbutton', {
 });
 
 Vue.component('reservationbutton', {
-    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Handle Reservation</button>',
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg commonStyleButton">Handle Reservation</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -38,7 +38,7 @@ Vue.component('signinbutton', {
 
 Vue.component('teacherbutton', {
     template:
-        '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection">Teachers</button>',
+        '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg commonStyleButton">Teachers</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -47,7 +47,7 @@ Vue.component('teacherbutton', {
 });
 
 Vue.component('coursebutton', {
-    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Courses</button>',
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg commonStyleButton ">Courses</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -56,7 +56,7 @@ Vue.component('coursebutton', {
 });
 
 Vue.component('advancedbutton', {
-    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Advanced</button>',
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg commonStyleButton ">Advanced</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -139,7 +139,7 @@ let app = new Vue({
         visiblePassword: false,
         showMore: false,
         redirectFunction: 'Home',
-        showMoreText: "Show Cancelled/Done lessons",
+        showMoreText: "Show Done/Cancelled lessons",
         newUserUname: "",
         newUserPassword: "",
         newUserName: "",
@@ -147,6 +147,8 @@ let app = new Vue({
         username: "",
         role: "",
         upcomingEventsCollection: [],
+        teacherCourse: [],
+        selectedTeacher: "",
         //New Lesson Variables
         newReservations: [{
             subject: "",
@@ -183,6 +185,8 @@ let app = new Vue({
         linkGetAllLessonsServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllLessons-servlet",
         linkUpdateLessonServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/updateLesson-servlet",
         linkAddTeacherServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/addTeacher-servlet",
+        linkRmvTeacherServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/rmvTeacher-servlet",
+        linkAddCourseServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/addCourse-servlet",
     },
     methods: {
         TOPHome: function () {
@@ -270,6 +274,7 @@ let app = new Vue({
             this.signInPage = false;
             this.signUpPage = false;
             this.adminPage = true;
+            this.loadAllForTeacherOption();
         },
         updateWrongPassword: function () {
             this.wrongPassword = !(this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20);
@@ -582,12 +587,49 @@ let app = new Vue({
                 }
             }
         },
-        addTeacher: function ()
-        {
-            $.get(this.linkAddTeacherServlet, {teacherName: this.newTeacherName, teacherSurname: this.newTeacherSurname}, function (data) {
+        addTeacher: function () {
+            $.get(this.linkAddTeacherServlet, {
+                teacherName: this.newTeacherName,
+                teacherSurname: this.newTeacherSurname
+            }, function (data) {
                 alert(data);
             });
-        }
+        },
+        rmvTeacher: function () {
+            var self = this;
+            $.get(this.linkRmvTeacherServlet,{selectedTeacher: this.selectedTeacher}, function (data) {
+
+            });
+        },
+        loadAllForTeacherOption: function () {
+            var self = this;
+            $.get(this.linkGetAllTeacherCoursesServlet, function (data) {
+                let arrayOfCourses = JSON.parse(data);
+                self.initTeacherOption(arrayOfCourses);
+            });
+        },
+        initTeacherOption: function (arrayOfCourses){
+            for (let i = 0; i < arrayOfCourses.length; i++) {
+                for (let j = 0; j < arrayOfCourses[i].teachers.length; j++) {
+                    var teacherId = arrayOfCourses[i].teachers[j].teacherId;
+                    var teacherName = arrayOfCourses[i].teachers[j].teacherName;
+                    var teacherSurname = arrayOfCourses[i].teachers[j].teacherSurname;
+                    var stringTeacher = teacherName+" "+teacherSurname+" "+String(teacherId);
+                    if (!this.teacherCourse.includes(stringTeacher)) {
+                        this.teacherCourse.push(
+                            stringTeacher
+                        );
+                    }
+                }
+            }
+        },
+        addCourse: function () {
+            $.get(this.linkAddCourseServlet, {
+                courseName: this.newCourseName
+            }, function (data) {
+                alert(data);
+            });
+        },
     },
     beforeMount() {
         this.onPageLoad();

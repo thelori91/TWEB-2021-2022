@@ -72,8 +72,7 @@
                     <reservationbutton v-on:transit-inner="TOPHandleReservation"></reservationbutton>
                     <teacherbutton v-on:transit-inner="TOP3"></teacherbutton>
                     <coursebutton v-on:transit-inner="TOP4"></coursebutton>
-                    <advancedbutton v-if="role.localeCompare('Admin') === 0"
-                                    v-on:transit-inner="TOPadmin"></advancedbutton>
+                    <advancedbutton v-if="role.localeCompare('Admin') === 0" v-on:transit-inner="TOPadmin"></advancedbutton>
                 </div>
             </div>
             <div v-if="username.localeCompare('') !== 0" class="container-fluid" id="upcomingEvents">
@@ -86,7 +85,7 @@
                         <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
                     </li>
                 </ul>
-                <button class="showMoreStyleButton" type="button" v-on:click="showMoreLess">{{showMoreText}}
+                <button class="btn btn-primary btn-dark commonStyleButton commonStyleButtonClick" type="button" v-on:click="showMoreLess">{{showMoreText}}
                 </button>
                 <ul v-if="showMore">
                     <li v-for="lesson in upcomingEventsCollection" v-if="lesson.state.localeCompare('Active') !== 0">
@@ -144,12 +143,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="commonStyleButton"
-                                    type="button" v-on:click="bookLessons">
+                            <button class="btn btn-primary btn-dark commonStyleButton commonStyleButtonClick" type="button" v-on:click="bookLessons">
                                 Book All
                             </button>
-                            <button class="commonStyleButton" onclick="moreReservation()">Add More</button>
-                            <button class="commonStyleButton" onclick="lessReservation()">Remove</button>
+                            <button class="btn btn-primary btn-dark commonStyleButton commonStyleButtonClick" onclick="moreReservation()">Add More</button>
+                            <button class="btn btn-primary btn-dark commonStyleButton commonStyleButtonClick" onclick="lessReservation()">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -470,34 +468,40 @@
             <div class="container-fluid center">
                 <div class="row justify-content-md-center">
                     <section>
+                        <div class="col-md-auto spacing">
+                            <h2>New Teacher</h2>
+                            <label>
+                                Insert Teacher name:
+                                <input v-model="newTeacherName" type="text" placeholder="Teacher Name">
+                            </label>
+                            <label>
+                                Insert Teacher Surname:
+                                <input v-model="newTeacherSurname" type="text" placeholder="Teacher Surname">
+                            </label>
+                            <button class="btn btn-primary btn-dark commonStyleButton commonStyleButtonClick" v-on:click="addTeacher" type="button">Add Teacher</button>
+                        </div>
 
-                        <div class="col-md-auto">
-                            <div id="addTeacher">
-                                <h1>New Teacher</h1>
-                                <label>
-                                    Insert Teacher name:
-                                    <input v-model="newTeacherName" type="text" placeholder="Teacher Name">
-                                </label>
-                                <label>
-                                    Insert Teacher Surname:
-                                    <input v-model="newTeacherSurname" type="text" placeholder="Teacher Surname">
-                                </label>
-                                <button v-on:click="addTeacher" type="button" class="commonStyleButton">Add Teacher</button>
-                            </div>
+                        <div class="col-md-auto spacing">
+                            <h2>Remove Teacher</h2>
+                            <label> Teacher:
+                                <select v-model="selectedTeacher">
+                                    <option v-for="option in teacherCourse">{{option}}</option>
+                                </select>
+                                <button class="btn btn-primary btn-dark commonStyleButton commonStyleButtonClick" v-on:click="rmvTeacher" type="button">Remove Teacher
+                                </button>
+                            </label>
                         </div>
 
                         <div class="col-md-auto">
                             <div id="addCourse">
-                                <h1>New Course</h1>
+                                <h2>New Course</h2>
                                 <label>
                                     Insert Course Name
                                     <input v-model="newCourseName" type="text" placeholder="Name">
                                 </label>
-                                <button type="button" class="commonStyleButton">Add Course</button>
+                                <button class="btn btn-primary btn-dark commonStyleButton commonStyleButtonClick" v-on:click="addCourse" type="button">Add Course</button>
                             </div>
                         </div>
-
-
                     </section>
 
 
