@@ -14,11 +14,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="./css/webPageStyleSheet.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merienda">
+    <link rel="icon" href="./image/Logo.png">
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <!--TODO: aggiustare password-->
 
     <title>REPETITA IUVANT</title>
 </head>
@@ -73,6 +72,7 @@
                     <reservationbutton v-on:transit-inner="TOPHandleReservation"></reservationbutton>
                     <teacherbutton v-on:transit-inner="TOP3"></teacherbutton>
                     <coursebutton v-on:transit-inner="TOP4"></coursebutton>
+                    <!--Admin Page 1-->
                 </div>
             </div>
             <div v-if="username.localeCompare('') !== 0" class="container-fluid" id="upcomingEvents">
@@ -85,7 +85,7 @@
                         <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
                     </li>
                 </ul>
-                <button class="signInLogOutShowMSButton" type="button" v-on:click="showMoreLess">{{showMoreText}}
+                <button class="showMoreStyleButton" type="button" v-on:click="showMoreLess">{{showMoreText}}
                 </button>
                 <ul v-if="showMore">
                     <li v-for="lesson in upcomingEventsCollection" v-if="lesson.state.localeCompare('Active') !== 0">
@@ -105,10 +105,7 @@
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
                             <div v-for="reservation in newReservations" class="spacing">
-                                <h2 v-if="username.localeCompare('') === 0">Reservation
-                                    #{{newReservations.indexOf(reservation) + 1}}</h2>
-                                <h2 v-else>Reservation #{{newReservations.indexOf(reservation) + 1}} for
-                                    {{reservation.user}}</h2>
+                                <h2>Reservation #{{newReservations.indexOf(reservation) + 1}}</h2>
                                 <div>
                                     <div class="spacing">
                                         <label> Subject: {{reservation.subject}}
@@ -159,7 +156,6 @@
         </article>
         <article v-if="handleReservationPage">
             <section>
-                <!--TODO unico component con passaggio di parametro?-->
                 <div class="container-fluid center">
                     <div class="row justify-content-md-center">
                         <div class="col-md-auto">
@@ -190,7 +186,6 @@
                                             <b class="noticeMe">{{lesson.course}}</b> on
                                             <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
                                             <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
-                                            <cancelstatebutton v-on:transit-inner="changeState(lesson, 'Cancelled')"></cancelstatebutton>
                                         </li>
                                     </ul>
                                 </div>
@@ -204,7 +199,6 @@
                                             <b class="noticeMe">{{lesson.course}}</b> on
                                             <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
                                             <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
-                                            <donestatebutton v-on:transit-inner="changeState(lesson, 'Done')"></donestatebutton>
                                         </li>
                                     </ul>
                                 </div>
@@ -256,7 +250,7 @@
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="input-group mb-3">
-                                    <input v-model="newUserPassword" name="password" oninput="handle" type="password"
+                                    <input v-model="newUserPassword" name="password" v-on:input="updateWrongPassword" type="password"
                                            data-target=".tab-group-1 #inputPassword6"
                                            class="form-control formStyle switchable" placeholder="Password">
                                     <button class="btn btn-outline-secondary" type="button" v-if="visiblePassword"
@@ -320,7 +314,7 @@
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="input-group mb-3">
-                                    <input v-model="newUserPassword" name="password" oninput="handle" type="password"
+                                    <input v-model="newUserPassword" name="password" v-on:input="updateWrongPassword" type="password"
                                            data-target=".tab-group-2 #inputPassword6"
                                            class="form-control formStyle switchable" placeholder="Password">
                                     <button class="btn btn-outline-secondary" type="button" v-if="visiblePassword"

@@ -31,6 +31,7 @@ public class LogOutServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
+        response.setContentType("text/plain");
         request.getSession().invalidate();
         out.println("Log out successful");
     }

@@ -35,7 +35,6 @@ public class UpdateLesson extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        // Check session ok ?
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(false);
         if (session == null) return;
@@ -44,14 +43,17 @@ public class UpdateLesson extends HttpServlet {
             out = response.getWriter();
             String teacherId = request.getParameter("teacherId");
             String course = request.getParameter("course");
-            String user = request.getParameter("username");
+            String user = (String) session.getAttribute("username");
+            String password = (String) session.getAttribute("password");
             String day = request.getParameter("day");
             String time = request.getParameter("time");
             String state = request.getParameter("state");
             try {
-                DAO.updateLesson(Long.parseLong(teacherId), course, user, day, time, state);
-                out.println("Success:");
-                out.println("Lesson is now Updated");
+                if (DAO.logInFunction(user, password)) {
+                    DAO.updateLesson(Long.parseLong(teacherId), course, user, day, time, state);
+                    out.println("Success:");
+                    out.println("Lesson is now Updated");
+                }
             } catch (Exception ex) {
                 out.println("Error:");
                 out.println("Cannot update Lesson");

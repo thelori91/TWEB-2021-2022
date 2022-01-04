@@ -128,6 +128,7 @@ let app = new Vue({
         wrongPassword: false,
         visiblePassword: false,
         showMore: false,
+        redirectFunction: 'Home',
         showMoreText: "Show Cancelled/Done lessons",
         newUserUname: "",
         newUserPassword: "",
@@ -174,13 +175,17 @@ let app = new Vue({
             this.signUpPage = false;
         },
         TOPHandleReservation: function () {
-            this.homePage = false;
-            this.handleReservationPage = true;
-            this.newReservationPage = false;
-            this.thirdPage = false;
-            this.fourthPage = false;
-            this.signInPage = false;
-            this.signUpPage = false;
+            if (this.username.localeCompare('') !== 0) {
+                this.homePage = false;
+                this.handleReservationPage = true;
+                this.newReservationPage = false;
+                this.thirdPage = false;
+                this.fourthPage = false;
+                this.signInPage = false;
+                this.signUpPage = false;
+            } else {
+                this.TOPSignUp();
+            }
         },
         TOPnewReservation: function () {
             this.homePage = false;
@@ -228,7 +233,7 @@ let app = new Vue({
             this.signInPage = false;
             this.signUpPage = true;
         },
-        handle: function () {
+        updateWrongPassword: function () {
             this.wrongPassword = !(this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20);
         },
         toggle: function () {
@@ -248,9 +253,10 @@ let app = new Vue({
                 state: eventState
             }, function (data) {
                 alert(data);
+                if (data.split('\n')[0].localeCompare('Error:') !== 0) {
+                    self.onPageLoad();
+                }
             });
-            this.onPageLoad();
-
         },
         checkFields: function (isLogIn) {
             let nothingIsNull = this.newUserName != null && this.newUserSurname != null && this.newUserUname != null && this.newUserPassword != null;
@@ -293,7 +299,9 @@ let app = new Vue({
                         self.username = response[1];
                         self.role = response[2];
                         self.onPageLoad();
-                        self.TOPHome();
+                        if (self.redirectFunction.localeCompare('Home') === 0) self.TOPHome();
+                        if (self.redirectFunction.localeCompare('NewReservation') === 0) self.TOPnewReservation();
+                        self.redirectFunction = 'Home';
                     } else
                         alert(data);
                 });
@@ -312,7 +320,9 @@ let app = new Vue({
                         self.username = response[1];
                         self.role = response[2];
                         self.onPageLoad();
-                        self.TOPHome();
+                        if (self.redirectFunction.localeCompare('Home') === 0) self.TOPHome();
+                        if (self.redirectFunction.localeCompare('NewReservation') === 0) self.TOPnewReservation();
+                        self.redirectFunction = 'Home';
                     } else
                         alert(data);
                 });
@@ -338,7 +348,7 @@ let app = new Vue({
                     self.username = obj[0].username;
                     self.role = obj[0].role;
                 } catch (e) {
-                    console.log(e);
+                    console.log('Error: http session does not contain username and password, log in/sign up to fix.');
                 }
             });
         },
@@ -358,6 +368,7 @@ let app = new Vue({
                 alert('Please, Sign In before you book any lesson.\nIf you are new, please, Sign Up!');
                 this.pendingOperation = true;
                 this.TOPSignUp();
+                this.redirectFunction = 'NewReservation';
                 return;
             }
 
