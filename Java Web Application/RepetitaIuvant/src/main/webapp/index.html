@@ -72,7 +72,8 @@
                     <reservationbutton v-on:transit-inner="TOPHandleReservation"></reservationbutton>
                     <teacherbutton v-on:transit-inner="TOP3"></teacherbutton>
                     <coursebutton v-on:transit-inner="TOP4"></coursebutton>
-                    <!--Admin Page 1-->
+                    <advancedbutton v-if="role.localeCompare('Admin') === 0"
+                                    v-on:transit-inner="TOPadmin"></advancedbutton>
                 </div>
             </div>
             <div v-if="username.localeCompare('') !== 0" class="container-fluid" id="upcomingEvents">
@@ -172,8 +173,10 @@
                                             <b class="noticeMe">{{lesson.course}}</b> on
                                             <b class="noticeMe">{{lesson.day}} at {{lesson.time}}</b> with
                                             <b class="noticeMe">{{lesson.teacherName}} {{lesson.teacherSurname}}</b>
-                                            <donestatebutton v-on:transit-inner="changeState(lesson, 'Done')"></donestatebutton>
-                                            <cancelstatebutton v-on:transit-inner="changeState(lesson, 'Cancelled')"></cancelstatebutton>
+                                            <donestatebutton
+                                                    v-on:transit-inner="changeState(lesson, 'Done')"></donestatebutton>
+                                            <cancelstatebutton
+                                                    v-on:transit-inner="changeState(lesson, 'Cancelled')"></cancelstatebutton>
                                         </li>
                                     </ul>
                                 </div>
@@ -250,7 +253,8 @@
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="input-group mb-3">
-                                    <input v-model="newUserPassword" name="password" v-on:input="updateWrongPassword" type="password"
+                                    <input v-model="newUserPassword" name="password" v-on:input="updateWrongPassword"
+                                           type="password"
                                            data-target=".tab-group-1 #inputPassword6"
                                            class="form-control formStyle switchable" placeholder="Password">
                                     <button class="btn btn-outline-secondary" type="button" v-if="visiblePassword"
@@ -314,7 +318,8 @@
                             </div>
                             <div class="row g-3 align-items-center">
                                 <div class="input-group mb-3">
-                                    <input v-model="newUserPassword" name="password" v-on:input="updateWrongPassword" type="password"
+                                    <input v-model="newUserPassword" name="password" v-on:input="updateWrongPassword"
+                                           type="password"
                                            data-target=".tab-group-2 #inputPassword6"
                                            class="form-control formStyle switchable" placeholder="Password">
                                     <button class="btn btn-outline-secondary" type="button" v-if="visiblePassword"
@@ -461,10 +466,64 @@
                 </form>
             </section>
         </article>
+        <article v-if="adminPage">
+            <div class="container-fluid center">
+                <div class="row justify-content-md-center">
+                    <section>
+
+                        <div class="col-md-auto">
+                            <div id="addTeacher">
+                                <h1>New Teacher</h1>
+                                <label>
+                                    Insert Teacher name:
+                                    <input v-model="newTeacherName" type="text" placeholder="Teacher Name">
+                                </label>
+                                <label>
+                                    Insert Teacher Surname:
+                                    <input v-model="newTeacherSurname" type="text" placeholder="Teacher Surname">
+                                </label>
+                                <button v-on:click="addTeacher" type="button" class="commonStyleButton">Add Teacher</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-auto">
+                            <div id="addCourse">
+                                <h1>New Course</h1>
+                                <label>
+                                    Insert Course Name
+                                    <input v-model="newCourseName" type="text" placeholder="Name">
+                                </label>
+                                <button type="button" class="commonStyleButton">Add Course</button>
+                            </div>
+                        </div>
+
+
+                    </section>
+
+
+                    <div class="row justify-content-md-center">
+                        <section>
+                            <div id="joinTeacherCourse">
+
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="row justify-content-md-center">
+                        <section>
+                            <div id="listOfLessons">
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+        </article>
     </div>
     <footer>
         <div class="d-flex justify-content-between">
-            <div class="p-2">legal info of the company/universtiy</div>
+            <div class="p-2">Dipartimento Informatica | Corso Svizzera 185 - 10149 Torino</div>
             <div class="p-2">Design by Andrea Cacioli, Lorenzo Cassinelli</div>
         </div>
     </footer>

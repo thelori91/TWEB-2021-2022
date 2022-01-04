@@ -1,6 +1,7 @@
 package com.ium.repetitaiuvant.servlets;
 
 import com.ium.repetitaiuvant.DAO.DAO;
+import com.ium.repetitaiuvant.DAO.Role;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -12,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 
 
-@WebServlet(name = "updateLessonServlet", value = "/updateLesson-servlet")
-public class UpdateLesson extends HttpServlet {
-
+@WebServlet(name = "addTeacherServlet", value = "/addTeacher-servlet")
+public class AddTeacherServlet extends HttpServlet {
     public void init(ServletConfig conf) throws ServletException {
         super.init(conf);
         ServletContext ctx = conf.getServletContext();
@@ -41,23 +42,32 @@ public class UpdateLesson extends HttpServlet {
         PrintWriter out = null;
         try {
             out = response.getWriter();
-            String teacherId = request.getParameter("teacherId");
-            String course = request.getParameter("course");
             String user = (String) session.getAttribute("username");
             String password = (String) session.getAttribute("password");
-            String day = request.getParameter("day");
-            String time = request.getParameter("time");
-            String state = request.getParameter("state");
             try {
-                if (DAO.logInFunction(user, password)) {
-                    DAO.updateLesson(Long.parseLong(teacherId), course, user, day, time, state);
+                if (DAO.logInFunction(user, password) && DAO.getRole(user, password) == Role.ADMIN) {
+                    String name = request.getParameter("teacherName");
+                    String surname = request.getParameter("teacherSurname");
+                    name = name.trim();
+                    surname = surname.trim();
+                    if(name.length() == 0 || surname.length()==0)
+                    {
+                        out.println("Error:");
+                        out.println("Invalid input");
+                        return;
+                    }
+                    DAO.addTeacher(name,surname);
                     out.println("Success:");
-                    out.println("Lesson is now Updated");
+                    out.println("Teacher added correctly");
                 }
-            } catch (Exception ex) {
+            }catch (ConnectException connectException)
+            {
+                out.println("Error:");
+                out.println("Cannot contact server");
+            }
+            catch (Exception ex) {
                 out.println("Error:");
                 out.println("Cannot update Lesson");
-                DAO.closeConnection();
             }
         } catch (IOException e) {
             System.err.println("Error: can't use PrintWriter");

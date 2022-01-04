@@ -55,6 +55,15 @@ Vue.component('coursebutton', {
     }
 });
 
+Vue.component('advancedbutton', {
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg greyHoverSelection ">Advanced</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
 Vue.component('logosection', {
     template: '<div class="container-fluid center">\n' +
         '                <div class="row justify-content-md-center">\n' +
@@ -125,6 +134,7 @@ let app = new Vue({
         fourthPage: false,
         signInPage: false,
         signUpPage: false,
+        adminPage: false,
         wrongPassword: false,
         visiblePassword: false,
         showMore: false,
@@ -155,6 +165,15 @@ let app = new Vue({
         allLessons: [],
         pendingOperation: false,
         //////////////////////
+
+        //ADMIN PAGE
+        //New Teacher
+        newTeacherName: "",
+        newTeacherSurname: "",
+        //New Course
+        newCourseName: "",
+
+        //Links
         linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet",
         linkSingInServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signIn-servlet",
         linkLogOutServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/logOut-servlet",
@@ -163,6 +182,7 @@ let app = new Vue({
         linkGetAllTeacherCoursesServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllTeacherCourses-servlet",
         linkGetAllLessonsServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllLessons-servlet",
         linkUpdateLessonServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/updateLesson-servlet",
+        linkAddTeacherServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/addTeacher-servlet",
     },
     methods: {
         TOPHome: function () {
@@ -173,6 +193,7 @@ let app = new Vue({
             this.fourthPage = false;
             this.signInPage = false;
             this.signUpPage = false;
+            this.adminPage = false;
         },
         TOPHandleReservation: function () {
             if (this.username.localeCompare('') !== 0) {
@@ -183,6 +204,7 @@ let app = new Vue({
                 this.fourthPage = false;
                 this.signInPage = false;
                 this.signUpPage = false;
+                this.adminPage = false;
             } else {
                 this.TOPSignUp();
             }
@@ -195,6 +217,7 @@ let app = new Vue({
             this.fourthPage = false;
             this.signInPage = false;
             this.signUpPage = false;
+            this.adminPage = false;
             this.loadAllForNewReservation();
         },
         TOP3: function () {
@@ -205,6 +228,7 @@ let app = new Vue({
             this.fourthPage = false;
             this.signInPage = false;
             this.signUpPage = false;
+            this.adminPage = false;
         },
         TOP4: function () {
             this.homePage = false;
@@ -214,6 +238,7 @@ let app = new Vue({
             this.fourthPage = true;
             this.signInPage = false;
             this.signUpPage = false;
+            this.adminPage = false;
         },
         TOPSignIn: function () {
             this.homePage = false;
@@ -223,6 +248,7 @@ let app = new Vue({
             this.fourthPage = false;
             this.signInPage = true;
             this.signUpPage = false;
+            this.adminPage = false;
         },
         TOPSignUp: function () {
             this.homePage = false;
@@ -232,6 +258,18 @@ let app = new Vue({
             this.fourthPage = false;
             this.signInPage = false;
             this.signUpPage = true;
+            this.adminPage = false;
+        },
+        TOPadmin: function () {
+            if (this.role.localeCompare('Admin') !== 0) return;
+            this.homePage = false;
+            this.handleReservationPage = false;
+            this.newReservationPage = false;
+            this.thirdPage = false;
+            this.fourthPage = false;
+            this.signInPage = false;
+            this.signUpPage = false;
+            this.adminPage = true;
         },
         updateWrongPassword: function () {
             this.wrongPassword = !(this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20);
@@ -543,6 +581,12 @@ let app = new Vue({
                     }
                 }
             }
+        },
+        addTeacher: function ()
+        {
+            $.get(this.linkAddTeacherServlet, {teacherName: this.newTeacherName, teacherSurname: this.newTeacherSurname}, function (data) {
+                alert(data);
+            });
         }
     },
     beforeMount() {

@@ -424,11 +424,14 @@ public class DAO {
         }
     }
 
-    public static void addTeacherServlet(String name, String surname) {
+    public static void addTeacher(String name, String surname) throws ConnectException{
         Connection conn1 = null;
-        String choice;
         try {
-            conn1 = DriverManager.getConnection(url, user, psw);
+            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+            if (conn1 == null) {
+                System.err.println("Unable to establish a connection!");
+                throw new ConnectException();
+            }
             String sql = "INSERT INTO Teacher(Name, Surname) VALUES(?,?)";
             PreparedStatement st = conn1.prepareStatement(sql);
             st.setString(1, name);
