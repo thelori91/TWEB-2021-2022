@@ -295,32 +295,13 @@ input:active {
     box-shadow: none !important;
 }
 
-.greyHoverSelection:hover {
+.commonStyleButton:hover {
     background-color: darkgray;
 }
 
-.commonStyleButton {
-    font-size: 130%;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    overflow: hidden;
-    outline: none;
-    color: black;
-    margin-bottom: 5%;
-    transition-duration: 0.4s;
-    border-radius: 10px;
-}
-
-.commonStyleButton:hover {
-    background-color: gray;
-    color: white;
-}
-
-.commonStyleButton:active {
+.commonStyleButtonClick:active {
     background-color: #D7A417;
-    color: black;
+    color: white;
 }
 
 .spacing {
@@ -329,29 +310,6 @@ input:active {
 
 .doubleSpacing {
     margin-bottom: 2em;
-}
-
-.showMoreStyleButton {
-    font-size: 130%;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    overflow: hidden;
-    outline: none;
-    color: white;
-    transition-duration: 0.4s;
-    border-radius: 10px;
-}
-
-.showMoreStyleButton:hover {
-    background-color: gray;
-    color: white;
-}
-
-.showMoreStyleButton:active {
-    background-color: #D7A417;
-    color: black;
 }
 
 
