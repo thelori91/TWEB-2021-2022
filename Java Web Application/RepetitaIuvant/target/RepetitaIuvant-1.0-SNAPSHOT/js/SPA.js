@@ -127,6 +127,7 @@ function lessReservation() {
 let app = new Vue({
     el: '#SPA',
     data: {
+        /* PAGE */
         homePage: true,
         handleReservationPage: false,
         newReservationPage: false,
@@ -135,11 +136,14 @@ let app = new Vue({
         signInPage: false,
         signUpPage: false,
         adminPage: false,
+        /* HANDLER FOR PASSWORD */
         wrongPassword: false,
         visiblePassword: false,
+        /* BUTTON */
         showMore: false,
         redirectFunction: 'Home',
         showMoreText: "Show Done/Cancelled lessons",
+
         newUserUname: "",
         newUserPassword: "",
         newUserName: "",
@@ -147,9 +151,7 @@ let app = new Vue({
         username: "",
         role: "",
         upcomingEventsCollection: [],
-        teacherCourse: [],
-        selectedTeacher: "",
-        //New Lesson Variables
+        /* New Lesson Variables */
         newReservations: [{
             subject: "",
             teacher: "",
@@ -168,14 +170,27 @@ let app = new Vue({
         pendingOperation: false,
         //////////////////////
 
-        //ADMIN PAGE
-        //New Teacher
+        /* ADMIN PAGE */
+        /* Teacher */
         newTeacherName: "",
         newTeacherSurname: "",
-        //New Course
-        newCourseName: "",
+        selectedTeacher: "",
+        rmvTeacherOptions: [],
 
-        //Links
+        /* Course */
+        newCourseName: "",
+        selectedCourse: "",
+        rmvCourseOptions: [],
+
+        /* Teacher Course */
+        selectedTeacherCourseT: "",
+        selectedTeacherCourseC: "",
+        allTeachers: [],
+        allCourses: [],
+        teacherCourseOptions: [],
+        selectedTeacherCourse: "",
+
+        /* LINKS */
         linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet",
         linkSingInServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signIn-servlet",
         linkLogOutServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/logOut-servlet",
@@ -187,6 +202,11 @@ let app = new Vue({
         linkAddTeacherServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/addTeacher-servlet",
         linkRmvTeacherServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/rmvTeacher-servlet",
         linkAddCourseServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/addCourse-servlet",
+        linkRmvCourseServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/rmvCourse-servlet",
+        linkAddTeacherCourseServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/addTeacherCourse-servlet",
+        linkRmvTeacherCourseServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/rmvTeacherCourse-servlet",
+        linkGetAllTeachersServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllTeachers-servlet",
+        linkGetAllCoursesServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/getAllCourses-servlet",
     },
     methods: {
         TOPHome: function () {
@@ -274,7 +294,11 @@ let app = new Vue({
             this.signInPage = false;
             this.signUpPage = false;
             this.adminPage = true;
-            this.loadAllForTeacherOption();
+            this.loadAllForTeacherOptions();
+            this.loadAllForCourseOptions();
+            this.getAllTeachers();
+            this.getAllCourses();
+            this.initTeacherCourseOptions();
         },
         updateWrongPassword: function () {
             this.wrongPassword = !(this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20);
@@ -593,30 +617,35 @@ let app = new Vue({
                 teacherSurname: this.newTeacherSurname
             }, function (data) {
                 alert(data);
+                self.getAllTeachers();
             });
         },
         rmvTeacher: function () {
             var self = this;
-            $.get(this.linkRmvTeacherServlet,{selectedTeacher: this.selectedTeacher}, function (data) {
-
+            $.get(this.linkRmvTeacherServlet, {selectedTeacher: this.selectedTeacher}, function (data) {
+                alert(data);
+                self.selectedTeacher = "";
+                self.rmvTeacherOptions = [];
+                self.loadAllForTeacherOptions();
+                self.loadAllForCourseOptions();
             });
         },
-        loadAllForTeacherOption: function () {
+        loadAllForTeacherOptions: function () {
             var self = this;
             $.get(this.linkGetAllTeacherCoursesServlet, function (data) {
                 let arrayOfCourses = JSON.parse(data);
-                self.initTeacherOption(arrayOfCourses);
+                self.initTeachersOptions(arrayOfCourses);
             });
         },
-        initTeacherOption: function (arrayOfCourses){
+        initTeachersOptions: function (arrayOfCourses) {
             for (let i = 0; i < arrayOfCourses.length; i++) {
                 for (let j = 0; j < arrayOfCourses[i].teachers.length; j++) {
                     var teacherId = arrayOfCourses[i].teachers[j].teacherId;
                     var teacherName = arrayOfCourses[i].teachers[j].teacherName;
                     var teacherSurname = arrayOfCourses[i].teachers[j].teacherSurname;
-                    var stringTeacher = teacherName+" "+teacherSurname+" "+String(teacherId);
-                    if (!this.teacherCourse.includes(stringTeacher)) {
-                        this.teacherCourse.push(
+                    var stringTeacher = teacherName + " " + teacherSurname + " " + String(teacherId);
+                    if (!this.rmvTeacherOptions.includes(stringTeacher)) {
+                        this.rmvTeacherOptions.push(
                             stringTeacher
                         );
                     }
@@ -624,12 +653,107 @@ let app = new Vue({
             }
         },
         addCourse: function () {
+            var self = this;
             $.get(this.linkAddCourseServlet, {
                 courseName: this.newCourseName
             }, function (data) {
                 alert(data);
+                self.getAllCourses();
             });
         },
+        rmvCourse: function () {
+            var self = this;
+            $.get(this.linkRmvCourseServlet, {selectedCourse: this.selectedCourse}, function (data) {
+                alert(data);
+                self.selectedCourse = "";
+                self.rmvCourseOptions = [];
+                self.loadAllForTeacherOptions();
+                self.loadAllForCourseOptions();
+            });
+        },
+        loadAllForCourseOptions: function () {
+            var self = this;
+            $.get(this.linkGetAllTeacherCoursesServlet, function (data) {
+                let arrayOfCourses = JSON.parse(data);
+                self.initCoursesOptions(arrayOfCourses);
+            });
+        },
+        initCoursesOptions: function (arrayOfCourses) {
+            for (let i = 0; i < arrayOfCourses.length; i++) {
+                if (!this.rmvCourseOptions.includes(arrayOfCourses[i].courseName)) {
+                    this.rmvCourseOptions.push(arrayOfCourses[i].courseName);
+                }
+            }
+        },
+        addTeacherCourse: function () {
+            var self = this;
+            $.get(this.linkAddTeacherCourseServlet, {
+                teacher: this.selectedTeacherCourseT,
+                course: this.selectedTeacherCourseC
+            }, function (data) {
+                alert(data);
+                self.selectedTeacherCourseT = "";
+                self.selectedTeacherCourseC = "";
+                self.allTeachers = [];
+                self.allCourses = [];
+                self.getAllTeachers();
+                self.getAllCourses();
+            });
+        },
+        getAllTeachers: function () {
+            var self = this;
+            $.get(this.linkGetAllTeachersServlet, function (data) {
+                let teachers = JSON.parse(data);
+                for (let i = 0; i < teachers.length; i++) {
+                    let teacherName = teachers[i].teacherName;
+                    let teacherSurname = teachers[i].teacherSurname;
+                    let teacherId = teachers[i].teacherId;
+                    let teacherString = teacherName + " " + teacherSurname + " " + String(teacherId);
+                    self.allTeachers.push(teacherString);
+                }
+            });
+        },
+        getAllCourses: function () {
+            var self = this;
+            $.get(this.linkGetAllCoursesServlet, function (data) {
+                let courses = JSON.parse(data);
+                for (let i = 0; i < courses.length; i++) {
+                    self.allCourses.push(courses[i].courseName);
+                }
+            });
+        },
+        rmvTeacherCourse: function () {
+            var self = this;
+            $.get(this.linkRmvTeacherCourseServlet, {
+                teacherCourse: this.selectedTeacherCourse
+            }, function (data) {
+                alert(data);
+                self.selectedTeacherCourse = "";
+                self.allTeachers = [];
+                self.allCourses = [];
+                self.getAllTeachers();
+                self.getAllCourses();
+                self.loadAllForNewReservation();
+            });
+        },
+        initTeacherCourseOptions: function () {
+            this.loadAllForNewReservation();
+            console.log(this.allCoursesWithTeachers);
+            for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
+                let courseName = this.allCoursesWithTeachers[i].courseName;
+                console.log(courseName);
+                for (let j = 0; j < this.allCoursesWithTeachers.teachers.length; j++) {
+                    let teacherName = this.allCoursesWithTeachers.teachers[j].teacherName;
+                    let teacherSurname = this.allCoursesWithTeachers.teachers[j].teacherSurname;
+                    let teacherId = this.allCoursesWithTeachers.teachers[j].teacherId;
+                    let stringTeacherCourse = teacherName + " " + teacherSurname + " " + teacherId + " " + courseName;
+                    console.log(stringTeacherCourse);
+                    if (!this.teacherCourseOptions.includes(stringTeacherCourse)) {
+                        this.teacherCourseOptions.push(stringTeacherCourse);
+                    }
+                }
+            }
+        }
     },
     beforeMount() {
         this.onPageLoad();

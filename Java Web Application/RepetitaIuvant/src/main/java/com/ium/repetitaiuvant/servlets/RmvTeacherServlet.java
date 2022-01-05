@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 
 
 @WebServlet(name = "rmvTeacherServlet", value = "/rmvTeacher-servlet")
@@ -36,7 +37,7 @@ public class RmvTeacherServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/plain;charset=UTF-8");
         HttpSession session = request.getSession(false);
         if (session == null) return;
         PrintWriter out = null;
@@ -45,15 +46,19 @@ public class RmvTeacherServlet extends HttpServlet {
             String user = (String) session.getAttribute("username");
             String password = (String) session.getAttribute("password");
             try {
-                if(DAO.logInFunction(user, password) && DAO.getRole(user, password) == Role.ADMIN) {
+                if (DAO.logInFunction(user, password) && DAO.getRole(user, password) == Role.ADMIN) {
                     String teacher = request.getParameter("selectedTeacher");
-                    String teacherInfo[] = teacher.split(" ");
-                    System.out.println(teacherInfo[2]);
+                    String[] teacherInfo = teacher.split(" ");
                     DAO.rmvTeacher(Long.parseLong(teacherInfo[2]));
+                    out.println("Success:");
+                    out.println("Teacher removed correctly");
                 }
+            } catch (ConnectException connectException) {
+                out.println("Error:");
+                out.println("Cannot contact server");
             } catch (Exception ex) {
                 out.println("Error:");
-                out.println("Cannot update Lesson");
+                out.println("Cannot remove Teacher");
             }
         } catch (IOException e) {
             System.err.println("Error: can't use PrintWriter");

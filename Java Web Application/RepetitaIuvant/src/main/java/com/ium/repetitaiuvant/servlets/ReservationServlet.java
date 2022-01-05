@@ -10,7 +10,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -36,9 +36,9 @@ public class ReservationServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/plain;charset=UTF-8");
         String reservations = request.getParameter("reservations");
         HttpSession session = request.getSession(false);
-        response.setContentType("text/plain");
         if (session != null) {
             String username = (String) session.getAttribute("username");
             String password = (String) session.getAttribute("password");
@@ -82,11 +82,9 @@ public class ReservationServlet extends HttpServlet {
                     out.println("Success:");
                     out.println("Every lesson has been added!");
 
-                } catch (SQLException sqlException) {
-                    if (out != null) {
-                        out.println("Error:");
-                        out.println("Error contacting the database\n");
-                    }
+                } catch (ConnectException connectException) {
+                    out.println("Error:");
+                    out.println("Cannot contact server");
                 } catch (Exception e) {
                     out.println("Error:");
                     out.println("Something went wrong!");
@@ -106,7 +104,13 @@ public class ReservationServlet extends HttpServlet {
 
     // Check Teacher teaches the subject
     private boolean checkTeacher(Long teacherId, String course) {
-        ArrayList<TeacherCourse> teacherCourses = DAO.getTeachersCourses();
+        ArrayList<TeacherCourse> teacherCourses = null;
+        try {
+            teacherCourses = DAO.getTeachersCourses();
+        } catch (ConnectException connectException) {
+            return false;
+        }
+
         for (TeacherCourse teacherCourse : teacherCourses) {
             if (teacherId == teacherCourse.getTeacher().getID() && teacherCourse.getCourse().getName().compareTo(course) == 0)
                 return true;

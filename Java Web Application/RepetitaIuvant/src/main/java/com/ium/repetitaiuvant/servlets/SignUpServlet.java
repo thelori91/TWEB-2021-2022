@@ -37,6 +37,7 @@ public class SignUpServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/plain;charset=UTF-8");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String username = request.getParameter("uname");

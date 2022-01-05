@@ -33,8 +33,8 @@ public class OnLoadServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
         response.setContentType("text/plain;charset=UTF-8");
+        HttpSession session = request.getSession(false);
         if (session == null) return;
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");

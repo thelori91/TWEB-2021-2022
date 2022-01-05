@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 
 
 @WebServlet(name = "updateLessonServlet", value = "/updateLesson-servlet")
@@ -54,10 +55,12 @@ public class UpdateLessonServlet extends HttpServlet {
                     out.println("Success:");
                     out.println("Lesson is now Updated");
                 }
+            } catch (ConnectException connectException) {
+                out.println("Error:");
+                out.println("Cannot contact server");
             } catch (Exception ex) {
                 out.println("Error:");
                 out.println("Cannot update Lesson");
-                DAO.closeConnection();
             }
         } catch (IOException e) {
             System.err.println("Error: can't use PrintWriter");

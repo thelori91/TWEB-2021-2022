@@ -48,8 +48,7 @@ public class AddCourseServlet extends HttpServlet {
                 if (DAO.logInFunction(user, password) && DAO.getRole(user, password) == Role.ADMIN) {
                     String course = request.getParameter("courseName");
                     course = course.trim();
-                    if(course.length() == 0)
-                    {
+                    if (course.length() == 0) {
                         out.println("Error:");
                         out.println("Invalid input");
                         return;
@@ -58,14 +57,12 @@ public class AddCourseServlet extends HttpServlet {
                     out.println("Success:");
                     out.println("Course added correctly");
                 }
-            }catch (ConnectException connectException)
-            {
+            } catch (ConnectException connectException) {
                 out.println("Error:");
                 out.println("Cannot contact server");
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 out.println("Error:");
-                out.println("Cannot update Lesson");
+                out.println("Cannot add Course");
             }
         } catch (IOException e) {
             System.err.println("Error: can't use PrintWriter");
