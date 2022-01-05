@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Gen 03, 2022 alle 14:05
+-- Creato il: Gen 05, 2022 alle 10:10
 -- Versione del server: 10.4.21-MariaDB
 -- Versione PHP: 8.0.11
 
@@ -133,7 +133,7 @@ CREATE TABLE `User` (
 
 INSERT INTO `User` (`Username`, `Password`, `Role`, `Name`, `Surname`) VALUES
 ('Polletto!', 'ginogino', 'Student', 'Andrea', 'Cacioli'),
-('TheLori91', 'giobin69', 'Admin', 'Lorenzo', 'Cassinelli');
+('TheLori91', 'ciaociao', 'Admin', 'Lorenzo', 'Cassinelli');
 
 --
 -- Indici per le tabelle scaricate
@@ -197,8 +197,8 @@ ALTER TABLE `Teacher`
 -- Limiti per la tabella `Lesson`
 --
 ALTER TABLE `Lesson`
-  ADD CONSTRAINT `fkCourse` FOREIGN KEY (`Course`) REFERENCES `TeacherCourse` (`Course`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fkTeacher` FOREIGN KEY (`Teacher`) REFERENCES `TeacherCourse` (`Teacher`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkCourse` FOREIGN KEY (`Course`) REFERENCES `Course` (`Name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fkTeacher` FOREIGN KEY (`Teacher`) REFERENCES `Teacher` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fkUser` FOREIGN KEY (`User`) REFERENCES `User` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
