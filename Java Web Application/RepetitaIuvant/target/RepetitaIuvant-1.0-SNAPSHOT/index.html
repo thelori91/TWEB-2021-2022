@@ -567,17 +567,17 @@
             <div class="container-fluid center">
                 <div class="row justify-content-md-center">
                     <section>
-                        <h1>Handle all user Reservation</h1>
+                        <h1 class="doubleSpacing">Handle all user Reservation</h1>
                         <ul>
                             <li v-for="teacher in teacherLesson">
-                                <h2 class="noticeMe bold">{{teacher}}</h2>
+                                <b class="noticeMe teacherNameReserv spacing">{{teacher}}</b>
                                 <ul>
                                     <li v-for="lesson in lessons">
                                         <b class="noticeMe">{{lesson}}</b>
                                         <donestatebutton v-if="lesson.split(' ')[3].localeCompare('Done')!==0"
-                                                         v-on:transit-inner="changeState(lesson, 'Done')"></donestatebutton>
+                                                         v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Done')"></donestatebutton>
                                         <cancelstatebutton v-if="lesson.split(' ')[3].localeCompare('Cancelled')!==0"
-                                                           v-on:transit-inner="changeState(lesson, 'Cancelled')"></cancelstatebutton>
+                                                           v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Cancelled')"></cancelstatebutton>
                                     </li>
                                 </ul>
                             </li>

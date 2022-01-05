@@ -360,6 +360,24 @@ let app = new Vue({
                 }
             });
         },
+        changeStateAdmin: function (teacher, lesson, eventState) {
+            var self = this;
+            let teacherArray = teacher.split(" ");
+            let lessonArray = lesson.split(" ");
+            $.post(this.linkUpdateLessonServlet, {
+                teacherId: teacherArray[2],
+                course: lessonArray[0],
+                username: lessonArray[3],
+                day: lessonArray[1],
+                time: lessonArray[2],
+                state: eventState
+            }, function (data) {
+                alert(data);
+                if (data.split('\n')[0].localeCompare('Error:') !== 0) {
+                    self.onPageLoad();
+                }
+            });
+        },
         checkFields: function (isLogIn) {
             let nothingIsNull = this.newUserName != null && this.newUserSurname != null && this.newUserUname != null && this.newUserPassword != null;
 
@@ -383,8 +401,8 @@ let app = new Vue({
             let allRight = nothingEmpty && passwordLength;
 
             if (!passwordLength) alert("Check password length " + this.newUserPassword.length);
-            if (!nothingEmpty) alert("Please fill everything");
-            return allRight;
+            else if (!nothingEmpty) alert("Please fill everything");
+            else return allRight;
 
         }, registerNewUser: function () {
             var self = this;
@@ -828,6 +846,8 @@ let app = new Vue({
         },
         loadAllLesson: function () {
             var self = this;
+            this.teacherLesson = [];
+            this.lessons = [];
             $.get(this.linkGetAllLessonsServlet, function (data) {
                     let teacherWithLessonsArray = JSON.parse(data)
                     self.allLessons = teacherWithLessonsArray;
@@ -841,8 +861,9 @@ let app = new Vue({
                             let courseName = self.allLessons[i].lessons[j].lessonCourse;
                             let lDay = self.allLessons[i].lessons[j].lessonDay;
                             let lTime = self.allLessons[i].lessons[j].lessonTime;
+                            let username = self.allLessons[i].lessons[j].lessonWithUser;
                             let lState = self.allLessons[i].lessons[j].lessonState;
-                            let stringLesson = courseName + " " + lDay + " " + lTime + " " + lState;
+                            let stringLesson = courseName + " " + lDay + " " + lTime + " with " + username + " " + lState;
                             self.lessons.push(stringLesson);
                         }
                     }

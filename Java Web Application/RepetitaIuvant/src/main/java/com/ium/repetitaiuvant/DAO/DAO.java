@@ -8,7 +8,6 @@ public class DAO {
     private static String url;
     private static String user;
     private static String psw;
-    private static Connection conn;
 
     public static void initDAO(String url, String user, String psw) {
         DAO.url = url;
@@ -554,7 +553,7 @@ public class DAO {
     }
 
     /* UPDATE */
-    public static void updateLesson(long teacherId, String course, String user, String day, String time, String state) throws Exception {
+    public static void updateLesson(long teacherId, String course, String user, String day, String time, String state) throws ConnectException {
         Connection conn1 = null;
         try {
             conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
@@ -570,7 +569,7 @@ public class DAO {
             String d = " && Lesson.Day= " + "?";
             String t = " && Lesson.Time= " + "?";
             String sql = "UPDATE Lesson SET" + newState + tId + c + usr + d + t;
-            PreparedStatement st = DAO.conn.prepareStatement(sql);
+            PreparedStatement st = conn1.prepareStatement(sql);
             st.setString(1, state);
             st.setLong(2, teacherId);
             st.setString(3, course);
