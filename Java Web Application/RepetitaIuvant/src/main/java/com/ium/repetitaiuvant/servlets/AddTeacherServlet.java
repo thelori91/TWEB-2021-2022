@@ -50,24 +50,21 @@ public class AddTeacherServlet extends HttpServlet {
                     String surname = request.getParameter("teacherSurname");
                     name = name.trim();
                     surname = surname.trim();
-                    if(name.length() == 0 || surname.length()==0)
-                    {
+                    if (name.length() == 0 || surname.length() == 0) {
                         out.println("Error:");
                         out.println("Invalid input");
                         return;
                     }
-                    DAO.addTeacher(name,surname);
+                    DAO.addTeacher(name, surname);
                     out.println("Success:");
                     out.println("Teacher added correctly");
                 }
-            }catch (ConnectException connectException)
-            {
+            } catch (ConnectException connectException) {
                 out.println("Error:");
                 out.println("Cannot contact server");
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 out.println("Error:");
-                out.println("Cannot update Lesson");
+                out.println("Cannot add Teacher");
             }
         } catch (IOException e) {
             System.err.println("Error: can't use PrintWriter");

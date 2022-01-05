@@ -30,8 +30,8 @@ public class LogOutServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/plain;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        response.setContentType("text/plain");
         request.getSession().invalidate();
         out.println("Log out successful");
     }

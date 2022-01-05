@@ -29,7 +29,7 @@ public class SignInServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/plain;charset=UTF-8");
         String username = request.getParameter("uname");
         String password = request.getParameter("password");
         HttpSession s = request.getSession();

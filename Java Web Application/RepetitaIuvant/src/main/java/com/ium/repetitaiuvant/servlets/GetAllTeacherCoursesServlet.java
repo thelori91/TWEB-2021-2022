@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.util.ArrayList;
 
 @WebServlet(name = "GetAllTeacherCoursesServlet", value = "/getAllTeacherCourses-servlet")
@@ -39,50 +40,45 @@ public class GetAllTeacherCoursesServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/plain;charset=UTF-8");
-        ArrayList<TeacherCourse> teacherCourses = DAO.getTeachersCourses();
         JSONArray ret = new JSONArray();
-        PrintWriter out;
-        try{
+        PrintWriter out = null;
+        try {
+            ArrayList<TeacherCourse> teacherCourses = DAO.getTeachersCourses();
             out = response.getWriter();
+            //Get all different courses from the arraylist teacherCourses
+            ArrayList<Course> courses = new ArrayList<>();
+            for (TeacherCourse teacherCourse : teacherCourses) {
+                if (!courses.contains(teacherCourse.getCourse())) {
+                    courses.add(teacherCourse.getCourse());
+                }
+            }
+            //For each of the teachers find all courses taught
+            for (Course course : courses) {
+                JSONObject courseJSON = new JSONObject();
+                courseJSON.put("courseName", course.getName());
+                JSONArray teachersOfCourse = new JSONArray();
+                for (TeacherCourse teacherCourse : teacherCourses) {
+                    if (teacherCourse.getCourse().equals(course)) {
+                        //Teacher teaches this course, so we add it to the courses it teaches
+                        JSONObject teacher = new JSONObject();
+                        teacher.put("teacherId", teacherCourse.getTeacher().getID());
+                        teacher.put("teacherName", teacherCourse.getTeacher().getName());
+                        teacher.put("teacherSurname", teacherCourse.getTeacher().getSurname());
+                        teachersOfCourse.add(teacher);
+                    }
+                }
+                courseJSON.put("teachers", teachersOfCourse);
+                ret.add(courseJSON);
+            }
+            out.print(ret.toJSONString());
+
+        } catch (ConnectException connectException) {
+            out.println("Error:");
+            out.println("Cannot contact server");
         } catch (IOException ex) {
             System.err.println("Error: can't use PrintWriter");
             return;
         }
-
-        //Get all different courses from the arraylist teacherCourses
-        ArrayList<Course> courses = new ArrayList<>();
-        for(TeacherCourse teacherCourse : teacherCourses)
-        {
-            if(!courses.contains(teacherCourse.getCourse()))
-            {
-                courses.add(teacherCourse.getCourse());
-            }
-        }
-
-        //For each of the teachers find all courses taught
-        for(Course course : courses)
-        {
-            JSONObject courseJSON = new JSONObject();
-            courseJSON.put("courseName", course.getName());
-            JSONArray teachersOfCourse = new JSONArray();
-            for(TeacherCourse teacherCourse : teacherCourses)
-            {
-                if(teacherCourse.getCourse().equals(course))
-                {
-                    //Teacher teaches this course, so we add it to the courses it teaches
-                    JSONObject teacher = new JSONObject();
-                    teacher.put("teacherId", teacherCourse.getTeacher().getID());
-                    teacher.put("teacherName", teacherCourse.getTeacher().getName());
-                    teacher.put("teacherSurname", teacherCourse.getTeacher().getSurname());
-                    teachersOfCourse.add(teacher);
-                }
-            }
-            courseJSON.put("teachers", teachersOfCourse);
-            ret.add(courseJSON);
-        }
-
-        if(out != null) out.print(ret.toJSONString());
-
     }
 
     public void destroy() {
