@@ -86,6 +86,16 @@ Vue.component('logosection', {
         '            </div>',
 });
 
+Vue.component('activestatebutton', {
+    template:
+        '<button v-on:click="transitInner" type="button" class="activeButton">Active</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
 Vue.component('donestatebutton', {
     template:
         '<button v-on:click="transitInner" type="button" class="doneButton">Done</button>',
@@ -99,6 +109,26 @@ Vue.component('donestatebutton', {
 Vue.component('cancelstatebutton', {
     template:
         '<button v-on:click="transitInner" type="button" class="cancelButton">Cancel</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
+Vue.component('searchbutton', {
+    template:
+        '<button type="button" v-on:click="transitInner" class="btn btn-primary">Search</button>',
+    methods: {
+        transitInner: function () {
+            this.$emit('transit-inner');
+        }
+    }
+});
+
+Vue.component('resetfiltersbutton', {
+    template:
+        '<button type="button" v-on:click="transitInner" class="btn btn-secondary">Reset Filters</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -140,8 +170,8 @@ let app = new Vue({
         homePage: true,
         handleReservationPage: false,
         newReservationPage: false,
-        thirdPage: false,
-        fourthPage: false,
+        searchTeacherPage: false,
+        searchCoursePage: false,
         signInPage: false,
         signUpPage: false,
         adminPage: false,
@@ -180,7 +210,7 @@ let app = new Vue({
         pendingOperation: false,
         //////////////////////
 
-        /* ADMIN PAGE */
+        /*ADMIN PAGE*/
         /* Teacher */
         newTeacherName: "",
         newTeacherSurname: "",
@@ -201,8 +231,21 @@ let app = new Vue({
         selectedTeacherCourse: "",
 
         /* Handle reservation */
-        teacherLesson: [],
-        lessons: [],
+        teacherCourseArray: [{
+            teacher: "",
+            lessonsArray: [{
+                lessonId: "",
+                lesson: ""
+            }]
+        }],
+
+        /*SEARCH TEACHER PAGE*/
+        searchTeacher: "",
+        selectedCourseFilter: "",
+        searchCourse: "",
+        selectedTeacherFilter: "",
+        teacherFound: [],
+        courseFound: [],
 
         /* LINKS */
         linkSingUpServlet: "http://localhost:8080/RepetitaIuvant_war_exploded/signUp-servlet",
@@ -227,8 +270,8 @@ let app = new Vue({
             this.homePage = true;
             this.handleReservationPage = false;
             this.newReservationPage = false;
-            this.thirdPage = false;
-            this.fourthPage = false;
+            this.searchTeacherPage = false;
+            this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
             this.adminPage = false;
@@ -239,8 +282,8 @@ let app = new Vue({
                 this.homePage = false;
                 this.handleReservationPage = true;
                 this.newReservationPage = false;
-                this.thirdPage = false;
-                this.fourthPage = false;
+                this.searchTeacherPage = false;
+                this.searchCoursePage = false;
                 this.signInPage = false;
                 this.signUpPage = false;
                 this.adminPage = false;
@@ -253,42 +296,53 @@ let app = new Vue({
             this.homePage = false;
             this.handleReservationPage = false;
             this.newReservationPage = true;
-            this.thirdPage = false;
-            this.fourthPage = false;
+            this.searchTeacherPage = false;
+            this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
             this.adminPage = false;
             this.handleReservationAdminPage = false;
             this.loadAllForNewReservation();
         },
-        TOP3: function () {
+        TOPSearchTeacher: function () {
             this.homePage = false;
             this.handleReservationPage = false;
             this.newReservationPage = false;
-            this.thirdPage = true;
-            this.fourthPage = false;
+            this.searchTeacherPage = true;
+            this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
             this.adminPage = false;
             this.handleReservationAdminPage = false;
+            /* init all and download */
+            this.searchTeacher = "";
+            this.selectedCourseFilter = "";
+            this.allTeachers = [];
+            this.allCourses = [];
+            this.getAllTeachers();
+            this.getAllCourses();
+            this.loadAllForNewReservation();
         },
-        TOP4: function () {
+        TOPSearchCourse: function () {
             this.homePage = false;
             this.handleReservationPage = false;
             this.newReservationPage = false;
-            this.thirdPage = false;
-            this.fourthPage = true;
+            this.searchTeacherPage = false;
+            this.searchCoursePage = true;
             this.signInPage = false;
             this.signUpPage = false;
             this.adminPage = false;
             this.handleReservationAdminPage = false;
+            /* init all and download */
+            this.allCourses = [];
+            this.getAllCourses();
         },
         TOPSignIn: function () {
             this.homePage = false;
             this.handleReservationPage = false;
             this.newReservationPage = false;
-            this.thirdPage = false;
-            this.fourthPage = false;
+            this.searchTeacherPage = false;
+            this.searchCoursePage = false;
             this.signInPage = true;
             this.signUpPage = false;
             this.adminPage = false;
@@ -298,8 +352,8 @@ let app = new Vue({
             this.homePage = false;
             this.handleReservationPage = false;
             this.newReservationPage = false;
-            this.thirdPage = false;
-            this.fourthPage = false;
+            this.searchTeacherPage = false;
+            this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = true;
             this.adminPage = false;
@@ -310,8 +364,8 @@ let app = new Vue({
             this.homePage = false;
             this.handleReservationPage = false;
             this.newReservationPage = false;
-            this.thirdPage = false;
-            this.fourthPage = false;
+            this.searchTeacherPage = false;
+            this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
             this.adminPage = true;
@@ -324,16 +378,17 @@ let app = new Vue({
         },
         TOPHandleReservationAdmin: function () {
             if (this.role.localeCompare('Admin') !== 0) return;
+            this.loadAllLessonAdmin();
             this.homePage = false;
             this.handleReservationPage = false;
             this.newReservationPage = false;
-            this.thirdPage = false;
-            this.fourthPage = false;
+            this.searchTeacherPage = false;
+            this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
             this.adminPage = false;
             this.handleReservationAdminPage = true;
-            this.loadAllLesson();
+
         },
         updateWrongPassword: function () {
             this.wrongPassword = !(this.newUserPassword.length >= 8 && this.newUserPassword.length <= 20);
@@ -357,23 +412,27 @@ let app = new Vue({
                 alert(data);
                 if (data.split('\n')[0].localeCompare('Error:') !== 0) {
                     self.onPageLoad();
+
                 }
             });
         },
         changeStateAdmin: function (teacher, lesson, eventState) {
             var self = this;
-            let teacherArray = teacher.split(" ");
-            let lessonArray = lesson.split(" ");
+            let teacherArray = teacher.teacher.split(" ");
+            let lessonArray = lesson.lesson.split(" ");
             $.post(this.linkUpdateLessonServlet, {
                 teacherId: teacherArray[2],
+                lessonId: lesson.lessonId,
                 course: lessonArray[0],
-                username: lessonArray[3],
+                username: lessonArray[4],
                 day: lessonArray[1],
                 time: lessonArray[2],
-                state: eventState
+                state: lessonArray[5],
+                nextState: eventState
             }, function (data) {
                 alert(data);
                 if (data.split('\n')[0].localeCompare('Error:') !== 0) {
+                    self.loadAllLessonAdmin();
                     self.onPageLoad();
                 }
             });
@@ -439,6 +498,9 @@ let app = new Vue({
                     if (response[0].localeCompare("Success:") === 0) {
                         self.username = response[1];
                         self.role = response[2];
+                        if (self.role.localeCompare('') !== 0 && self.role.localeCompare('Admin') === 0) {
+                            self.loadAllLessonAdmin();
+                        }
                         self.onPageLoad();
                         if (self.redirectFunction.localeCompare('Home') === 0) self.TOPHome();
                         if (self.redirectFunction.localeCompare('NewReservation') === 0) self.TOPnewReservation();
@@ -844,11 +906,17 @@ let app = new Vue({
                 }
             });
         },
-        loadAllLesson: function () {
+        loadAllLessonAdmin: function () {
             var self = this;
-            this.teacherLesson = [];
-            this.lessons = [];
             $.get(this.linkGetAllLessonsServlet, function (data) {
+                    /* init all*/
+                    self.teacherCourseArray = [{
+                        teacher: "",
+                        lessonsArray: [{
+                            lessonId: "",
+                            lesson: ""
+                        }]
+                    }];
                     let teacherWithLessonsArray = JSON.parse(data)
                     self.allLessons = teacherWithLessonsArray;
                     for (let i = 0; i < self.allLessons.length; i++) {
@@ -856,7 +924,7 @@ let app = new Vue({
                         let teacherSurname = self.allLessons[i].teacherSurname;
                         let teacherId = self.allLessons[i].teacherId;
                         let stringTeacher = teacherName + " " + teacherSurname + " " + teacherId;
-                        self.teacherLesson.push(stringTeacher);
+                        self.teacherCourseArray[i].teacher = stringTeacher;
                         for (let j = 0; j < self.allLessons[i].lessons.length; j++) {
                             let courseName = self.allLessons[i].lessons[j].lessonCourse;
                             let lDay = self.allLessons[i].lessons[j].lessonDay;
@@ -864,25 +932,131 @@ let app = new Vue({
                             let username = self.allLessons[i].lessons[j].lessonWithUser;
                             let lState = self.allLessons[i].lessons[j].lessonState;
                             let stringLesson = courseName + " " + lDay + " " + lTime + " with " + username + " " + lState;
-                            self.lessons.push(stringLesson);
+                            self.teacherCourseArray[i].lessonsArray[j] = {
+                                lessonId: self.allLessons[i].lessons[j].lessonId,
+                                lesson: stringLesson,
+                            };
+                            /* if there isn't next element, don't push another element */
+                            if (j !== self.allLessons[i].lessons.length - 1) {
+                                self.teacherCourseArray[i].lessonsArray.push({
+                                    lessonId: "",
+                                    lesson: "",
+                                });
+                            }
+                        }
+                        /* if there isn't next element, don't push another element */
+                        if (i !== self.allLessons.length - 1) {
+                            self.teacherCourseArray.push({
+                                teacher: "",
+                                lessonsArray: [{
+                                    lessonId: "",
+                                    lesson: ""
+                                }]
+                            });
                         }
                     }
                 }
             );
+        },
+        resetFilter: function () {
+            this.searchTeacher = "";
+            this.selectedCourseFilter = "";
+            this.teacherFound = [];
+            this.searchCourse = "";
+            this.selectedTeacherFilter = "";
+            this.courseFound = [];
+        },
+        searchFunctionTeacher: function () {
+            this.teacherFound = [];
+            this.searchTeacher = this.searchTeacher.trim();
+
+            if (this.searchTeacher.localeCompare("") !== 0 && this.selectedCourseFilter.localeCompare("") !== 0) {
+                this.searchTeacher = this.searchTeacher.charAt(0).toUpperCase() + this.searchTeacher.slice(1);
+                /*TODO check*/
+                if (this.searchTeacher.split(" ").length > 2) {
+                    this.teacherFound.push("Error: We can filter only by using 1 Name and 1 Surname");
+                } else if (this.searchTeacher.split(" ").length === 2) { /* Using name and surname */
+                    let teacherNorS = this.searchTeacher.split(" ")[0];
+                    this.searchTeacher = this.searchTeacher.split(" ")[1].charAt(0).toUpperCase() + this.searchTeacher.split(" ")[1].slice(1);
+                    for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
+                        let course = this.allCoursesWithTeachers[i].courseName;
+                        if (course.localeCompare(this.selectedCourseFilter) === 0) {
+                            for (let j = 0; j < this.allCoursesWithTeachers[i].teachers.length; j++) {
+                                let teacher = this.allCoursesWithTeachers[i].teachers[j];
+                                let teacherString = teacher.teacherName + " " + teacher.teacherSurname + " " + teacher.teacherId;
+                                let cond1 = teacher.teacherName.localeCompare(this.searchTeacher) === 0 || teacher.teacherSurname.localeCompare(this.searchTeacher) === 0;
+                                let cond2 = teacher.teacherName.localeCompare(teacherNorS) === 0 || teacher.teacherSurname.localeCompare(teacherNorS) === 0;
+                                if (cond1 && cond2){
+                                    this.teacherFound.push(teacherString);
+                                }
+
+                            }
+                        }
+                    }
+                    this.searchTeacher = teacherNorS + " " + this.searchTeacher;
+                }
+                else { /* only one */
+                    for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
+                        let course = this.allCoursesWithTeachers[i].courseName;
+                        if (course.localeCompare(this.selectedCourseFilter) === 0) {
+                            for (let j = 0; j < this.allCoursesWithTeachers[i].teachers.length; j++) {
+                                let teacher = this.allCoursesWithTeachers[i].teachers[j];
+                                let teacherString = teacher.teacherName + " " + teacher.teacherSurname + " " + teacher.teacherId;
+                                if (teacher.teacherName.localeCompare(this.searchTeacher) === 0 || teacher.teacherSurname.localeCompare(this.searchTeacher) === 0)
+                                    this.teacherFound.push(teacherString);
+                            }
+                        }
+                    }
+                }
+            } else if (this.searchTeacher.localeCompare("") !== 0) { /*search with textfield*/
+
+                this.searchTeacher = this.searchTeacher.charAt(0).toUpperCase() + this.searchTeacher.slice(1);
+
+                if (this.searchTeacher.split(" ").length > 2) {
+                    this.teacherFound.push("Error: We can filter only by using 1 Name and 1 Surname");
+                } else if (this.searchTeacher.split(" ").length === 2) {/* Using name and surname */
+                    let teacherNorS = this.searchTeacher.split(" ")[0];
+                    this.searchTeacher = this.searchTeacher.split(" ")[1].charAt(0).toUpperCase() + this.searchTeacher.split(" ")[1].slice(1);
+
+                    for (let i = 0; i < this.allTeachers.length; i++) {
+                        let stringTeacherArray = this.allTeachers[i].split(" ");
+                        let cond1 = this.searchTeacher.localeCompare(stringTeacherArray[0]) === 0 || this.searchTeacher.localeCompare(stringTeacherArray[1]) === 0;
+                        let cond2 = teacherNorS.localeCompare(stringTeacherArray[0]) === 0 || teacherNorS.localeCompare(stringTeacherArray[1]) === 0
+                        if (cond1 && cond2) {
+                            this.teacherFound.push(this.allTeachers[i]);
+                        }
+                    }
+                    this.searchTeacher = teacherNorS + " " + this.searchTeacher;
+                } else {/* only one */
+                    for (let i = 0; i < this.allTeachers.length; i++) {
+                        let stringTeacherArray = this.allTeachers[i].split(" ");
+                        if (this.searchTeacher.localeCompare(stringTeacherArray[0]) === 0 || this.searchTeacher.localeCompare(stringTeacherArray[1]) === 0) {
+                            this.teacherFound.push(this.allTeachers[i]);
+                        }
+                    }
+                }
+            } else if (this.selectedCourseFilter.localeCompare("") !== 0) {/*search with dropdown*/
+                for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
+                    let course = this.allCoursesWithTeachers[i].courseName;
+                    if (course.localeCompare(this.selectedCourseFilter) === 0) {
+                        for (let j = 0; j < this.allCoursesWithTeachers[i].teachers.length; j++) {
+                            let teacher = this.allCoursesWithTeachers[i].teachers[j];
+                            let teacherString = teacher.teacherName + " " + teacher.teacherSurname + " " + teacher.teacherId;
+                            this.teacherFound.push(teacherString);
+
+                        }
+                    }
+                }
+            }
+            if (this.teacherFound.length === 0) {
+                this.teacherFound.push("Not Found!");
+            }
+        },
+        searchFunctionCourse: function () {
+
         }
     },
     beforeMount() {
         this.onPageLoad();
     }
 });
-
-/*
-INSERT INTO `TeacherCourse`(`Teacher`, `Course`) VALUES (13,'Matematica');
-INSERT INTO `TeacherCourse`(`Teacher`, `Course`) VALUES (14,'Matematica');
-INSERT INTO `TeacherCourse`(`Teacher`, `Course`) VALUES (13,'Elettronica');
-INSERT INTO `TeacherCourse`(`Teacher`, `Course`) VALUES (14,'Elettronica');
-INSERT INTO `TeacherCourse`(`Teacher`, `Course`) VALUES (15,'Elettronica');
-INSERT INTO `TeacherCourse`(`Teacher`, `Course`) VALUES (16,'Elettronica');
-INSERT INTO `TeacherCourse`(`Teacher`, `Course`) VALUES (17,'Scienze');
-INSERT INTO `TeacherCourse`(`Teacher`, `Course`) VALUES (15,'Matematica');
-* */

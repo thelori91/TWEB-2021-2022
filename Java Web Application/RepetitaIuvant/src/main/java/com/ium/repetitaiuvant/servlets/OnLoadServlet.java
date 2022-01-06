@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.util.ArrayList;
 
 
@@ -66,6 +67,9 @@ public class OnLoadServlet extends HttpServlet {
                     }
                     out.print(outArray.toJSONString());
                 }
+            } catch (ConnectException connectException) {
+                out.println("Error:");
+                out.println("Cannot contact server");
             } catch (Exception ex) {
                 out.println("Error:");
                 out.println("Unable to perform the operation");

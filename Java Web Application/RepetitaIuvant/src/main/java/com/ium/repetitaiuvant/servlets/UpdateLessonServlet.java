@@ -1,6 +1,7 @@
 package com.ium.repetitaiuvant.servlets;
 
 import com.ium.repetitaiuvant.DAO.DAO;
+import com.ium.repetitaiuvant.DAO.Role;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -41,20 +42,36 @@ public class UpdateLessonServlet extends HttpServlet {
         if (session == null) return;
         PrintWriter out = null;
         try {
-            /*TODO controllo role user e se ADMIN CAMBIO PARAMETRO*/
+            Role userRole = DAO.getRole((String) session.getAttribute("username"), (String) session.getAttribute("password"));
             out = response.getWriter();
             String teacherId = request.getParameter("teacherId");
+            String lessonId = request.getParameter("lessonId");
             String course = request.getParameter("course");
-            String user = (String) session.getAttribute("username");
+            String user;
+            if (userRole == Role.ADMIN) {
+                user = request.getParameter("username");
+            } else {
+                user = (String) session.getAttribute("username");
+            }
             String password = (String) session.getAttribute("password");
             String day = request.getParameter("day");
             String time = request.getParameter("time");
             String state = request.getParameter("state");
+            String nextState = request.getParameter("nextState");
             try {
-                if (DAO.logInFunction(user, password)) {
-                    DAO.updateLesson(Long.parseLong(teacherId), course, user, day, time, state);
-                    out.println("Success:");
-                    out.println("Lesson is now Updated");
+                if (DAO.logInFunction((String) session.getAttribute("username"), password)) {
+                    if (nextState.equals("Cancelled")) {
+                        DAO.updateLesson(Long.parseLong(teacherId), Long.parseLong(lessonId), course, user, day, time, state, nextState);
+                        out.println("Success:");
+                        out.println("Lesson is now Updated");
+                    } else if (DAO.checkBeforeUpdateLesson(Long.parseLong(teacherId), course, user, day, Long.parseLong(lessonId), time) == 0) {
+                        DAO.updateLesson(Long.parseLong(teacherId), Long.parseLong(lessonId), course, user, day, time, state, nextState);
+                        out.println("Success:");
+                        out.println("Lesson is now Updated");
+                    } else {
+                        out.println("Error:");
+                        out.println("Lesson already exists");
+                    }
                 }
             } catch (ConnectException connectException) {
                 out.println("Error:");

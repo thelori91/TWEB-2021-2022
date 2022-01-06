@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 
 
 @WebServlet(name = "signUpServlet", value = "/signUp-servlet")
@@ -69,6 +70,9 @@ public class SignUpServlet extends HttpServlet {
                         out.println((String) s.getAttribute("username"));
                         out.println("Student");
                     }
+                } catch (ConnectException connectException) {
+                    out.println("Error:");
+                    out.println("Cannot contact server");
                 } catch (Exception ex) {
                     out.println("Error:");
                     out.println("unable to contact database");

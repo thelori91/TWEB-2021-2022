@@ -20,6 +20,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <title>REPETITA IUVANT</title>
+    <!-- TODO check tolower e toupper admin e pagine in più-->
+    <!-- TODO spazi nello username ci fregano-->
 </head>
 <body>
 <div id="page-container">
@@ -70,8 +72,8 @@
                 <div class="d-grid gap-2 col-4 mx-auto">
                     <newreservationbutton v-on:transit-inner="TOPnewReservation"></newreservationbutton>
                     <reservationbutton v-on:transit-inner="TOPHandleReservation"></reservationbutton>
-                    <teacherbutton v-on:transit-inner="TOP3"></teacherbutton>
-                    <coursebutton v-on:transit-inner="TOP4"></coursebutton>
+                    <teacherbutton v-on:transit-inner="TOPSearchTeacher"></teacherbutton>
+                    <coursebutton v-on:transit-inner="TOPSearchCourse"></coursebutton>
                     <advancedbutton v-if="role.localeCompare('Admin') === 0"
                                     v-on:transit-inner="TOPAdmin"></advancedbutton>
                     <handlereservationadminbutton v-if="role.localeCompare('Admin') === 0"
@@ -353,7 +355,7 @@
                 </div>
             </section>
         </article>
-        <article v-if="thirdPage">
+        <article v-if="searchTeacherPage">
             <section>
                 <logosection></logosection>
             </section>
@@ -364,56 +366,63 @@
                         <p>Teachers:</p>
                     </div>
                 </div>
-                <form>
-                    <div class="d-flex justify-content-evenly">
-                        <div class="p-2">
-                            <input type="text" class="form-control formStyle" placeholder="Filter by Name">
-                        </div>
-                        <div class="p-2">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Teacher</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
+                <div class="d-flex justify-content-evenly">
+                    <div class="p-2">
+                        <input v-model="searchTeacher" type="text"
+                               class="form-control"
+                               placeholder="Filter by Name/Surname">
+                    </div>
+                    <div class="p-2">
+                        <select v-model="selectedCourseFilter">
+                            <option></option>
+                            <option v-for="option in allCourses">{{option}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="p-2">
+                        <div class="col-auto">
+                            <label>Only show teachers who take lessons:</label>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="p-2">
-                            <div class="col-auto">
-                                <label>Only show teachers who take lessons:</label>
-                            </div>
-                        </div>
-                        <div class="p-2">
-                            <div class="col-auto">
-                                <input type="checkbox" name="checkbox">
-                            </div>
+                    <div class="p-2">
+                        <div class="col-auto">
+                            <input type="checkbox" name="checkbox">
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="p-2">
-                            <div class="col-auto">
-                                <label>Only show Teachers I booked a lesson with:</label>
-                            </div>
-                        </div>
-                        <div class="p-2">
-                            <div class="col-auto">
-                                <input type="checkbox" name="checkbox">
-                            </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="p-2">
+                        <div class="col-auto">
+                            <label>Only show Teachers I booked a lesson with:</label>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="p-2">
-                            <button type="button" class="btn btn-secondary ">Reset Filters</button>
-                        </div>
-                        <div class="p-2">
-                            <button type="button" class="btn btn-primary ">Search</button>
+                    <div class="p-2">
+                        <div class="col-auto">
+                            <input type="checkbox" name="checkbox">
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="p-2">
+                        <resetfiltersbutton v-on:transit-inner="resetFilter"></resetfiltersbutton>
+                    </div>
+                    <div class="p-2">
+                        <searchbutton v-on:transit-inner="searchFunctionTeacher"></searchbutton>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="p-2">
+                        <ul>
+                            <li v-for="teacher in teacherFound">
+                                <b class="noticeMe">{{teacher}}</b>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </section>
         </article>
-        <article v-if="fourthPage">
+        <article v-if="searchCoursePage">
             <section>
                 <logosection></logosection>
             </section>
@@ -424,53 +433,60 @@
                         <p>Courses:</p>
                     </div>
                 </div>
-                <form>
-                    <div class="d-flex justify-content-evenly">
-                        <div class="p-2">
-                            <input type="text" class="form-control formStyle" placeholder="Filter by Name">
-                        </div>
-                        <div class="p-2">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Course</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
+                <div class="d-flex justify-content-evenly">
+                    <div class="p-2">
+                        <input v-model="searchCourse" type="text"
+                               class="form-control"
+                               placeholder="Filter by Name/Surname">
+                    </div>
+                    <div class="p-2">
+                        <select v-model="selectedTeacherFilter">
+                            <option></option>
+                            <option v-for="option in allTeachers">{{option}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="p-2">
+                        <div class="col-auto">
+                            <label>Only show reservable Courses:</label>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="p-2">
-                            <div class="col-auto">
-                                <label>Only show reservable Courses:</label>
-                            </div>
-                        </div>
-                        <div class="p-2">
-                            <div class="col-auto">
-                                <input type="checkbox" name="checkbox">
-                            </div>
+                    <div class="p-2">
+                        <div class="col-auto">
+                            <input type="checkbox" name="checkbox">
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="p-2">
-                            <div class="col-auto">
-                                <label>Only show courses I booked:</label>
-                            </div>
-                        </div>
-                        <div class="p-2">
-                            <div class="col-auto">
-                                <input type="checkbox" name="checkbox">
-                            </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="p-2">
+                        <div class="col-auto">
+                            <label>Only show courses I booked:</label>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="p-2">
-                            <button type="button" class="btn btn-secondary">Reset Filters</button>
-                        </div>
-                        <div class="p-2">
-                            <button type="button" class="btn btn-primary">Search</button>
+                    <div class="p-2">
+                        <div class="col-auto">
+                            <input type="checkbox" name="checkbox">
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="p-2">
+                        <resetfiltersbutton v-on:transit-inner="resetFilter"></resetfiltersbutton>
+                    </div>
+                    <div class="p-2">
+                        <searchbutton v-on:transit-inner="searchFunctionCourse"></searchbutton>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="p-2">
+                        <ul>
+                            <li v-for="course in courseFound">
+                                <b class="noticeMe">{{course}}</b>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </section>
         </article>
         <article v-if="adminPage">
@@ -569,15 +585,19 @@
                     <section>
                         <h1 class="doubleSpacing">Handle all user Reservation</h1>
                         <ul>
-                            <li v-for="teacher in teacherLesson">
-                                <b class="noticeMe teacherNameReserv spacing">{{teacher}}</b>
+                            <li v-for="teacher in teacherCourseArray">
+                                <b class="noticeMe teacherNameReserv spacing">{{teacher.teacher}}</b>
                                 <ul>
-                                    <li v-for="lesson in lessons">
-                                        <b class="noticeMe">{{lesson}}</b>
-                                        <donestatebutton v-if="lesson.split(' ')[3].localeCompare('Done')!==0"
+                                    <li v-for="lesson in teacher.lessonsArray">
+                                        <b class="noticeMe">{{lesson.lesson}}</b>
+                                        <activestatebutton
+                                                v-if="lesson.lesson.split(' ')[5].localeCompare('Active')!==0"
+                                                v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Active')"></activestatebutton>
+                                        <donestatebutton v-if="lesson.lesson.split(' ')[5].localeCompare('Done')!==0"
                                                          v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Done')"></donestatebutton>
-                                        <cancelstatebutton v-if="lesson.split(' ')[3].localeCompare('Cancelled')!==0"
-                                                           v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Cancelled')"></cancelstatebutton>
+                                        <cancelstatebutton
+                                                v-if="lesson.lesson.split(' ')[5].localeCompare('Cancelled')!==0"
+                                                v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Cancelled')"></cancelstatebutton>
                                     </li>
                                 </ul>
                             </li>
