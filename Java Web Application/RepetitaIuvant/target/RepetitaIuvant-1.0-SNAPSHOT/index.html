@@ -370,7 +370,7 @@
                     <div class="p-2">
                         <input v-model="searchTeacher" type="text"
                                class="form-control"
-                               placeholder="Filter by Name/Surname">
+                               placeholder="Teacher Name/Surname">
                     </div>
                     <div class="p-2">
                         <select v-model="selectedCourseFilter">
@@ -437,7 +437,7 @@
                     <div class="p-2">
                         <input v-model="searchCourse" type="text"
                                class="form-control"
-                               placeholder="Filter by Name/Surname">
+                               placeholder="Course Name">
                     </div>
                     <div class="p-2">
                         <select v-model="selectedTeacherFilter">
@@ -586,17 +586,19 @@
                         <h1 class="doubleSpacing">Handle all user Reservation</h1>
                         <ul>
                             <li v-for="teacher in teacherCourseArray">
-                                <b class="noticeMe teacherNameReserv spacing">{{teacher.teacher}}</b>
+                                <b class="noticeMe teacherNameReserv spacing">{{teacher.teacherName}} {{teacher.teacherSurname}} {{teacher.teacherId}}</b>
                                 <ul>
                                     <li v-for="lesson in teacher.lessonsArray">
-                                        <b class="noticeMe">{{lesson.lesson}}</b>
+                                        <b class="noticeMe">{{lesson.lessonCourse}} {{lesson.lessonDay}}
+                                            {{lesson.lessonTime}}
+                                            with {{lesson.lessonUser}} {{lesson.lessonState}}</b>
                                         <activestatebutton
-                                                v-if="lesson.lesson.split(' ')[5].localeCompare('Active')!==0"
+                                                v-if="lesson.lessonState.localeCompare('Active')!==0"
                                                 v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Active')"></activestatebutton>
-                                        <donestatebutton v-if="lesson.lesson.split(' ')[5].localeCompare('Done')!==0"
+                                        <donestatebutton v-if="lesson.lessonState.localeCompare('Done')!==0"
                                                          v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Done')"></donestatebutton>
                                         <cancelstatebutton
-                                                v-if="lesson.lesson.split(' ')[5].localeCompare('Cancelled')!==0"
+                                                v-if="lesson.lessonState.localeCompare('Cancelled')!==0"
                                                 v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Cancelled')"></cancelstatebutton>
                                     </li>
                                 </ul>
