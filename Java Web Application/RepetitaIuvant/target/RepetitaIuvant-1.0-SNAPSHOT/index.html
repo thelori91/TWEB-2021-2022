@@ -73,7 +73,9 @@
                     <teacherbutton v-on:transit-inner="TOP3"></teacherbutton>
                     <coursebutton v-on:transit-inner="TOP4"></coursebutton>
                     <advancedbutton v-if="role.localeCompare('Admin') === 0"
-                                    v-on:transit-inner="TOPadmin"></advancedbutton>
+                                    v-on:transit-inner="TOPAdmin"></advancedbutton>
+                    <handlereservationadminbutton v-if="role.localeCompare('Admin') === 0"
+                                                  v-on:transit-inner="TOPHandleReservationAdmin"></handlereservationadminbutton>
                 </div>
             </div>
             <div v-if="username.localeCompare('') !== 0" class="container-fluid" id="upcomingEvents">
@@ -557,27 +559,32 @@
                                     v-on:click="rmvTeacherCourse" type="button">Remove Teacher Course
                             </button>
                         </div>
-
                     </section>
-
-                    <div class="row justify-content-md-center">
-                        <section>
-                            <div id="joinTeacherCourse">
-
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="row justify-content-md-center">
-                        <section>
-                            <div id="listOfLessons">
-
-                            </div>
-                        </section>
-                    </div>
                 </div>
             </div>
-
+        </article>
+        <article v-if="handleReservationAdminPage">
+            <div class="container-fluid center">
+                <div class="row justify-content-md-center">
+                    <section>
+                        <h1 class="doubleSpacing">Handle all user Reservation</h1>
+                        <ul>
+                            <li v-for="teacher in teacherLesson">
+                                <b class="noticeMe teacherNameReserv spacing">{{teacher}}</b>
+                                <ul>
+                                    <li v-for="lesson in lessons">
+                                        <b class="noticeMe">{{lesson}}</b>
+                                        <donestatebutton v-if="lesson.split(' ')[3].localeCompare('Done')!==0"
+                                                         v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Done')"></donestatebutton>
+                                        <cancelstatebutton v-if="lesson.split(' ')[3].localeCompare('Cancelled')!==0"
+                                                           v-on:transit-inner="changeStateAdmin(teacher, lesson, 'Cancelled')"></cancelstatebutton>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
         </article>
     </div>
     <footer>

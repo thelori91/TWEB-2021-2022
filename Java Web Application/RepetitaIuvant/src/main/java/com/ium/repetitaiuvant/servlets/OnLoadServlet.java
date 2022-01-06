@@ -47,14 +47,18 @@ public class OnLoadServlet extends HttpServlet {
                     JSONArray outArray = new JSONArray();
                     //Get all lessons from db for the given user
                     ArrayList<Lesson> lessons = DAO.getLessons(username);
+                    JSONObject stater = new JSONObject();
+                    stater.put("username", username);
+                    stater.put("role", Conversions.roleToString(DAO.getRole(username, password)));
+                    outArray.add(stater);
                     for (Lesson lesson : lessons) {
                         JSONObject lessonJSON = new JSONObject();
                         lessonJSON.put("username", lesson.getUser().getUsername());
                         lessonJSON.put("role", Conversions.roleToString(lesson.getUser().getRole()));
                         lessonJSON.put("course", lesson.getCourse().getName());
                         lessonJSON.put("teacherName", lesson.getTeacher().getName());
-                        lessonJSON.put("teacherSurname" , lesson.getTeacher().getSurname());
-                        lessonJSON.put("teacherId" , lesson.getTeacher().getID());
+                        lessonJSON.put("teacherSurname", lesson.getTeacher().getSurname());
+                        lessonJSON.put("teacherId", lesson.getTeacher().getID());
                         lessonJSON.put("day", Conversions.dayToString(lesson.getDay()));
                         lessonJSON.put("time", Conversions.timeToString(lesson.getTime()));
                         lessonJSON.put("state", Conversions.stateToString(lesson.getState()));

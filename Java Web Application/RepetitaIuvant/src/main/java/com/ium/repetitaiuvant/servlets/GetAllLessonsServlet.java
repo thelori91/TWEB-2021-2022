@@ -24,15 +24,15 @@ public class GetAllLessonsServlet extends HttpServlet {
         DAO.initDAO(url, user, pwd);
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/plain;charset=UTF-8");
         try {
             PrintWriter out = response.getWriter();
@@ -55,6 +55,7 @@ public class GetAllLessonsServlet extends HttpServlet {
                     for (Lesson lesson : lessons) {
                         JSONObject lessonJSON = new JSONObject();
                         if (lesson.getTeacher().equals(teacher)) {
+                            lessonJSON.put("lessonWithUser", lesson.getUser().getUsername());
                             lessonJSON.put("lessonId", lesson.getId());
                             lessonJSON.put("lessonCourse", lesson.getCourse().getName());
                             lessonJSON.put("lessonDay", Conversions.dayToString(lesson.getDay()));

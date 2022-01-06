@@ -41,6 +41,7 @@ public class UpdateLessonServlet extends HttpServlet {
         if (session == null) return;
         PrintWriter out = null;
         try {
+            /*TODO controllo role user e se ADMIN CAMBIO PARAMETRO*/
             out = response.getWriter();
             String teacherId = request.getParameter("teacherId");
             String course = request.getParameter("course");
