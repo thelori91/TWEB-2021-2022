@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_ThirdFragment"
             app:destination="@id/ThirdFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_NewLesson"
+            app:destination="@id/NewLessonFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -42,5 +45,15 @@
         <action
             android:id="@+id/action_ThirdFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/NewLessonFragment"
+        android:name="com.ium.fragmentexample.NewLessonFragment"
+        tools:layout="@layout/fragment_new_lesson">
+
+        <action
+            android:id="@+id/action_NewLesson_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+
     </fragment>
 </navigation>

@@ -57,6 +57,7 @@ public class FirstFragment extends Fragment {
         }
 
 
+        //Go to login Button
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,11 +66,21 @@ public class FirstFragment extends Fragment {
             }
         });
 
+        //Go to Sign Up button
         binding.buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_ThirdFragment);
+            }
+        });
+
+        //Go to New Lesson button
+        binding.newReservationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(FirstFragment.this)
+                        .navigate(R.id.action_FirstFragment_to_NewLesson);
             }
         });
     }
