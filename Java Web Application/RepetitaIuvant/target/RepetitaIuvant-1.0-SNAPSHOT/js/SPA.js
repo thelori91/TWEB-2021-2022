@@ -413,16 +413,17 @@ let app = new Vue({
             var self = this;
             $.post(this.linkUpdateLessonServlet, {
                 teacherId: lesson.teacherId,
+                lessonId: lesson.lessonId,
                 course: lesson.course,
                 username: this.username,
                 day: lesson.day,
                 time: lesson.time,
-                state: eventState
+                state: lesson.state,
+                nextState: eventState
             }, function (data) {
                 alert(data);
                 if (data.split('\n')[0].localeCompare('Error:') !== 0) {
                     self.onPageLoad();
-
                 }
             });
         },
@@ -738,6 +739,8 @@ let app = new Vue({
         },
         addTeacher: function () {
             var self = this;
+            this.newTeacherName = this.stringToUpperCase(this.newTeacherName); /* add first letter to Upper Case */
+            this.newTeacherSurname = this.stringToUpperCase(this.newTeacherSurname);
             $.get(this.linkAddTeacherServlet, {
                 teacherName: this.newTeacherName,
                 teacherSurname: this.newTeacherSurname
@@ -790,6 +793,7 @@ let app = new Vue({
         },
         addCourse: function () {
             var self = this;
+            this.newCourseName = this.stringToUpperCase(this.newCourseName); /* add first letter to Upper Case */
             $.get(this.linkAddCourseServlet, {
                 courseName: this.newCourseName
             }, function (data) {
