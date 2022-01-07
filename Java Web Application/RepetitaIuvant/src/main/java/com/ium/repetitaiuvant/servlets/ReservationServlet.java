@@ -120,7 +120,12 @@ public class ReservationServlet extends HttpServlet {
 
     // Check DayTime is available (Cancelled lessons don't count)
     private boolean checkDayTime(Long teacherId, Day day, Time time) {
-        ArrayList<Lesson> lessons = DAO.getLessons(null);
+        ArrayList<Lesson> lessons = null;
+        try {
+            lessons = DAO.getLessons(null);
+        } catch (ConnectException connectException) {
+            return false;
+        }
         for (Lesson lesson : lessons) {
             if (lesson.getState() != State.CANCELLED && lesson.getTeacher().getID() == teacherId && day == lesson.getDay() && time == lesson.getTime())
                 return false;

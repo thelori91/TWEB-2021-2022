@@ -97,6 +97,30 @@
     --animate-delay: 8s;
 }
 
+.activeButton {
+    font-size: 130%;
+    background-repeat: no-repeat;
+    background-color: rgb(174,123,6);
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    color: white;
+    margin-bottom: 2%;
+    transition-duration: 0.4s;
+    border-radius: 10px;
+}
+
+.activeButton:hover {
+    background-color: gray;
+    color: white;
+}
+
+.activeButton:active {
+    background-color: #D7A417;
+    color: black;
+}
+
 .doneButton {
     font-size: 130%;
     background-repeat: no-repeat;

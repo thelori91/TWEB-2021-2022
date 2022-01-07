@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.util.ArrayList;
 
 
@@ -59,6 +60,7 @@ public class OnLoadServlet extends HttpServlet {
                         lessonJSON.put("teacherName", lesson.getTeacher().getName());
                         lessonJSON.put("teacherSurname", lesson.getTeacher().getSurname());
                         lessonJSON.put("teacherId", lesson.getTeacher().getID());
+                        lessonJSON.put("lessonId", lesson.getId());
                         lessonJSON.put("day", Conversions.dayToString(lesson.getDay()));
                         lessonJSON.put("time", Conversions.timeToString(lesson.getTime()));
                         lessonJSON.put("state", Conversions.stateToString(lesson.getState()));
@@ -66,6 +68,9 @@ public class OnLoadServlet extends HttpServlet {
                     }
                     out.print(outArray.toJSONString());
                 }
+            } catch (ConnectException connectException) {
+                out.println("Error:");
+                out.println("Cannot contact server");
             } catch (Exception ex) {
                 out.println("Error:");
                 out.println("Unable to perform the operation");
