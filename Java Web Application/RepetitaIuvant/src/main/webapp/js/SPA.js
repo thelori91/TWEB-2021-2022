@@ -240,7 +240,7 @@ let app = new Vue({
         }],
 
         /*SEARCH TEACHER PAGE*/
-        searchTeacher: "",
+        searchTeacherNandS: "",
         selectedCourseFilter: "",
         searchCourse: "",
         selectedTeacherFilter: "",
@@ -315,7 +315,7 @@ let app = new Vue({
             this.adminPage = false;
             this.handleReservationAdminPage = false;
             /* init all and download */
-            this.searchTeacher = "";
+            this.searchTeacherNandS = "";
             this.selectedCourseFilter = "";
             this.teacherFound = [];
             this.allTeachers = [];
@@ -342,6 +342,7 @@ let app = new Vue({
             this.courseFound = [];
             this.allCourses = [];
             this.getAllCourses();
+            this.loadAllForNewReservation();
             /*init dropdown*/
             this.allTeachers = [];
             this.getAllTeachers();
@@ -936,7 +937,7 @@ let app = new Vue({
                         let teacherName = self.allLessons[i].teacherName;
                         let teacherSurname = self.allLessons[i].teacherSurname;
                         let teacherId = self.allLessons[i].teacherId;
-                        self.teacherCourseArray[i].teacherName = teacherName ;
+                        self.teacherCourseArray[i].teacherName = teacherName;
                         self.teacherCourseArray[i].teacherSurname = teacherSurname;
                         self.teacherCourseArray[i].teacherId = teacherId;
                         for (let j = 0; j < self.allLessons[i].lessons.length; j++) {
@@ -986,81 +987,58 @@ let app = new Vue({
             );
         },
         resetFilter: function () {
-            this.searchTeacher = "";
+            /* teacher */
+            this.searchTeacherNandS = "";
             this.selectedCourseFilter = "";
             this.teacherFound = [];
+            /* course */
             this.searchCourse = "";
             this.selectedTeacherFilter = "";
             this.courseFound = [];
         },
-        searchFunctionTeacher: function () {
+        searchTeacherFunction: function () {
             this.teacherFound = [];
-            this.searchTeacher = this.searchTeacher.trim();
-            /* TEXTBOX AND DROPDOWN BOTH */
-            if (this.searchTeacher.localeCompare("") !== 0 && this.selectedCourseFilter.localeCompare("") !== 0) {
-                this.searchTeacher = this.searchTeacher.charAt(0).toUpperCase() + this.searchTeacher.slice(1);
-                if (this.searchTeacher.split(" ").length > 2) {
-                    this.teacherFound.push("Error: We can filter only by using 1 Name and 1 Surname");
-                } else if (this.searchTeacher.split(" ").length === 2) { /* Using name and surname */
-                    let teacherNorS = this.searchTeacher.split(" ")[0];
-                    this.searchTeacher = this.searchTeacher.split(" ")[1].charAt(0).toUpperCase() + this.searchTeacher.split(" ")[1].slice(1);
-                    for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
-                        let course = this.allCoursesWithTeachers[i].courseName;
-                        if (course.localeCompare(this.selectedCourseFilter) === 0) {
-                            for (let j = 0; j < this.allCoursesWithTeachers[i].teachers.length; j++) {
-                                let teacher = this.allCoursesWithTeachers[i].teachers[j];
-                                let teacherString = teacher.teacherName + " " + teacher.teacherSurname + " " + teacher.teacherId;
-                                let cond1 = teacher.teacherName.localeCompare(this.searchTeacher) === 0 || teacher.teacherSurname.localeCompare(this.searchTeacher) === 0;
-                                let cond2 = teacher.teacherName.localeCompare(teacherNorS) === 0 || teacher.teacherSurname.localeCompare(teacherNorS) === 0;
-                                if (cond1 && cond2) {
-                                    this.teacherFound.push(teacherString);
+            this.searchTeacherNandS = this.searchTeacherNandS.trim();
+            let condTeacherNandS = this.searchTeacherNandS.localeCompare("") !== 0;
+            let condCourse = this.selectedCourseFilter.localeCompare("") !== 0;
+
+            if (condTeacherNandS && condCourse) { /* TEXTBOX AND DROPDOWN BOTH */
+                this.searchTeacherNandS = this.stringToUpperCase(this.searchTeacherNandS);
+                for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
+                    let course = this.allCoursesWithTeachers[i].courseName;
+                    if (course.localeCompare(this.selectedCourseFilter) === 0) {
+                        for (let j = 0; j < this.allCoursesWithTeachers[i].teachers.length; j++) {
+                            let teacher = this.allCoursesWithTeachers[i].teachers[j];
+                            let teacherString = teacher.teacherName + " " + teacher.teacherSurname + " " + teacher.teacherId;
+                            let searchingNameAndSurname = teacher.teacherName + " " + teacher.teacherSurname;
+                            let teacherArr = searchingNameAndSurname.split(" ");
+                            for (let k = 0; k < teacherArr.length; k++) {
+                                let stringTeacherNandSArray = this.searchTeacherNandS.split(" ");
+                                for (let h = 0; h < stringTeacherNandSArray.length; h++) {
+                                    let cond = teacherArr[k].localeCompare(stringTeacherNandSArray[h]) === 0;
+                                    if (cond && !this.teacherFound.includes(teacherString)) {
+                                        this.teacherFound.push(teacherString);
+                                    }
                                 }
-
-                            }
-                        }
-                    }
-                    this.searchTeacher = teacherNorS + " " + this.searchTeacher;
-                } else { /* only one */
-                    for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
-                        let course = this.allCoursesWithTeachers[i].courseName;
-                        if (course.localeCompare(this.selectedCourseFilter) === 0) {
-                            for (let j = 0; j < this.allCoursesWithTeachers[i].teachers.length; j++) {
-                                let teacher = this.allCoursesWithTeachers[i].teachers[j];
-                                let teacherString = teacher.teacherName + " " + teacher.teacherSurname + " " + teacher.teacherId;
-                                if (teacher.teacherName.localeCompare(this.searchTeacher) === 0 || teacher.teacherSurname.localeCompare(this.searchTeacher) === 0)
-                                    this.teacherFound.push(teacherString);
                             }
                         }
                     }
                 }
-            } else if (this.searchTeacher.localeCompare("") !== 0) { /* TEXTBOX */
-
-                this.searchTeacher = this.searchTeacher.charAt(0).toUpperCase() + this.searchTeacher.slice(1);
-
-                if (this.searchTeacher.split(" ").length > 2) {
-                    this.teacherFound.push("Error: We can filter only by using 1 Name and 1 Surname");
-                } else if (this.searchTeacher.split(" ").length === 2) {/* Using name and surname */
-                    let teacherNorS = this.searchTeacher.split(" ")[0];
-                    this.searchTeacher = this.searchTeacher.split(" ")[1].charAt(0).toUpperCase() + this.searchTeacher.split(" ")[1].slice(1);
-
-                    for (let i = 0; i < this.allTeachers.length; i++) {
-                        let stringTeacherArray = this.allTeachers[i].split(" ");
-                        let cond1 = this.searchTeacher.localeCompare(stringTeacherArray[0]) === 0 || this.searchTeacher.localeCompare(stringTeacherArray[1]) === 0;
-                        let cond2 = teacherNorS.localeCompare(stringTeacherArray[0]) === 0 || teacherNorS.localeCompare(stringTeacherArray[1]) === 0
-                        if (cond1 && cond2) {
-                            this.teacherFound.push(this.allTeachers[i]);
-                        }
-                    }
-                    this.searchTeacher = teacherNorS + " " + this.searchTeacher;
-                } else {/* only one */
-                    for (let i = 0; i < this.allTeachers.length; i++) {
-                        let stringTeacherArray = this.allTeachers[i].split(" ");
-                        if (this.searchTeacher.localeCompare(stringTeacherArray[0]) === 0 || this.searchTeacher.localeCompare(stringTeacherArray[1]) === 0) {
-                            this.teacherFound.push(this.allTeachers[i]);
+            } else if (condTeacherNandS) { /* TEXTBOX */
+                this.searchTeacherNandS = this.stringToUpperCase(this.searchTeacherNandS);
+                for (let i = 0; i < this.allTeachers.length; i++) { /* searching by watching all teacher */
+                    let stringTeacherArray = this.allTeachers[i].split(" "); /* split the selected teacher's string */
+                    let stringTeacherNandSArray = this.searchTeacherNandS.split(" "); /* split what the user wrote */
+                    for (let j = 0; j < stringTeacherArray.length; j++) { /* searching by matching all */
+                        for (let k = 0; k < stringTeacherNandSArray.length; k++) {
+                            let cond = stringTeacherNandSArray[k].localeCompare(stringTeacherArray[j]) === 0;
+                            if (cond && !this.teacherFound.includes(this.allTeachers[i])) {
+                                this.teacherFound.push(this.allTeachers[i]);
+                            }
                         }
                     }
                 }
-            } else if (this.selectedCourseFilter.localeCompare("") !== 0) {/* DROPDOWN */
+            } else if (condCourse) {/* DROPDOWN */
                 for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
                     let course = this.allCoursesWithTeachers[i].courseName;
                     if (course.localeCompare(this.selectedCourseFilter) === 0) {
@@ -1077,24 +1055,71 @@ let app = new Vue({
                 this.teacherFound.push("Not Found!");
             }
         },
-        searchFunctionCourse: function () {
-            if (this.searchCourse.localeCompare("") !== 0) { /* TEXTBOX */
-                this.searchCourse = this.searchCourse.charAt(0).toUpperCase() + this.searchCourse.slice(1);
-                if (this.searchCourse.split(" ").length > 1) {
-                    this.courseFound.push("Error: We can filter only by using 1 Name");
-                } else {
-                    for (let i = 0; i < this.allCourses.length; i++) {
-                        if (this.searchCourse.localeCompare(this.allCourses[i].courseName) === 0) {
-                            this.courseFound.push(this.allCourses[i].courseName);
+        searchCourseFunction: function () {
+            this.courseFound = [];
+            this.searchCourse = this.searchCourse.trim();
+            let condCourseN = this.searchCourse.localeCompare("") !== 0;
+            let condTeacher = this.selectedTeacherFilter.localeCompare("") !== 0;
+
+            if (condCourseN && condTeacher) {
+                this.searchCourse = this.stringToUpperCase(this.searchCourse);
+                for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
+                    for (let j = 0; j < this.allCoursesWithTeachers[i].teachers.length; j++) {
+                        let teacher = this.allCoursesWithTeachers[i].teachers[j];
+                        let teacherString = teacher.teacherName + " " + teacher.teacherSurname + " " + teacher.teacherId;
+                        if (this.selectedTeacherFilter.localeCompare(teacherString) === 0) {
+                            let courseArr = this.allCoursesWithTeachers[i].courseName.split(" ");
+                            for (let k = 0; k < courseArr.length; k++) {
+                                let stringCourseNameArray = this.searchCourse.split(" ");
+                                for (let h = 0; h < stringCourseNameArray.length; h++) {
+                                    let cond = courseArr[k].localeCompare(stringCourseNameArray[h]) === 0;
+                                    if (cond && !this.courseFound.includes(this.allCoursesWithTeachers[i].courseName)) {
+                                        this.courseFound.push(this.allCoursesWithTeachers[i].courseName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (condCourseN) { /* TEXTBOX */
+                this.searchCourse = this.stringToUpperCase(this.searchCourse);
+                for (let i = 0; i < this.allCourses.length; i++) {
+                    let stringCourseArray = this.allCourses[i].split(" ");
+                    let stringCourseNameArray = this.searchCourse.split(" ");
+                    for (let j = 0; j < stringCourseArray.length; j++) {
+                        for (let k = 0; k < stringCourseNameArray.length; k++) {
+                            let cond = stringCourseNameArray[k].localeCompare(stringCourseArray[j]) === 0;
+                            if (cond && !this.courseFound.includes(this.allCourses[i])) {
+                                this.courseFound.push(this.allCourses[i]);
+                            }
+                        }
+                    }
+                }
+            } else if (condTeacher) { /* DROPDOWN */
+                for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
+                    for (let j = 0; j < this.allCoursesWithTeachers[i].teachers.length; j++) {
+                        let teacherString = this.allCoursesWithTeachers[i].teachers[j].teacherName + " " + this.allCoursesWithTeachers[i].teachers[j].teacherSurname + " " + this.allCoursesWithTeachers[i].teachers[j].teacherId;
+                        if (this.selectedTeacherFilter.localeCompare(teacherString) === 0) {
+                            let course = this.allCoursesWithTeachers[i].courseName;
+                            if (!this.courseFound.includes(course))
+                                this.courseFound.push(course);
                         }
                     }
                 }
             }
-
-            if (this.searchCourse.length === 0) {
-                this.searchCourse.push("Not Found!");
+            if (this.courseFound.length === 0) {
+                this.courseFound.push("Not Found!");
             }
-
+        },
+        stringToUpperCase: function (str) {
+            var splitStr = str.toLowerCase().split(' ');
+            for (var i = 0; i < splitStr.length; i++) {
+                // You do not need to check if i is larger than splitStr length, as your for does that for you
+                // Assign it back to the array
+                splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+            }
+            // Directly return the joined string
+            return splitStr.join(' ');
         }
     },
     beforeMount() {
