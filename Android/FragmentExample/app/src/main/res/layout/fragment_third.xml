@@ -31,13 +31,14 @@
                 android:text="What's your name?" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/nameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,13 +54,14 @@
                 android:text="What's your Surname?" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/surnameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Surname"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,13 +77,14 @@
                 android:text="A unique way to call you?" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName3"
+                android:id="@+id/usernameEditTextSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Username"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
 
@@ -98,13 +101,14 @@
                 android:text="Your secret password" />
 
             <EditText
-                android:id="@+id/editTextTextPassword"
+                android:id="@+id/passwordEditTextSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
         <LinearLayout
