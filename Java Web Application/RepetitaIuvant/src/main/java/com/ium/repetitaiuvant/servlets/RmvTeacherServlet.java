@@ -49,7 +49,7 @@ public class RmvTeacherServlet extends HttpServlet {
                 if (DAO.logInFunction(user, password) && DAO.getRole(user, password) == Role.ADMIN) {
                     String teacher = request.getParameter("selectedTeacher");
                     String[] teacherInfo = teacher.split(" ");
-                    DAO.rmvTeacher(Long.parseLong(teacherInfo[2]));
+                    DAO.rmvTeacher(Long.parseLong(teacherInfo[teacherInfo.length-1]));
                     out.println("Success:");
                     out.println("Teacher removed correctly");
                 }

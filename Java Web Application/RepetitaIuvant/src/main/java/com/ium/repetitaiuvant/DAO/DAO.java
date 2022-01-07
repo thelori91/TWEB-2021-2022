@@ -428,7 +428,6 @@ public class DAO {
             System.out.println("rmvTeacher: Connected to the database Tutoring");
             String sql = "DELETE FROM `TeacherCourse` WHERE TeacherCourse.Teacher=" + "?";
             PreparedStatement st = conn1.prepareStatement(sql);
-            System.out.println(teacherId);
             st.setLong(1, teacherId);
             st.executeUpdate();
             st.close();

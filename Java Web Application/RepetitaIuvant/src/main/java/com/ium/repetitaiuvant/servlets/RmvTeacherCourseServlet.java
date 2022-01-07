@@ -1,6 +1,9 @@
 package com.ium.repetitaiuvant.servlets;
 
 import com.ium.repetitaiuvant.DAO.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -46,12 +49,10 @@ public class RmvTeacherCourseServlet extends HttpServlet {
             String password = (String) session.getAttribute("password");
             try {
                 if (DAO.logInFunction(user, password) && DAO.getRole(user, password) == Role.ADMIN) {
-                    String teacherCourse = request.getParameter("teacherCourse");
-                    String[] teacherCourseInfo = teacherCourse.split(" ");
-                    String teacherName = teacherCourseInfo[0];
-                    String teacherSurname = teacherCourseInfo[1];
-                    String teacherId = teacherCourseInfo[2];
-                    String courseName = teacherCourseInfo[3];
+                    String teacherName = request.getParameter("teacherName");
+                    String teacherSurname = request.getParameter("teacherSurname");
+                    String teacherId = request.getParameter("teacherId");
+                    String courseName = request.getParameter("courseName");
                     ArrayList<Teacher> teachers = DAO.getTeacherByNameSurname(teacherName, teacherSurname);
                     ArrayList<Course> courses = DAO.getCourses();
                     if (teachers.size() == 0) {
@@ -89,7 +90,7 @@ public class RmvTeacherCourseServlet extends HttpServlet {
                         }
                     }
                     if (teacherFound && courseFound && teacherCourseFound) {
-                        DAO.rmvTeacherCourse(Long.parseLong(teacherCourseInfo[2]), teacherCourseInfo[3]);
+                        DAO.rmvTeacherCourse(Long.parseLong(teacherId), courseName);
                         out.println("Success:");
                         out.println("Teacher Course removed correctly");
                     } else {

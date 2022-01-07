@@ -53,13 +53,12 @@ public class SignUpServlet extends HttpServlet {
                 out.println("Error:");
                 out.println("password must have from 8 to 20 chars, your password length is" + password.length());
 
+            } else if (username.length() > 30) {
+                out.println("Error:");
+                out.println("username is too long, please insert a new one " + username.length());
             } else {
-                HttpSession s = request.getSession(); // already checked if attribute are null
-                s.setAttribute("username", username);
-                s.setAttribute("password", password);
-                //Check if Username is already in use, since it's a primary key
                 try {
-                    if (DAO.existsUser((String) s.getAttribute("username"))) {
+                    if (DAO.existsUser(username)) {
                         out.println("Error:");
                         out.println("username already used");
                     } else {
@@ -67,8 +66,11 @@ public class SignUpServlet extends HttpServlet {
                         User student = new User(username, password, Role.STUDENT, name, surname);
                         DAO.addStudent(student);
                         out.println("Success:");
-                        out.println((String) s.getAttribute("username"));
+                        out.println(username);
                         out.println("Student");
+                        HttpSession s = request.getSession(); // already checked if attribute are null
+                        s.setAttribute("username", username);
+                        s.setAttribute("password", password);
                     }
                 } catch (ConnectException connectException) {
                     out.println("Error:");

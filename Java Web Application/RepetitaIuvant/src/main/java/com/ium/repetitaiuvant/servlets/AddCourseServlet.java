@@ -2,6 +2,7 @@ package com.ium.repetitaiuvant.servlets;
 
 import com.ium.repetitaiuvant.DAO.DAO;
 import com.ium.repetitaiuvant.DAO.Role;
+import com.ium.repetitaiuvant.DAO.StringFormatter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -53,6 +54,7 @@ public class AddCourseServlet extends HttpServlet {
                         out.println("Invalid input");
                         return;
                     }
+                    course = StringFormatter.capitalizeWord(course);
                     DAO.addCourse(course);
                     out.println("Success:");
                     out.println("Course added correctly");

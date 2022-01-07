@@ -53,13 +53,13 @@ public class AddTeacherCourseServlet extends HttpServlet {
                     for (TeacherCourse teacherCourse : teachersCourses) {
                         Teacher t = teacherCourse.getTeacher();
                         Course c = teacherCourse.getCourse();
-                        if(t.getID() == Long.parseLong(teacherInfo[2]) && c.getName().equals(course)){
+                        if(t.getID() == Long.parseLong(teacherInfo[teacherInfo.length-1]) && c.getName().equals(course)){
                             out.println("Error:");
                             out.println("Cannot add Teacher Course because already exists");
                             return;
                         }
                     }
-                    DAO.addTeacherCourse(Long.parseLong(teacherInfo[2]), course);
+                    DAO.addTeacherCourse(Long.parseLong(teacherInfo[teacherInfo.length-1]), course);
                     out.println("Success:");
                     out.println("Teacher Course added correctly");
                 }

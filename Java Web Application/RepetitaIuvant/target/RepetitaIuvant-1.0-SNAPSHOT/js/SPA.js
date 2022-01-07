@@ -55,8 +55,8 @@ Vue.component('coursebutton', {
     }
 });
 
-Vue.component('advancedbutton', {
-    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg commonStyleButton ">Advanced</button>',
+Vue.component('handleteacherandcoursedminbutton', {
+    template: '<button v-on:click="transitInner" type="button" class="btn btn-primary btn-dark btn-lg commonStyleButton ">Handle Teacher Course Admin</button>',
     methods: {
         transitInner: function () {
             this.$emit('transit-inner');
@@ -174,7 +174,7 @@ let app = new Vue({
         searchCoursePage: false,
         signInPage: false,
         signUpPage: false,
-        adminPage: false,
+        handleTeacherAndCourseAdminPage: false,
         handleReservationAdminPage: false,
         /* HANDLER FOR PASSWORD */
         wrongPassword: false,
@@ -228,14 +228,26 @@ let app = new Vue({
         allTeachers: [],
         allCourses: [],
         teacherCourseOptions: [],
+        selectedTeacherCourseOption: {
+            teacherId: "",
+            teacherName: "",
+            teacherSurname: "",
+            courseName: ""
+        },
         selectedTeacherCourse: "",
 
         /* Handle reservation */
-        teacherCourseArray: [{
-            teacher: "",
+        lessonArray: [{
+            teacherName: "",
+            teacherSurname: "",
+            teacherId: "",
             lessonsArray: [{
                 lessonId: "",
-                lesson: ""
+                lessonCourse: "",
+                lessonDay: "",
+                lessonTime: "",
+                lessonUser: "",
+                lessonState: ""
             }]
         }],
 
@@ -274,7 +286,7 @@ let app = new Vue({
             this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
-            this.adminPage = false;
+            this.handleTeacherAndCourseAdminPage = false;
             this.handleReservationAdminPage = false;
         },
         TOPHandleReservation: function () {
@@ -286,7 +298,7 @@ let app = new Vue({
                 this.searchCoursePage = false;
                 this.signInPage = false;
                 this.signUpPage = false;
-                this.adminPage = false;
+                this.handleTeacherAndCourseAdminPage = false;
                 this.handleReservationAdminPage = false;
             } else {
                 this.TOPSignUp();
@@ -300,7 +312,7 @@ let app = new Vue({
             this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
-            this.adminPage = false;
+            this.handleTeacherAndCourseAdminPage = false;
             this.handleReservationAdminPage = false;
             this.loadAllForNewReservation();
         },
@@ -312,7 +324,7 @@ let app = new Vue({
             this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
-            this.adminPage = false;
+            this.handleTeacherAndCourseAdminPage = false;
             this.handleReservationAdminPage = false;
             /* init all and download */
             this.searchTeacherNandS = "";
@@ -334,7 +346,7 @@ let app = new Vue({
             this.searchCoursePage = true;
             this.signInPage = false;
             this.signUpPage = false;
-            this.adminPage = false;
+            this.handleTeacherAndCourseAdminPage = false;
             this.handleReservationAdminPage = false;
             /* init all and download */
             this.searchCourse = "";
@@ -355,7 +367,7 @@ let app = new Vue({
             this.searchCoursePage = false;
             this.signInPage = true;
             this.signUpPage = false;
-            this.adminPage = false;
+            this.handleTeacherAndCourseAdminPage = false;
             this.handleReservationAdminPage = false;
         },
         TOPSignUp: function () {
@@ -366,10 +378,10 @@ let app = new Vue({
             this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = true;
-            this.adminPage = false;
+            this.handleTeacherAndCourseAdminPage = false;
             this.handleReservationAdminPage = false;
         },
-        TOPAdmin: function () {
+        TOPHandleTeacherCourseAdmin: function () {
             if (this.role.localeCompare('Admin') !== 0) return;
             this.homePage = false;
             this.handleReservationPage = false;
@@ -378,8 +390,24 @@ let app = new Vue({
             this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
-            this.adminPage = true;
+            this.handleTeacherAndCourseAdminPage = true;
             this.handleReservationAdminPage = false;
+            /*init all*/
+            this.newTeacherName = "";
+            this.newTeacherSurname = "";
+            this.selectedTeacher = "";
+            this.rmvTeacherOptions = [];
+            this.newCourseName = "";
+            this.selectedCourse = "";
+            this.rmvCourseOptions = [];
+            this.allTeachers = [];
+            this.allCourses = [];
+            this.selectedTeacherCourseT = "";
+            this.selectedTeacherCourseC = "";
+            this.allTeachers = [];
+            this.allCourses = [];
+            this.teacherCourseOptions = [];
+            this.selectedTeacherCourse = "";
             this.initTeacherCourseOptions();
             this.loadAllForTeacherOptions();
             this.loadAllForCourseOptions();
@@ -396,7 +424,7 @@ let app = new Vue({
             this.searchCoursePage = false;
             this.signInPage = false;
             this.signUpPage = false;
-            this.adminPage = false;
+            this.handleTeacherAndCourseAdminPage = false;
             this.handleReservationAdminPage = true;
 
         },
@@ -473,50 +501,62 @@ let app = new Vue({
             else return allRight;
 
         }, registerNewUser: function () {
-            var self = this;
-            let nothingIsEmpty = this.checkFields(false);
-            if (nothingIsEmpty) {
-                $.post(this.linkSingUpServlet, {
-                    uname: this.newUserUname,
-                    password: this.newUserPassword,
-                    name: this.newUserName,
-                    surname: this.newUserSurname
-                }, function (data) {
-                    const response = data.toString().split("\n");
-                    if (response[0].localeCompare("Success:") === 0) {
-                        self.username = response[1];
-                        self.role = response[2];
-                        self.onPageLoad();
-                        if (self.redirectFunction.localeCompare('Home') === 0) self.TOPHome();
-                        if (self.redirectFunction.localeCompare('NewReservation') === 0) self.TOPnewReservation();
-                        self.redirectFunction = 'Home';
-                    } else
-                        alert(data);
-                });
+            if (this.wrongPassword)
+                alert("Error:\npassword must have from 8 to 20 chars, your password length is " + this.newUserPassword.length)
+            else if (this.newUserUname.length > 30)
+                alert("Error:\nusername is too long, please insert a new one " + this.newUserUname.length)
+            else {
+                var self = this;
+                let nothingIsEmpty = this.checkFields(false);
+                if (nothingIsEmpty) {
+                    $.post(this.linkSingUpServlet, {
+                        uname: this.newUserUname,
+                        password: this.newUserPassword,
+                        name: this.newUserName,
+                        surname: this.newUserSurname
+                    }, function (data) {
+                        const response = data.toString().split("\n");
+                        if (response[0].localeCompare("Success:") === 0) {
+                            self.username = response[1];
+                            self.role = response[2];
+                            self.onPageLoad();
+                            if (self.redirectFunction.localeCompare('Home') === 0) self.TOPHome();
+                            if (self.redirectFunction.localeCompare('NewReservation') === 0) self.TOPnewReservation();
+                            self.redirectFunction = 'Home';
+                        } else
+                            alert(data);
+                    });
+                }
             }
         },
         signInUser: function () {
-            var self = this;
-            let nothingIsEmpty = this.checkFields(true);
-            if (nothingIsEmpty) {
-                $.post(this.linkSingInServlet, {
-                    uname: this.newUserUname,
-                    password: this.newUserPassword,
-                }, function (data) {
-                    const response = data.toString().split("\n");
-                    if (response[0].localeCompare("Success:") === 0) {
-                        self.username = response[1];
-                        self.role = response[2];
-                        if (self.role.localeCompare('') !== 0 && self.role.localeCompare('Admin') === 0) {
-                            self.loadAllLessonAdmin();
-                        }
-                        self.onPageLoad();
-                        if (self.redirectFunction.localeCompare('Home') === 0) self.TOPHome();
-                        if (self.redirectFunction.localeCompare('NewReservation') === 0) self.TOPnewReservation();
-                        self.redirectFunction = 'Home';
-                    } else
-                        alert(data);
-                });
+            if (this.wrongPassword)
+                alert("Error:\npassword must have from 8 to 20 chars, your password length is " + this.newUserPassword.length)
+            else if (this.newUserUname.length > 30)
+                alert("Error:\nusername is too long: " + this.newUserUname.length)
+            else {
+                var self = this;
+                let nothingIsEmpty = this.checkFields(true);
+                if (nothingIsEmpty) {
+                    $.post(this.linkSingInServlet, {
+                        uname: this.newUserUname,
+                        password: this.newUserPassword,
+                    }, function (data) {
+                        const response = data.toString().split("\n");
+                        if (response[0].localeCompare("Success:") === 0) {
+                            self.username = response[1];
+                            self.role = response[2];
+                            if (self.role.localeCompare('') !== 0 && self.role.localeCompare('Admin') === 0) {
+                                self.loadAllLessonAdmin();
+                            }
+                            self.onPageLoad();
+                            if (self.redirectFunction.localeCompare('Home') === 0) self.TOPHome();
+                            if (self.redirectFunction.localeCompare('NewReservation') === 0) self.TOPnewReservation();
+                            self.redirectFunction = 'Home';
+                        } else
+                            alert(data);
+                    });
+                }
             }
         },
         logOut: function () {
@@ -881,12 +921,16 @@ let app = new Vue({
             });
         },
         rmvTeacherCourse: function () {
+            this.completeParamToPost()
             var self = this;
             $.get(this.linkRmvTeacherCourseServlet, {
-                teacherCourse: this.selectedTeacherCourse
+                teacherName: this.selectedTeacherCourseOption.teacherName,
+                teacherSurname: this.selectedTeacherCourseOption.teacherSurname,
+                teacherId: this.selectedTeacherCourseOption.teacherId,
+                courseName: this.selectedTeacherCourseOption.courseName
             }, function (data) {
                 alert(data);
-                /* UPDATE rmv Teacher and Course dropdown */
+                /*UPDATE rmv Teacher and Course dropdown*/
                 self.selectedTeacher = "";
                 self.selectedCourse = "";
                 self.rmvTeacherOptions = [];
@@ -894,7 +938,7 @@ let app = new Vue({
                 self.loadAllForCourseOptions();
                 self.loadAllForTeacherOptions();
 
-                /* UPDATE itself */
+                /*UPDATE itself*/
                 self.selectedTeacherCourse = "";
                 self.teacherCourseOptions = [];
                 self.initTeacherCourseOptions();
@@ -911,18 +955,49 @@ let app = new Vue({
                         let teacherSurname = arrayOfTeachersCourses[i].teachers[j].teacherSurname;
                         let teacherId = arrayOfTeachersCourses[i].teachers[j].teacherId;
                         let stringTeacherCourse = teacherName + " " + teacherSurname + " " + teacherId + " " + courseName;
-                        if (!self.teacherCourseOptions.includes(stringTeacherCourse)) {
-                            self.teacherCourseOptions.push(stringTeacherCourse);
+                        let obj = {
+                            teacherName: teacherName,
+                            teacherSurname: teacherSurname,
+                            teacherId: teacherId,
+                            courseName: courseName,
+                        };
+                        cond = self.containsObj(obj, self.teacherCourseOptions);
+                        if (!cond) {
+                            self.teacherCourseOptions.push(obj);
                         }
                     }
                 }
             });
         },
+
+        completeParamToPost: function () {
+            let teacherCourseArray = this.selectedTeacherCourse.split(" ");
+            for (let i = 0; i < teacherCourseArray.length; i++) {
+                for (let j = 0; j < this.teacherCourseOptions.length; j++) {
+                    if (teacherCourseArray[i].localeCompare(this.teacherCourseOptions[j].teacherId) === 0) {
+                        this.selectedTeacherCourseOption.teacherId = String(this.teacherCourseOptions[j].teacherId);
+                        this.selectedTeacherCourseOption.teacherName = this.teacherCourseOptions[j].teacherName;
+                        this.selectedTeacherCourseOption.teacherSurname = this.teacherCourseOptions[j].teacherSurname;
+                        this.selectedTeacherCourseOption.courseName = this.teacherCourseOptions[j].courseName;
+                        break;
+                    }
+                }
+            }
+        },
+        containsObj: function (obj, list) {
+            var i;
+            for (i = 0; i < list.length; i++) {
+                if (list[i] === obj) {
+                    return true;
+                }
+            }
+            return false;
+        },
         loadAllLessonAdmin: function () {
             var self = this;
             $.get(this.linkGetAllLessonsServlet, function (data) {
                     /* init all*/
-                    self.teacherCourseArray = [{
+                    self.lessonArray = [{
                         teacherName: "",
                         teacherSurname: "",
                         teacherId: "",
@@ -941,16 +1016,16 @@ let app = new Vue({
                         let teacherName = self.allLessons[i].teacherName;
                         let teacherSurname = self.allLessons[i].teacherSurname;
                         let teacherId = self.allLessons[i].teacherId;
-                        self.teacherCourseArray[i].teacherName = teacherName;
-                        self.teacherCourseArray[i].teacherSurname = teacherSurname;
-                        self.teacherCourseArray[i].teacherId = teacherId;
+                        self.lessonArray[i].teacherName = teacherName;
+                        self.lessonArray[i].teacherSurname = teacherSurname;
+                        self.lessonArray[i].teacherId = teacherId;
                         for (let j = 0; j < self.allLessons[i].lessons.length; j++) {
                             let courseName = self.allLessons[i].lessons[j].lessonCourse;
                             let lDay = self.allLessons[i].lessons[j].lessonDay;
                             let lTime = self.allLessons[i].lessons[j].lessonTime;
                             let username = self.allLessons[i].lessons[j].lessonWithUser;
                             let lState = self.allLessons[i].lessons[j].lessonState;
-                            self.teacherCourseArray[i].lessonsArray[j] = {
+                            self.lessonArray[i].lessonsArray[j] = {
                                 lessonId: self.allLessons[i].lessons[j].lessonId,
                                 lessonCourse: courseName,
                                 lessonDay: lDay,
@@ -960,7 +1035,7 @@ let app = new Vue({
                             };
                             /* if there isn't next element, don't push another element */
                             if (j !== self.allLessons[i].lessons.length - 1) {
-                                self.teacherCourseArray[i].lessonsArray.push({
+                                self.lessonArray[i].lessonsArray.push({
                                     lessonId: "",
                                     lessonCourse: "",
                                     lessonDay: "",
@@ -972,7 +1047,7 @@ let app = new Vue({
                         }
                         /* if there isn't next element, don't push another element */
                         if (i !== self.allLessons.length - 1) {
-                            self.teacherCourseArray.push({
+                            self.lessonArray.push({
                                 teacherName: "",
                                 teacherSurname: "",
                                 teacherId: "",
@@ -1005,8 +1080,9 @@ let app = new Vue({
             this.searchTeacherNandS = this.searchTeacherNandS.trim();
             let condTeacherNandS = this.searchTeacherNandS.localeCompare("") !== 0;
             let condCourse = this.selectedCourseFilter.localeCompare("") !== 0;
-
-            if (condTeacherNandS && condCourse) { /* TEXTBOX AND DROPDOWN BOTH */
+            if (!condTeacherNandS && !condCourse) {
+                this.teacherFound = this.allTeachers;
+            } else if (condTeacherNandS && condCourse) { /* TEXTBOX AND DROPDOWN BOTH */
                 this.searchTeacherNandS = this.stringToUpperCase(this.searchTeacherNandS);
                 for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
                     let course = this.allCoursesWithTeachers[i].courseName;
@@ -1064,8 +1140,9 @@ let app = new Vue({
             this.searchCourse = this.searchCourse.trim();
             let condCourseN = this.searchCourse.localeCompare("") !== 0;
             let condTeacher = this.selectedTeacherFilter.localeCompare("") !== 0;
-
-            if (condCourseN && condTeacher) {
+            if (!condCourseN && !condTeacher) {
+                this.courseFound = this.allCourses;
+            } else if (condCourseN && condTeacher) {
                 this.searchCourse = this.stringToUpperCase(this.searchCourse);
                 for (let i = 0; i < this.allCoursesWithTeachers.length; i++) {
                     for (let j = 0; j < this.allCoursesWithTeachers[i].teachers.length; j++) {
