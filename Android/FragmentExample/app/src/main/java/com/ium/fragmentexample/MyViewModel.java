@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyViewModel extends ViewModel {
-    public MutableLiveData<String> username = new MutableLiveData<>();
-    public MutableLiveData<String> password = new MutableLiveData<>();
+    public MutableLiveData<String> username = new MutableLiveData<>("");
+    public MutableLiveData<String> password = new MutableLiveData<>("");
     public MutableLiveData<String> role = new MutableLiveData<>("Guest");
     public MutableLiveData<ArrayList<String>> upcomingEvents = new MutableLiveData<>(new ArrayList<>());
     AsyncHttpClient myHttpClient = new AsyncHttpClient();
