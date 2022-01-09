@@ -112,13 +112,14 @@ public class SecondFragment extends Fragment {
         JSONArray jsonArray = new JSONArray(response);
         for (int i = 1; i < jsonArray.length(); i++) {
             JSONObject result = jsonArray.getJSONObject(i);
+            boolean isActive = result.getString("state").equals("Active");
             String lesson = result.getString("course") + " " +
                     result.getString("teacherName") + " " +
                     result.getString("teacherSurname") + " " +
                     result.getString("day") + " " +
-                    result.getString("time") + " " +
-                    result.getString("state");
-            ret.add(lesson);
+                    result.getString("time");
+
+            if(isActive) ret.add(lesson);
         }
         return ret;
     }
