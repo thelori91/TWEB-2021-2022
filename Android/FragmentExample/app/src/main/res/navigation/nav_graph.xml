@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/ThirdFragment"
         android:name="com.ium.fragmentexample.ThirdFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/third_fragment_label"
         tools:layout="@layout/fragment_third">
         <action
             android:id="@+id/action_ThirdFragment_to_FirstFragment"
@@ -52,6 +52,7 @@
     <fragment
         android:id="@+id/NewLessonFragment"
         android:name="com.ium.fragmentexample.NewLessonFragment"
+        android:label="@string/newlesson_fragment_label"
         tools:layout="@layout/fragment_new_lesson">
 
         <action
@@ -62,6 +63,7 @@
     <fragment
         android:id="@+id/HandleFragment"
         android:name="com.ium.fragmentexample.HandleFragment"
+        android:label="@string/handle_fragment_label"
         tools:layout="@layout/fragment_handle">
 
         <action
