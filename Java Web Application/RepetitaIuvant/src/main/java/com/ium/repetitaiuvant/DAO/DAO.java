@@ -242,6 +242,43 @@ public class DAO {
         return lessons;
     }
 
+    public static Lesson getLessonsById(long lessonId) throws ConnectException {
+        Connection conn1 = null;
+        Lesson lesson = null;
+        try {
+            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+            if (conn1 == null) {
+                System.err.println("getLessonsById: Unable to establish a connection!");
+                throw new ConnectException();
+            }
+            System.out.println("getLessonsById: Connected to the database Tutoring");
+            Statement st = conn1.createStatement();
+            String sql = "SELECT * FROM Lesson join Teacher T on T.ID = Lesson.Teacher join Course C on C.Name = Lesson.Course join User U on U.Username = Lesson.User";
+            sql += " WHERE Lesson.ID = '" + lessonId + "';";
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                Teacher teacher = new Teacher(rs.getLong("T.ID"), rs.getString("T.Name"), rs.getString("T.Surname"));
+                Course course = new Course(rs.getString("C.Name"));
+                User user1 = new User(rs.getString("U.username"), rs.getString("U.Password"), Conversions.stringToRole(rs.getString("U.Role")), rs.getString("U.Name"), rs.getString("U.Surname"));
+                Day day = Conversions.stringToDay(rs.getString("Lesson.Day"));
+                Time time = Conversions.stringToTime(rs.getString("Lesson.Time"));
+                State state = Conversions.stringToState(rs.getString("Lesson.state"));
+                lesson = new Lesson(rs.getLong("Lesson.ID"), teacher, course, user1, day, time, state);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (conn1 != null) {
+                try {
+                    conn1.close();
+                } catch (SQLException e2) {
+                    System.out.println(e2.getMessage());
+                }
+            }
+        }
+        return lesson;
+    }
+
     public static Role getRole(String usr, String userPassword) throws ConnectException {
         Connection conn1 = null;
         String role = null;
@@ -545,7 +582,7 @@ public class DAO {
         return -1;
     }
 
-    public static void updateLesson(long teacherId, long lessonId, String course, String user, String day, String time, String state, String nextState) throws ConnectException {
+    public static void updateLesson(long lessonId, String nextState) throws ConnectException {
         Connection conn1 = null;
         try {
             conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
@@ -555,23 +592,11 @@ public class DAO {
             }
             System.out.println("updateLesson: Connected to the database Tutoring");
             String newState = " State= " + "?";
-            String tId = " WHERE Lesson.Teacher= " + "?";
-            String lId = " && Lesson.ID= " + "?";
-            String c = " && Lesson.Course= " + "?";
-            String usr = " && Lesson.User= " + "?";
-            String d = " && Lesson.Day= " + "?";
-            String t = " && Lesson.Time= " + "?";
-            String s = " && Lesson.State= " + "?";
-            String sql = "UPDATE Lesson SET" + newState + tId + c + usr + d + lId + t + s;
+            String lId = " WHERE Lesson.ID= " + "?";
+            String sql = "UPDATE Lesson SET" + newState + lId;
             PreparedStatement st = conn1.prepareStatement(sql);
             st.setString(1, nextState);
-            st.setLong(2, teacherId);
-            st.setString(3, course);
-            st.setString(4, user);
-            st.setString(5, day);
-            st.setLong(6, lessonId);
-            st.setString(7, time);
-            st.setString(8, state);
+            st.setLong(2, lessonId);
             st.executeUpdate();
             st.close();
         } catch (SQLException e) {

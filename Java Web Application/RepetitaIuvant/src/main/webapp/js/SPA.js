@@ -440,13 +440,7 @@ let app = new Vue({
         changeState: function (lesson, eventState) {
             var self = this;
             $.post(this.linkUpdateLessonServlet, {
-                teacherId: lesson.teacherId,
                 lessonId: lesson.lessonId,
-                course: lesson.course,
-                username: this.username,
-                day: lesson.day,
-                time: lesson.time,
-                state: lesson.state,
                 nextState: eventState
             }, function (data) {
                 alert(data);
@@ -458,13 +452,7 @@ let app = new Vue({
         changeStateAdmin: function (teacher, lesson, eventState) {
             var self = this;
             $.post(this.linkUpdateLessonServlet, {
-                teacherId: teacher.teacherId,
                 lessonId: lesson.lessonId,
-                course: lesson.lessonCourse,
-                username: lesson.lessonUser,
-                day: lesson.lessonDay,
-                time: lesson.lessonTime,
-                state: lesson.lessonState,
                 nextState: eventState
             }, function (data) {
                 alert(data);
