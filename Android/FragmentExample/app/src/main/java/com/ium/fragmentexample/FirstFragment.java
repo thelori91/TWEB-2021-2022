@@ -60,7 +60,8 @@ public class FirstFragment extends Fragment {
     {
         //Update the ui
         binding.roleDisplay.setText(myViewModel.role.getValue());
-        ArrayList<String> arrayList = myViewModel.upcomingEvents.getValue();
+        ArrayList<String> arrayList = myViewModel.getUpcomingEventsOptions();
+
         if(arrayList != null)
         {
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, arrayList);
@@ -80,7 +81,7 @@ public class FirstFragment extends Fragment {
                 String response = new String(responseBody, StandardCharsets.UTF_8);
                 ArrayList<String> events = null;
                 try {
-                    events = SecondFragment.parseUpcomingEventsJSON(response);
+                    events = SecondFragment.parseUpcomingEventsJSON(response, myViewModel);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

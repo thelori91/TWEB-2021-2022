@@ -46,7 +46,7 @@ public class HandleFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Populate the spinner with your lessons
-        binding.lessonSelectionSpinner.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, myViewModel.upcomingEvents.getValue()));
+        binding.lessonSelectionSpinner.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, myViewModel.getUpcomingEventsOptions()));
 
 
         binding.sendToCancelledButton.setOnClickListener(new View.OnClickListener() {

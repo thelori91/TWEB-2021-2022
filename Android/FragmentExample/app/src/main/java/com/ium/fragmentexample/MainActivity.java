@@ -18,11 +18,20 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.ium.fragmentexample.databinding.ActivityMainBinding;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +51,26 @@ public class MainActivity extends AppCompatActivity {
 
         if(myViewModel.myHttpClient == null) myViewModel.myHttpClient = new AsyncHttpClient();
         myViewModel.myHttpClient.setCookieStore(new PersistentCookieStore(getApplicationContext()));
+
+
+        //Updating upcoming events in myViewModel
+        myViewModel.myHttpClient.post("http://10.0.2.2:8080/RepetitaIuvant_war_exploded/onLoad-servlet", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String response = new String(responseBody, StandardCharsets.UTF_8);
+                ArrayList<String> events = null;
+                try {
+                    events = SecondFragment.parseUpcomingEventsJSON(response, myViewModel);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                myViewModel.upcomingEvents.setValue(events);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
 
         //Events of clicks on buttons
         binding.fab.setOnClickListener(new View.OnClickListener() {
