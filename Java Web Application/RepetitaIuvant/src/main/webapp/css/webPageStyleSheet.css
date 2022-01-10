@@ -3,6 +3,10 @@
     --animate-duration: 3s;
 }
 
+#navbarLogo {
+    font-family: Herculanum, "Eras Demi ITC", sans-serif;
+}
+
 .titleStyle {
     font-family: Herculanum, "Eras Demi ITC", sans-serif;
     font-size: 400%;
@@ -100,7 +104,7 @@
 .activeButton {
     font-size: 130%;
     background-repeat: no-repeat;
-    background-color: rgb(174,123,6);
+    background-color: rgb(174, 123, 6);
     border: none;
     cursor: pointer;
     overflow: hidden;
@@ -336,7 +340,7 @@ input:active {
     margin-bottom: 2em;
 }
 
-.teacherNameReserv{
+.teacherNameReserv {
     font-size: 1.5em;
 }
 
