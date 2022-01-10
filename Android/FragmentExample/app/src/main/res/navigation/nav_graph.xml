@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_NewLesson"
             app:destination="@id/NewLessonFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_HandleFragment"
+            app:destination="@id/HandleFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -53,6 +56,16 @@
 
         <action
             android:id="@+id/action_NewLesson_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/HandleFragment"
+        android:name="com.ium.fragmentexample.HandleFragment"
+        tools:layout="@layout/fragment_handle">
+
+        <action
+            android:id="@+id/action_Handle_to_FirstFragment"
             app:destination="@id/FirstFragment" />
 
     </fragment>

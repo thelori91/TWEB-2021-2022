@@ -58,8 +58,8 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 RequestParams requestParams = new RequestParams();
-                requestParams.add("uname", binding.usernameEditText.getText().toString());
-                requestParams.add("password", binding.passwordEditText.getText().toString());
+                requestParams.add("uname", binding.usernameEditText.getText().toString().trim());
+                requestParams.add("password", binding.passwordEditText.getText().toString().trim());
                 myViewModel.myHttpClient.post("http://10.0.2.2:8080/RepetitaIuvant_war_exploded/signIn-servlet", requestParams, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -71,7 +71,7 @@ public class SecondFragment extends Fragment {
                             //This should trigger the onChange declared in MainActivity
                             myViewModel.role.setValue(role);
                             myViewModel.username.setValue(usernameFromServer);
-                            myViewModel.password.setValue(binding.passwordEditText.getText().toString());
+                            myViewModel.password.setValue(binding.passwordEditText.getText().toString().trim());
                             //Second Request!!!/////////////////////
                             myViewModel.myHttpClient.post("http://10.0.2.2:8080/RepetitaIuvant_war_exploded/onLoad-servlet", null, new AsyncHttpResponseHandler() {
 
@@ -90,7 +90,7 @@ public class SecondFragment extends Fragment {
 
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                    Toast.makeText(getContext(), "Manco cosí", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), "Error Getting The request", Toast.LENGTH_LONG).show();
                                 }
                             });
                         } else {
@@ -107,7 +107,7 @@ public class SecondFragment extends Fragment {
         });
     }
 
-    private ArrayList<String> parseUpcomingEventsJSON(String response) throws JSONException {
+    public static ArrayList<String> parseUpcomingEventsJSON(String response) throws JSONException {
         ArrayList<String> ret = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(response);
         for (int i = 1; i < jsonArray.length(); i++) {
@@ -117,7 +117,8 @@ public class SecondFragment extends Fragment {
                     result.getString("teacherName") + " " +
                     result.getString("teacherSurname") + " " +
                     result.getString("day") + " " +
-                    result.getString("time");
+                    result.getString("time") + "\n" +
+                    result.getString("lessonId");
 
             if(isActive) ret.add(lesson);
         }
