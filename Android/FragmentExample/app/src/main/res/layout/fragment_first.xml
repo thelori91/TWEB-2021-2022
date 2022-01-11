@@ -45,7 +45,15 @@
                 android:layout_height="wrap_content"
                 android:text="Log Out"
                 tools:visibility="gone" />
+
         </LinearLayout>
+
+        <Button
+            android:id="@+id/lessonHistoryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lesson History"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/newReservationButton"

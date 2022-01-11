@@ -21,6 +21,11 @@
             app:popUpTo="@+id/ThirdFragment"
             />
         <action
+            android:id="@+id/action_FirstFragment_to_HistoryFragment"
+            app:destination="@id/LessonHistory"
+            app:popUpTo="@+id/LessonHistory"
+            />
+        <action
             android:id="@+id/action_FirstFragment_to_NewLesson"
             app:destination="@id/NewLessonFragment"
             app:popUpTo="@+id/NewLessonFragment"/>
@@ -78,6 +83,18 @@
 
         <action
             android:id="@+id/action_Handle_to_FirstFragment"
+            app:destination="@id/FirstFragment"
+            app:popUpTo="@+id/FirstFragment"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/LessonHistory"
+        android:name="com.ium.fragmentexample.LessonHistoryFragment"
+        android:label="lesson"
+        tools:layout="@layout/fragment_lesson_history">
+
+        <action
+            android:id="@+id/action_History_to_FirstFragment"
             app:destination="@id/FirstFragment"
             app:popUpTo="@+id/FirstFragment"/>
 

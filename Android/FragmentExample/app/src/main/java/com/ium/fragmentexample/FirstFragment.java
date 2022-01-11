@@ -79,6 +79,7 @@ public class FirstFragment extends Fragment {
         binding.buttonLogOut.setVisibility(logged ? View.VISIBLE : View.GONE);
         binding.buttonLogIn.setVisibility(logged ? View.GONE : View.VISIBLE);
         binding.buttonSignUp.setVisibility(logged ? View.GONE : View.VISIBLE);
+        binding.lessonHistoryButton.setVisibility(logged ? View.VISIBLE : View.GONE);
     }
 
     public void updateSpinner() {
@@ -137,6 +138,15 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_ThirdFragment);
+            }
+        });
+
+        //Go to Lesson History Button
+        binding.lessonHistoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(FirstFragment.this)
+                        .navigate(R.id.action_FirstFragment_to_HistoryFragment);
             }
         });
 

@@ -15,6 +15,7 @@ public class MyViewModel extends ViewModel {
     public MutableLiveData<String> password = new MutableLiveData<>("");
     public MutableLiveData<String> role = new MutableLiveData<>("Guest");
     public MutableLiveData<ArrayList<String>> upcomingEvents = new MutableLiveData<>(new ArrayList<>());
+    public MutableLiveData<ArrayList<String>> pastEvents = new MutableLiveData<>(new ArrayList<>());
     AsyncHttpClient myHttpClient = new AsyncHttpClient();
 
     public ArrayList<String> getUpcomingEventsOptions()
@@ -24,6 +25,16 @@ public class MyViewModel extends ViewModel {
         for(String s : upcomingEvents.getValue())
         {
             ret.add(s.split("\n")[0]);
+        }
+        return ret;
+    }
+    public ArrayList<String> getPastEventsOptions()
+    {
+        ArrayList<String> ret = new ArrayList<>();
+        if(pastEvents.getValue() == null) return ret;
+        for(String s : pastEvents.getValue())
+        {
+            ret.add(s);
         }
         return ret;
     }

@@ -91,7 +91,7 @@ public class ThirdFragment extends Fragment {
                                     String response = new String(responseBody, StandardCharsets.UTF_8);
                                     ArrayList<String> events = null;
                                     try {
-                                        events = parseUpcomingEventsJSON(response, myViewModel);
+                                        events = SecondFragment.parseUpcomingEventsJSON(response, myViewModel);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -120,26 +120,6 @@ public class ThirdFragment extends Fragment {
         });
     }
 
-    public static ArrayList<String> parseUpcomingEventsJSON(String response, MyViewModel vm) throws JSONException {
-        ArrayList<String> ret = new ArrayList<>();
-        JSONArray jsonArray = new JSONArray(response);
-        JSONObject starter = jsonArray.getJSONObject(0);
-        vm.username.setValue(starter.getString("username"));
-        vm.role.setValue(starter.getString("role"));
-        for (int i = 1; i < jsonArray.length(); i++) {
-            JSONObject result = jsonArray.getJSONObject(i);
-            boolean isActive = result.getString("state").equals("Active");
-            String lesson = result.getString("course") + " " +
-                    result.getString("teacherName") + " " +
-                    result.getString("teacherSurname") + " " +
-                    result.getString("day") + " " +
-                    result.getString("time") + "\n" +
-                    result.getString("lessonId");
-
-            if (isActive) ret.add(lesson);
-        }
-        return ret;
-    }
 
     @Override
     public void onDestroyView() {
