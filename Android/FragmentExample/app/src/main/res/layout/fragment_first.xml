@@ -34,10 +34,17 @@
                 android:text="Sign Up" />
 
             <Button
-                android:id="@+id/button_first"
+                android:id="@+id/button_LogIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Log In" />
+
+            <Button
+                android:id="@+id/button_LogOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log Out"
+                tools:visibility="gone" />
         </LinearLayout>
 
         <Button

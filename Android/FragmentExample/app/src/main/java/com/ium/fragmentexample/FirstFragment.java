@@ -37,6 +37,8 @@ public class FirstFragment extends Fragment {
     private FragmentFirstBinding binding;
     private MyViewModel myViewModel;
     Observer<ArrayList<String>> eventsObserver = null;
+    Observer<String> roleObserver = null;
+    Observer<String> usernameObserver = null;
 
     @Override
     public View onCreateView(
@@ -51,9 +53,30 @@ public class FirstFragment extends Fragment {
             }
         };
 
+        roleObserver = new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                updateButtons(myViewModel.role.getValue().equals("Student") || myViewModel.role.getValue().equals("Admin"));
+            }
+        };
+
+        usernameObserver = new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                updateButtons(myViewModel.role.getValue().equals("Student") || myViewModel.role.getValue().equals("Admin"));
+            }
+        };
+
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         myViewModel = new ViewModelProvider(requireActivity()).get(MyViewModel.class);
         return binding.getRoot();
+    }
+
+    void updateButtons(boolean logged)
+    {
+        binding.buttonLogOut.setVisibility(logged ? View.VISIBLE : View.GONE);
+        binding.buttonLogIn.setVisibility(logged ? View.GONE : View.VISIBLE);
+        binding.buttonSignUp.setVisibility(logged ? View.GONE : View.VISIBLE);
     }
 
     public void updateSpinner()
@@ -73,6 +96,8 @@ public class FirstFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         myViewModel.upcomingEvents.observe(getActivity(),eventsObserver);
+        myViewModel.role.observe(getActivity(),roleObserver);
+        myViewModel.username.observe(getActivity(),usernameObserver);
 
         //Updating upcoming events in myViewModel
         myViewModel.myHttpClient.post("http://10.0.2.2:8080/RepetitaIuvant_war_exploded/onLoad-servlet", null, new AsyncHttpResponseHandler() {
@@ -98,7 +123,7 @@ public class FirstFragment extends Fragment {
 
 
         //Go to login Button
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
+        binding.buttonLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
@@ -124,18 +149,45 @@ public class FirstFragment extends Fragment {
             }
         });
 
+        //Handle reservations
         binding.handleReservationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(myViewModel.role.getValue().equals("Student") || myViewModel.role.getValue().equals("Admin"))
+                if(!(myViewModel.role.getValue().equals("Student") || myViewModel.role.getValue().equals("Admin")))
+                {
+                    Toast.makeText(getContext(), "Please, Log in first!", Toast.LENGTH_SHORT).show();
+                }
+                else if (myViewModel.upcomingEvents.getValue().size() == 0)
+                {
+                    Toast.makeText(getContext(), "There are no upcoming events to be handled", Toast.LENGTH_SHORT).show();
+                }
+                else
                 {
                     NavHostFragment.findNavController(FirstFragment.this)
                             .navigate(R.id.action_FirstFragment_to_HandleFragment);
                 }
-                else 
-                {
-                    Toast.makeText(getContext(), "Please, Log in first!", Toast.LENGTH_SHORT).show();
-                }
+
+            }
+        });
+
+        //Log Out
+        binding.buttonLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://10.0.2.2:8080/RepetitaIuvant_war_exploded/logOut-servlet";
+                myViewModel.myHttpClient.get(url, null, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        myViewModel.username.setValue("");
+                        myViewModel.role.setValue("Guest");
+                        myViewModel.upcomingEvents.setValue(new ArrayList<>());
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Toast.makeText(getContext(), "Failed to log out", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -145,6 +197,8 @@ public class FirstFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         myViewModel.upcomingEvents.removeObservers(getActivity());
+        myViewModel.role.removeObservers(getActivity());
+        myViewModel.username.removeObservers(getActivity());
         binding = null;
     }
 
