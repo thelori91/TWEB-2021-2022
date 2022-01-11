@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Gen 05, 2022 alle 10:10
+-- Creato il: Gen 11, 2022 alle 17:59
 -- Versione del server: 10.4.21-MariaDB
 -- Versione PHP: 8.0.11
 
@@ -36,6 +36,7 @@ CREATE TABLE `Course` (
 --
 
 INSERT INTO `Course` (`Name`) VALUES
+('Cinematica II'),
 ('Comunicazione'),
 ('Elettronica'),
 ('Fisica'),
@@ -65,8 +66,9 @@ CREATE TABLE `Lesson` (
 INSERT INTO `Lesson` (`Teacher`, `Course`, `User`, `Day`, `ID`, `Time`, `State`) VALUES
 (15, 'Matematica', 'Polletto!', 'Monday', 3, '09:00', 'Active'),
 (17, 'Matematica', 'Polletto!', 'Tuesday', 4, '10:00', 'Active'),
-(14, 'Fisica', 'Polletto!', 'Thursday', 5, '14:00', 'Cancelled'),
-(14, 'Fisica', 'Polletto!', 'Monday', 6, '12:00', 'Done');
+(14, 'Scienze', 'Polletto!', 'Thursday', 5, '14:00', 'Cancelled'),
+(14, 'Scienze', 'Polletto!', 'Monday', 6, '12:00', 'Done'),
+(18, 'Cinematica II', 'TheLori91', 'Thursday', 7, '15:00', 'Active');
 
 -- --------------------------------------------------------
 
@@ -89,7 +91,8 @@ INSERT INTO `Teacher` (`Name`, `ID`, `Surname`) VALUES
 ('Piero', 14, 'Angela'),
 ('Nadir', 15, 'Murru'),
 ('Andrea', 16, 'Grosso'),
-('Roberta', 17, 'Sirovich');
+('Roberta', 17, 'Sirovich'),
+('Marco Aurelio', 18, 'Della Valle');
 
 -- --------------------------------------------------------
 
@@ -111,7 +114,8 @@ INSERT INTO `TeacherCourse` (`Teacher`, `Course`) VALUES
 (13, 'Scienze'),
 (14, 'Scienze'),
 (15, 'Matematica'),
-(17, 'Matematica');
+(17, 'Matematica'),
+(18, 'Cinematica II');
 
 -- --------------------------------------------------------
 
@@ -181,13 +185,13 @@ ALTER TABLE `User`
 -- AUTO_INCREMENT per la tabella `Lesson`
 --
 ALTER TABLE `Lesson`
-  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT per la tabella `Teacher`
 --
 ALTER TABLE `Teacher`
-  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Limiti per le tabelle scaricate

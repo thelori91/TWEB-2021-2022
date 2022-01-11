@@ -5,131 +5,136 @@
     android:layout_height="match_parent"
     tools:context=".ThirdFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="91dp"
-            android:gravity="center_horizontal"
-            android:text="Sign Up!"
-            android:textSize="48sp"
-            android:textStyle="bold" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="71dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="What's your name?"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/nameEditText"
-                android:layout_width="202dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="84dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="What's your Surname?"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/surnameEditText"
-                android:layout_width="201dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Surname"
-                android:inputType="textPersonName"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="87dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="A unique way to call you?"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/usernameEditTextSignUp"
-                android:layout_width="202dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Username"
-                android:inputType="textPersonName"
-                tools:ignore="TouchTargetSizeCheck" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="158dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Your secret password"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/passwordEditTextSignUp"
-                android:layout_width="201dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonSignUpRequest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Sign Up!" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/button_to_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Already a member? Log In!" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="91dp"
+                android:gravity="center_horizontal"
+                android:text="Sign Up!"
+                android:textSize="48sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="71dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="233dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="What's your name?"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/nameEditText"
+                    android:layout_width="202dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="textPersonName"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="What's your Surname?"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/surnameEditText"
+                    android:layout_width="201dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Surname"
+                    android:inputType="textPersonName"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="87dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="A unique way to call you?"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/usernameEditTextSignUp"
+                    android:layout_width="202dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Username"
+                    android:inputType="textPersonName"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="158dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Your secret password"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/passwordEditTextSignUp"
+                    android:layout_width="201dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonSignUpRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sign Up!" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_to_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Already a member? Log In!" />
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>
