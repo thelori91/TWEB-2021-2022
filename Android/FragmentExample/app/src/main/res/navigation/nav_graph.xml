@@ -13,16 +13,21 @@
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/SecondFragment"
+            app:popUpTo="@+id/SecondFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_ThirdFragment"
-            app:destination="@id/ThirdFragment" />
+            app:destination="@id/ThirdFragment"
+            app:popUpTo="@+id/ThirdFragment"
+            />
         <action
             android:id="@+id/action_FirstFragment_to_NewLesson"
-            app:destination="@id/NewLessonFragment" />
+            app:destination="@id/NewLessonFragment"
+            app:popUpTo="@+id/NewLessonFragment"/>
         <action
             android:id="@+id/action_FirstFragment_to_HandleFragment"
-            app:destination="@id/HandleFragment" />
+            app:destination="@id/HandleFragment"
+            app:popUpTo="@+id/HandleFragment"/>
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -32,10 +37,12 @@
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/FirstFragment"
+            app:popUpTo="@+id/FirstFragment"/>
         <action
             android:id="@+id/action_SecondFragment_to_ThirdFragment"
-            app:destination="@id/ThirdFragment" />
+            app:destination="@id/ThirdFragment"
+            app:popUpTo="@+id/ThirdFragment"/>
     </fragment>
     <fragment
         android:id="@+id/ThirdFragment"
@@ -44,10 +51,12 @@
         tools:layout="@layout/fragment_third">
         <action
             android:id="@+id/action_ThirdFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/FirstFragment"
+            app:popUpTo="@+id/FirstFragment"/>
         <action
             android:id="@+id/action_ThirdFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/SecondFragment"
+            app:popUpTo="@+id/SecondFragment"/>
     </fragment>
     <fragment
         android:id="@+id/NewLessonFragment"
@@ -57,7 +66,8 @@
 
         <action
             android:id="@+id/action_NewLesson_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/FirstFragment"
+            app:popUpTo="@+id/FirstFragment"/>
 
     </fragment>
     <fragment
@@ -68,7 +78,8 @@
 
         <action
             android:id="@+id/action_Handle_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/FirstFragment"
+            app:popUpTo="@+id/FirstFragment"/>
 
     </fragment>
 </navigation>
