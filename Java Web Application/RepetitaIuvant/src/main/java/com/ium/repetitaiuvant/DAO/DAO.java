@@ -3,8 +3,10 @@ package com.ium.repetitaiuvant.DAO;
 import java.net.ConnectException;
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class DAO {
+    public static final ReentrantLock reentrantLock = new ReentrantLock();
     private static String url;
     private static String user;
     private static String psw;
@@ -310,19 +312,54 @@ public class DAO {
     /* INSERT */
 
     public static void addStudent(User student) throws ConnectException {
-        if (student.getRole() == Role.STUDENT) {
+        synchronized (reentrantLock) {
+            if (student.getRole() == Role.STUDENT) {
+                Connection conn1 = null;
+                try {
+                    conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+                    if (conn1 == null) {
+                        System.err.println("addStudent: Unable to establish a connection!");
+                        throw new ConnectException();
+                    }
+                    System.out.println("addStudent: Connected to the database Tutoring");
+                    String sql = "INSERT into User(Username, Password, Role, Name, Surname) values ('" + student.getUsername() + "', '" + student.getPassword() + "', 'Student', '" + student.getName() + "' , '" + student.getSurname() + "')";
+                    Statement update = (Statement) conn1.createStatement();
+                    update.executeUpdate(sql);
+                    System.out.println("Student added correctly!");
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                } finally {
+                    if (conn1 != null) {
+                        try {
+                            conn1.close();
+                        } catch (SQLException e2) {
+                            System.out.println(e2.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void addLesson(long teacher, String course, String user, Day day, Time time) throws ConnectException {
+        synchronized (reentrantLock) {
             Connection conn1 = null;
             try {
                 conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
                 if (conn1 == null) {
-                    System.err.println("addStudent: Unable to establish a connection!");
+                    System.err.println("addLesson: Unable to establish a connection!");
                     throw new ConnectException();
                 }
-                System.out.println("addStudent: Connected to the database Tutoring");
-                String sql = "INSERT into User(Username, Password, Role, Name, Surname) values ('" + student.getUsername() + "', '" + student.getPassword() + "', 'Student', '" + student.getName() + "' , '" + student.getSurname() + "')";
-                Statement update = (Statement) conn1.createStatement();
-                update.executeUpdate(sql);
-                System.out.println("Student added correctly!");
+                System.out.println("addLesson: Connected to the database Tutoring");
+                String sql = "INSERT INTO Lesson(Teacher, Course, User, Day, Time)" + "VALUES(?,?,?,?,?)";
+                PreparedStatement st = conn1.prepareStatement(sql);
+                st.setLong(1, teacher);
+                st.setString(2, course);
+                st.setString(3, user);
+                st.setString(4, Conversions.dayToString(day));
+                st.setString(5, Conversions.timeToString(time));
+                st.executeUpdate();
+                st.close();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             } finally {
@@ -337,116 +374,91 @@ public class DAO {
         }
     }
 
-    public static void addLesson(long teacher, String course, String user, Day day, Time time) throws ConnectException {
-        Connection conn1 = null;
-        try {
-            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
-            if (conn1 == null) {
-                System.err.println("addLesson: Unable to establish a connection!");
-                throw new ConnectException();
-            }
-            System.out.println("addLesson: Connected to the database Tutoring");
-            String sql = "INSERT INTO Lesson(Teacher, Course, User, Day, Time)" + "VALUES(?,?,?,?,?)";
-            PreparedStatement st = conn1.prepareStatement(sql);
-            st.setLong(1, teacher);
-            st.setString(2, course);
-            st.setString(3, user);
-            st.setString(4, Conversions.dayToString(day));
-            st.setString(5, Conversions.timeToString(time));
-            st.executeUpdate();
-            st.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (conn1 != null) {
-                try {
-                    conn1.close();
-                } catch (SQLException e2) {
-                    System.out.println(e2.getMessage());
-                }
-            }
-        }
-    }
-
     public static void addTeacher(String name, String surname) throws ConnectException {
-        Connection conn1 = null;
-        try {
-            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
-            if (conn1 == null) {
-                System.err.println("addTeacher: Unable to establish a connection!");
-                throw new ConnectException();
-            }
-            System.out.println("addTeacher: Connected to the database Tutoring");
-            String sql = "INSERT INTO Teacher(Name, Surname) VALUES(?,?)";
-            PreparedStatement st = conn1.prepareStatement(sql);
-            st.setString(1, name);
-            st.setString(2, surname);
-            st.executeUpdate();
-            st.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (conn1 != null) {
-                try {
-                    conn1.close();
-                } catch (SQLException e2) {
-                    System.out.println(e2.getMessage());
+        synchronized (reentrantLock) {
+            Connection conn1 = null;
+            try {
+                conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+                if (conn1 == null) {
+                    System.err.println("addTeacher: Unable to establish a connection!");
+                    throw new ConnectException();
+                }
+                System.out.println("addTeacher: Connected to the database Tutoring");
+                String sql = "INSERT INTO Teacher(Name, Surname) VALUES(?,?)";
+                PreparedStatement st = conn1.prepareStatement(sql);
+                st.setString(1, name);
+                st.setString(2, surname);
+                st.executeUpdate();
+                st.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (conn1 != null) {
+                    try {
+                        conn1.close();
+                    } catch (SQLException e2) {
+                        System.out.println(e2.getMessage());
+                    }
                 }
             }
         }
     }
 
     public static void addCourse(String Name) throws ConnectException {
-        Connection conn1 = null;
-        try {
-            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
-            if (conn1 == null) {
-                System.err.println("addCourse: Unable to establish a connection!");
-                throw new ConnectException();
-            }
-            System.out.println("addCourse: Connected to the database Tutoring");
-            String sql = "INSERT INTO Course(Name)" + "VALUES(?)";
-            PreparedStatement st = conn1.prepareStatement(sql);
-            st.setString(1, Name);
-            st.executeUpdate();
-            st.close();
-        } catch (
-                SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (conn1 != null) {
-                try {
-                    conn1.close();
-                } catch (SQLException e2) {
-                    System.out.println(e2.getMessage());
+        synchronized (reentrantLock) {
+            Connection conn1 = null;
+            try {
+                conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+                if (conn1 == null) {
+                    System.err.println("addCourse: Unable to establish a connection!");
+                    throw new ConnectException();
+                }
+                System.out.println("addCourse: Connected to the database Tutoring");
+                String sql = "INSERT INTO Course(Name)" + "VALUES(?)";
+                PreparedStatement st = conn1.prepareStatement(sql);
+                st.setString(1, Name);
+                st.executeUpdate();
+                st.close();
+            } catch (
+                    SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (conn1 != null) {
+                    try {
+                        conn1.close();
+                    } catch (SQLException e2) {
+                        System.out.println(e2.getMessage());
+                    }
                 }
             }
         }
     }
 
     public static void addTeacherCourse(long teacher, String course) throws ConnectException {
-        Connection conn1 = null;
-        try {
-            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
-            if (conn1 == null) {
-                System.err.println("addTeacherCourse: Unable to establish a connection!");
-                throw new ConnectException();
-            }
-            System.out.println("addTeacherCourse: Connected to the database Tutoring");
-            String sql = "INSERT INTO TeacherCourse(Teacher, Course)" + "VALUES(?,?)";
-            PreparedStatement st = conn1.prepareStatement(sql);
-            st.setLong(1, teacher);
-            st.setString(2, course);
-            st.executeUpdate();
-            st.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (conn1 != null) {
-                try {
-                    conn1.close();
-                } catch (SQLException e2) {
-                    System.out.println(e2.getMessage());
+        synchronized (reentrantLock) {
+            Connection conn1 = null;
+            try {
+                conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+                if (conn1 == null) {
+                    System.err.println("addTeacherCourse: Unable to establish a connection!");
+                    throw new ConnectException();
+                }
+                System.out.println("addTeacherCourse: Connected to the database Tutoring");
+                String sql = "INSERT INTO TeacherCourse(Teacher, Course)" + "VALUES(?,?)";
+                PreparedStatement st = conn1.prepareStatement(sql);
+                st.setLong(1, teacher);
+                st.setString(2, course);
+                st.executeUpdate();
+                st.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (conn1 != null) {
+                    try {
+                        conn1.close();
+                    } catch (SQLException e2) {
+                        System.out.println(e2.getMessage());
+                    }
                 }
             }
         }
@@ -455,83 +467,89 @@ public class DAO {
     /* DELETE */
 
     public static void rmvTeacher(long teacherId) throws ConnectException {
-        Connection conn1 = null;
-        try {
-            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
-            if (conn1 == null) {
-                System.err.println("rmvTeacher: Unable to establish a connection!");
-                throw new ConnectException();
-            }
-            System.out.println("rmvTeacher: Connected to the database Tutoring");
-            String sql = "DELETE FROM `TeacherCourse` WHERE TeacherCourse.Teacher=" + "?";
-            PreparedStatement st = conn1.prepareStatement(sql);
-            st.setLong(1, teacherId);
-            st.executeUpdate();
-            st.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (conn1 != null) {
-                try {
-                    conn1.close();
-                } catch (SQLException e2) {
-                    System.out.println(e2.getMessage());
+        synchronized (reentrantLock) {
+            Connection conn1 = null;
+            try {
+                conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+                if (conn1 == null) {
+                    System.err.println("rmvTeacher: Unable to establish a connection!");
+                    throw new ConnectException();
+                }
+                System.out.println("rmvTeacher: Connected to the database Tutoring");
+                String sql = "DELETE FROM `TeacherCourse` WHERE TeacherCourse.Teacher=" + "?";
+                PreparedStatement st = conn1.prepareStatement(sql);
+                st.setLong(1, teacherId);
+                st.executeUpdate();
+                st.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (conn1 != null) {
+                    try {
+                        conn1.close();
+                    } catch (SQLException e2) {
+                        System.out.println(e2.getMessage());
+                    }
                 }
             }
         }
     }
 
     public static void rmvCourse(String courseName) throws ConnectException {
-        Connection conn1 = null;
-        try {
-            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
-            if (conn1 == null) {
-                System.err.println("rmvCourse: Unable to establish a connection!");
-                throw new ConnectException();
-            }
-            System.out.println("rmvCourse: Connected to the database Tutoring");
-            String sql = "DELETE FROM `TeacherCourse` WHERE TeacherCourse.Course=" + "?";
-            PreparedStatement st = conn1.prepareStatement(sql);
-            st.setString(1, courseName);
-            st.executeUpdate();
-            st.close();
-        } catch (
-                SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (conn1 != null) {
-                try {
-                    conn1.close();
-                } catch (SQLException e2) {
-                    System.out.println(e2.getMessage());
+        synchronized (reentrantLock) {
+            Connection conn1 = null;
+            try {
+                conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+                if (conn1 == null) {
+                    System.err.println("rmvCourse: Unable to establish a connection!");
+                    throw new ConnectException();
+                }
+                System.out.println("rmvCourse: Connected to the database Tutoring");
+                String sql = "DELETE FROM `TeacherCourse` WHERE TeacherCourse.Course=" + "?";
+                PreparedStatement st = conn1.prepareStatement(sql);
+                st.setString(1, courseName);
+                st.executeUpdate();
+                st.close();
+            } catch (
+                    SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (conn1 != null) {
+                    try {
+                        conn1.close();
+                    } catch (SQLException e2) {
+                        System.out.println(e2.getMessage());
+                    }
                 }
             }
         }
     }
 
     public static void rmvTeacherCourse(long teacherId, String courseName) throws ConnectException {
-        Connection conn1 = null;
-        try {
-            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
-            if (conn1 == null) {
-                System.err.println("rmvTeacherCourse: Unable to establish a connection!");
-                throw new ConnectException();
-            }
-            System.out.println("rmvTeacherCourse: Connected to the database Tutoring");
-            String sql = "DELETE FROM `TeacherCourse` WHERE TeacherCourse.Teacher= " + "?" + "&& TeacherCourse.Course= " + "?";
-            PreparedStatement st = conn1.prepareStatement(sql);
-            st.setLong(1, teacherId);
-            st.setString(2, courseName);
-            st.executeUpdate();
-            st.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (conn1 != null) {
-                try {
-                    conn1.close();
-                } catch (SQLException e2) {
-                    System.out.println(e2.getMessage());
+        synchronized (reentrantLock) {
+            Connection conn1 = null;
+            try {
+                conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+                if (conn1 == null) {
+                    System.err.println("rmvTeacherCourse: Unable to establish a connection!");
+                    throw new ConnectException();
+                }
+                System.out.println("rmvTeacherCourse: Connected to the database Tutoring");
+                String sql = "DELETE FROM `TeacherCourse` WHERE TeacherCourse.Teacher= " + "?" + "&& TeacherCourse.Course= " + "?";
+                PreparedStatement st = conn1.prepareStatement(sql);
+                st.setLong(1, teacherId);
+                st.setString(2, courseName);
+                st.executeUpdate();
+                st.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (conn1 != null) {
+                    try {
+                        conn1.close();
+                    } catch (SQLException e2) {
+                        System.out.println(e2.getMessage());
+                    }
                 }
             }
         }
@@ -583,30 +601,32 @@ public class DAO {
     }
 
     public static void updateLesson(long lessonId, String nextState) throws ConnectException {
-        Connection conn1 = null;
-        try {
-            conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
-            if (conn1 == null) {
-                System.err.println("updateLesson: Unable to establish a connection!");
-                throw new ConnectException();
-            }
-            System.out.println("updateLesson: Connected to the database Tutoring");
-            String newState = " State= " + "?";
-            String lId = " WHERE Lesson.ID= " + "?";
-            String sql = "UPDATE Lesson SET" + newState + lId;
-            PreparedStatement st = conn1.prepareStatement(sql);
-            st.setString(1, nextState);
-            st.setLong(2, lessonId);
-            st.executeUpdate();
-            st.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (conn1 != null) {
-                try {
-                    conn1.close();
-                } catch (SQLException e2) {
-                    System.out.println(e2.getMessage());
+        synchronized (reentrantLock) {
+            Connection conn1 = null;
+            try {
+                conn1 = DriverManager.getConnection(DAO.url, DAO.user, DAO.psw);
+                if (conn1 == null) {
+                    System.err.println("updateLesson: Unable to establish a connection!");
+                    throw new ConnectException();
+                }
+                System.out.println("updateLesson: Connected to the database Tutoring");
+                String newState = " State= " + "?";
+                String lId = " WHERE Lesson.ID= " + "?";
+                String sql = "UPDATE Lesson SET" + newState + lId;
+                PreparedStatement st = conn1.prepareStatement(sql);
+                st.setString(1, nextState);
+                st.setLong(2, lessonId);
+                st.executeUpdate();
+                st.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                if (conn1 != null) {
+                    try {
+                        conn1.close();
+                    } catch (SQLException e2) {
+                        System.out.println(e2.getMessage());
+                    }
                 }
             }
         }

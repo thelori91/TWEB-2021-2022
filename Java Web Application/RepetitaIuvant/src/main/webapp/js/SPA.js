@@ -493,6 +493,10 @@ let app = new Vue({
                 alert("Error:\npassword must have from 8 to 20 chars, your password length is " + this.newUserPassword.length)
             else if (this.newUserUname.length > 30)
                 alert("Error:\nusername is too long, please insert a new one " + this.newUserUname.length)
+            else if (this.newUserName.length > 30)
+                alert("Error:\nName is too long, please insert a new one " + this.newUserUname.length)
+            else if (this.newUserSurname.length > 30)
+                alert("Error:\nSurname is too long, please insert a new one " + this.newUserUname.length)
             else {
                 var self = this;
                 let nothingIsEmpty = this.checkFields(false);

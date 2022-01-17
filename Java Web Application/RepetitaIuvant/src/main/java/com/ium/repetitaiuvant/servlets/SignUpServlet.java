@@ -53,10 +53,16 @@ public class SignUpServlet extends HttpServlet {
                 out.println("Error:");
                 out.println("password must have from 8 to 20 chars, your password length is" + password.length());
 
-            } else if (username.length() > 30) {
+            } else if (username.length() == 0 || username.length() > 30) {
                 out.println("Error:");
-                out.println("username is too long, please insert a new one " + username.length());
-            } else {
+                out.println("improper username length, please insert a new one " + username.length());
+            } else if (name.length() == 0 || name.length() > 30) {
+                out.println("Error:");
+                out.println("improper name length, please insert a new one " + name.length());
+            }else if (surname.length() == 0 || surname.length() > 30) {
+                out.println("Error:");
+                out.println("improper surname length, please insert a new one " + surname.length());
+            }else {
                 try {
                     if (DAO.existsUser(username)) {
                         out.println("Error:");
